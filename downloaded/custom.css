@@ -1,0 +1,499 @@
+﻿/* -------------------------------------------------------------------------- */
+/*                                Falcon Button                               */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================================
+Global
+=========================================================================================*/
+/* DQUAM custom */
+/* ========================================================================================
+Vertical Nav
+=========================================================================================*/
+/* ========================================================================================
+Other
+=========================================================================================*/
+/* ========================================================================================
+Navbar
+=========================================================================================*/
+/* prettier-ignore */
+/* ========================================================================================*/
+.text-light-blue {
+  color: #27BCFE;
+}
+
+.bg-light-blue {
+  background-color: #E5F7FF;
+}
+
+.text-light-orange {
+  color: #F68F57;
+}
+
+.bg-light-orange {
+  background-color: #FEF0E8;
+}
+
+.card .card-body.dash-statics {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.dash-system-tables table td .badge {
+  width: 75px !important;
+  height: 23px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.gap-actions .btn {
+  height: 36px;
+  min-width: 130px;
+  font-weight: 400;
+  font-size: 0.8rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.form-check-input-urgent-tasks:checked {
+  border-color: #1869d2 !important;
+  background-color: #1869d2 !important;
+}
+.form-check-input-high-tasks:checked {
+  border-color: #2aceff !important;
+  background-color: #2aceff !important;
+}
+.form-check-input-medium-tasks:checked {
+  border-color: #73D3FE !important;
+  background-color: #73D3FE !important;
+}
+.form-check-input-low-tasks:checked {
+  border-color: #A9E4FF !important;
+  background-color: #A9E4FF !important;
+}
+
+.qipobjective-header {
+  text-align: start !important;
+  width: 100%;
+  margin: 0 !important;
+  height: 50px;
+}
+.qipobjective-header:hover {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.objective-activities .card-header {
+  background-color: #F9FAFF;
+  color: #344050;
+  padding: 0.8rem 1rem;
+}
+.objective-activities .card-header h6 {
+  font-size: 1rem;
+}
+.objective-activities .card-footer .btn {
+  height: 45px;
+}
+.objective-activities .table td, .objective-activities .table th {
+  text-align: center;
+}
+/*# sourceMappingURL=custom.css.map
+//////////////////////////////////////
+//    My changes
+////////////////////////////////////*/
+
+@media(min-width: 1870px) {
+  .each-hover-card-tilt {
+      width: 16.66%
+  }
+}
+
+@media (min-width: 1200px){	
+.navbar-vertical.navbar-expand-xl + .content {
+    margin-right: 0rem !important;
+}
+}
+.clsMarginLogo {
+	margin-top: 90px;
+}
+.clsMarginProfileRight{
+	margin-right: 0rem !important;
+}
+.navbar-vertical .toggle-icon-wrapper {
+    margin-left: -2.5rem;
+    padding-left: 0.125rem;
+    margin-right: -1.75rem;
+}
+
+.container-tilt {
+  position: relative;
+  width: 190px;
+  height: 254px;
+  max-width: 100%;
+  transition: 200ms;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.container-tilt:active {
+  width: 180px;
+  height: 245px
+}
+
+#card-tilt {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  transition: 700ms
+}
+
+[data-bs-theme=light] #card-tilt {
+  background: linear-gradient(43deg, #9dacbf 0%, #d8e2ee 100%)
+}
+
+[data-bs-theme=dark] #card-tilt {
+  background: linear-gradient(43deg, #28292b 0%, #4e565f 100%)
+}
+
+.canvas-tilt:hover #card-tilt {
+  background: linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%)
+}
+
+.subtitle-tilt {
+  transform: translateY(160px);
+  color: #866edd;
+  text-align: center;
+  width: 100%
+}
+
+.title-tilt {
+  opacity: 0;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out-out;
+  transition-delay: 100ms;
+  position: absolute;
+  font-size: 14px;
+  color: #fff;
+  margin: 10px
+}
+
+.tracker:hover~#card-tilt .title-tilt {
+  opacity: 1
+}
+
+#prompt-tilt {
+  bottom: 15px;
+  left: 15px;
+  z-index: 20;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 300ms ease-in-out-out;
+  position: absolute;
+  max-width: 110px;
+  color: #fff;
+  margin: 0
+}
+
+.tracker {
+  position: absolute;
+  z-index: 200;
+  width: 100%;
+  height: 100%
+}
+
+.tracker:hover {
+  cursor: pointer
+}
+
+.tracker:hover~#card-tilt #prompt-tilt {
+  opacity: 0
+}
+
+.tracker:hover~#card-tilt {
+  transition: 300ms;
+  filter: brightness(1.1)
+}
+
+.container-tilt:hover #card-tilt::before {
+  transition: 200ms;
+  content: "";
+  opacity: 80%
+}
+
+.canvas-tilt {
+  perspective: 800px;
+  inset: 0;
+  z-index: 200;
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas: "tr-1 tr-2 tr-3 tr-4 tr-5" "tr-6 tr-7 tr-8 tr-9 tr-10" "tr-11 tr-12 tr-13 tr-14 tr-15" "tr-16 tr-17 tr-18 tr-19 tr-20" "tr-21 tr-22 tr-23 tr-24 tr-25"
+}
+
+[data-bs-theme=dark] .canvas-tilt:hover #card-tilt::before {
+  content: "";
+  background: linear-gradient(43deg, rgb(65, 88, 208) 0%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%);
+  filter: blur(2rem);
+  opacity: 30%;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+  transition: 200ms
+}
+
+.tr-1 {
+  grid-area: tr-1
+}
+
+.tr-2 {
+  grid-area: tr-2
+}
+
+.tr-3 {
+  grid-area: tr-3
+}
+
+.tr-4 {
+  grid-area: tr-4
+}
+
+.tr-5 {
+  grid-area: tr-5
+}
+
+.tr-6 {
+  grid-area: tr-6
+}
+
+.tr-7 {
+  grid-area: tr-7
+}
+
+.tr-8 {
+  grid-area: tr-8
+}
+
+.tr-9 {
+  grid-area: tr-9
+}
+
+.tr-10 {
+  grid-area: tr-10
+}
+
+.tr-11 {
+  grid-area: tr-11
+}
+
+.tr-12 {
+  grid-area: tr-12
+}
+
+.tr-13 {
+  grid-area: tr-13
+}
+
+.tr-14 {
+  grid-area: tr-14
+}
+
+.tr-15 {
+  grid-area: tr-15
+}
+
+.tr-16 {
+  grid-area: tr-16
+}
+
+.tr-17 {
+  grid-area: tr-17
+}
+
+.tr-18 {
+  grid-area: tr-18
+}
+
+.tr-19 {
+  grid-area: tr-19
+}
+
+.tr-20 {
+  grid-area: tr-20
+}
+
+.tr-21 {
+  grid-area: tr-21
+}
+
+.tr-22 {
+  grid-area: tr-22
+}
+
+.tr-23 {
+  grid-area: tr-23
+}
+
+.tr-24 {
+  grid-area: tr-24
+}
+
+.tr-25 {
+  grid-area: tr-25
+}
+
+.tr-1:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(20deg) rotateY(-10deg) rotateZ(0deg)
+}
+
+.tr-2:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(20deg) rotateY(-5deg) rotateZ(0deg)
+}
+
+.tr-3:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(20deg) rotateY(0deg) rotateZ(0deg)
+}
+
+.tr-4:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(20deg) rotateY(5deg) rotateZ(0deg)
+}
+
+.tr-5:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(20deg) rotateY(10deg) rotateZ(0deg)
+}
+
+.tr-6:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(10deg) rotateY(-10deg) rotateZ(0deg)
+}
+
+.tr-7:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(10deg) rotateY(-5deg) rotateZ(0deg)
+}
+
+.tr-8:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(10deg) rotateY(0deg) rotateZ(0deg)
+}
+
+.tr-9:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(10deg) rotateY(5deg) rotateZ(0deg)
+}
+
+.tr-10:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(10deg) rotateY(10deg) rotateZ(0deg)
+}
+
+.tr-11:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(0deg) rotateY(-10deg) rotateZ(0deg)
+}
+
+.tr-12:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(0deg) rotateY(-5deg) rotateZ(0deg)
+}
+
+.tr-13:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg)
+}
+
+.tr-14:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(0deg) rotateY(5deg) rotateZ(0deg)
+}
+
+.tr-15:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(0deg) rotateY(10deg) rotateZ(0deg)
+}
+
+.tr-16:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-10deg) rotateY(-10deg) rotateZ(0deg)
+}
+
+.tr-17:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-10deg) rotateY(-5deg) rotateZ(0deg)
+}
+
+.tr-18:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-10deg) rotateY(0deg) rotateZ(0deg)
+}
+
+.tr-19:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-10deg) rotateY(5deg) rotateZ(0deg)
+}
+
+.tr-20:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-10deg) rotateY(10deg) rotateZ(0deg)
+}
+
+.tr-21:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-20deg) rotateY(-10deg) rotateZ(0deg)
+}
+
+.tr-22:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-20deg) rotateY(-5deg) rotateZ(0deg)
+}
+
+.tr-23:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg)
+}
+
+.tr-24:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-20deg) rotateY(5deg) rotateZ(0deg)
+}
+
+.tr-25:hover~#card-tilt {
+  transition: 125ms ease-in-out;
+  transform: rotateX(-20deg) rotateY(10deg) rotateZ(0deg)
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+
+button.accordion-button.text-800.fw-medium.fs--1.py-2:after {
+  float: right;
+  margin-right: 20px;
+}

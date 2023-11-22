@@ -1,0 +1,112 @@
+/* -------------------------------------------------------------------------- */
+/*                                Falcon Button                               */
+/* -------------------------------------------------------------------------- */
+/* ========================================================================================
+Global
+=========================================================================================*/
+/* DQUAM custom */
+/* ========================================================================================
+Vertical Nav
+=========================================================================================*/
+/* ========================================================================================
+Other
+=========================================================================================*/
+/* ========================================================================================
+Navbar
+=========================================================================================*/
+/* prettier-ignore */
+/* ========================================================================================*/
+.text-light-blue {
+  color: #27BCFE;
+}
+
+.bg-light-blue {
+  background-color: #E5F7FF;
+}
+
+.text-light-orange {
+  color: #F68F57;
+}
+
+.bg-light-orange {
+  background-color: #FEF0E8;
+}
+
+.card .card-body.dash-statics {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.dash-system-tables table td .badge {
+  width: 75px !important;
+  height: 23px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.gap-actions .btn {
+  height: 36px;
+  min-width: 130px;
+  font-weight: 400;
+  font-size: 0.8rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.form-check-input-urgent-tasks:checked {
+  border-color: #1869d2 !important;
+  background-color: #1869d2 !important;
+}
+.form-check-input-high-tasks:checked {
+  border-color: #2aceff !important;
+  background-color: #2aceff !important;
+}
+.form-check-input-medium-tasks:checked {
+  border-color: #73D3FE !important;
+  background-color: #73D3FE !important;
+}
+.form-check-input-low-tasks:checked {
+  border-color: #A9E4FF !important;
+  background-color: #A9E4FF !important;
+}
+
+.qipobjective-header {
+  text-align: start !important;
+  width: 100%;
+  margin: 0 !important;
+  height: 50px;
+}
+.qipobjective-header:hover {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.objective-activities .card-header {
+  background-color: #F9FAFF;
+  color: #344050;
+  padding: 0.8rem 1rem;
+}
+.objective-activities .card-header h6 {
+  font-size: 1rem;
+}
+.objective-activities .card-footer .btn {
+  height: 45px;
+}
+.objective-activities .table td, .objective-activities .table th {
+  text-align: center;
+}
+/*# sourceMappingURL=custom-rtl.css.map */
