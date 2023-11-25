@@ -1,0 +1,347 @@
+﻿<!-- ################################### Inner Contents ################################ -->
+
+<div class="content-inner p-lg-4">
+    <!-- BreadCrumb-->
+    <div class="row mb-3 mb-xl-4">
+        <div class="col">
+            <nav style="--falcon-breadcrumb-divider: 'Â»';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Quality Improvement</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add New Incident</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ============ page contents here... =========== -->
+    <div class="row justify-content-center">
+        <div class="col-12 col-xxl-8">
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row align-items-center justify-content-between mb-5">
+                        <div class="col-12 col-xxl-auto mb-3 mb-xxl-0">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-4xl status-online me-2">
+                                    <img class="rounded-circle" src="../assets/img/team/1.jpg" alt="">
+                                </div>
+                                <div class="flex-1">
+                                    <h5 id="name" class="mb-0">Lisa K</h5>
+                                    <p id="department" class="fs-0 mb-0 d-flex">Managementsss Department</p>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-6 col-xxl-auto">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <span class="fw-semi-bold text-800 fs-0">Reporting Date</span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <span id="Reporting_Date" class="text-500 fs--1">2023/03/18</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-xxl-auto">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <span class="fw-semi-bold text-800 fs-0">Reporting Time</span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <span id="Reporting_Time" class="text-500 fs--1">10:16:35</span>
+                                                </div>
+                                            </div>
+                                        </div>                    </div>
+                    <div class="row mb-4">
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="incidentRelatedTo">Incident Related to:</label>
+                            <select class="form-select" id="incidentRelatedTo" aria-label="Incident Related To">
+                                <option selected="selected">Select Item</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label class="form-label">Add Effected Pary:</label>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="table-responsive scrollbar">
+                                       <table id="Effected_party_table" class="table table-bordered table-white">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center" scope="col">Effect Party</th>
+                                                            <th class="text-center" scope="col">Type</th>
+                                                            <th class="text-center" scope="col">Consequence</th>
+                                                            <th class="text-center" scope="col">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr >
+                                                            <td class="text-center">ep</td>
+                                                            <td class="text-center">type2</td>
+                                                            <td class="text-center">conse1</td>
+                                                            <td class="text-center">
+                                                                <div>
+                                                                    <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                        title="Edit">
+                                                                        <span class="fas fa-edit text-primary-emphasis"></span>
+                                                                    </button>
+                                                                    <button class="btn btn-link p-0 ms-2" type="button" data-bs-toggle="tooltip"
+                                                                        data-bs-placement="top"  title="Delete">
+                                                                        <span class="fas fa-trash text-danger"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr id="addnew">
+                                                            <td class="text-center">
+                                                                <select id="select_party" class="form-select minw-150">
+                                                                    <option value="" selected="">select party</option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <select id="select_type" class="form-select minw-150">
+                                                                    <option value="" selected="">select type</option>
+                                                                    <option value="1">1</option>
+                                                                    <option value="2">2</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <input  id="consequences" class="form-control form-control-style-cursor minw-150" type="text" placeholder="consequence...">
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <button class="btn btn-dquam-success btn-sm minw-80" type="button" onclick="Effected_Party()">
+                                                                    <span class="fas fa-plus me-1" data-fa-transform="shrink-3"></span> Add
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>                            </div><!--End: table-responsive -->
+                        </div>
+                    </div>
+                </div><!--End: card-body -->
+                <div class="card-footer bg-light">
+                    <div class="row g-3 justify-content-end">
+                        <div class="col-auto">
+
+                            <div class="row g-2">
+                                <div class="col-auto">
+                                    <button class="btn btn-dquam-danger px-2 px-sm-3" type="button">Cancel</button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-dquam-primary px-2 px-sm-5" type="button"
+                                        onclick="create_new_incident()">
+                                        Next <span class="fas fa-chevron-right ms-2"
+                                            data-fa-transform="shrink-3"></span>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div><!--End: card-footer-->
+            </div><!--End: card -->
+
+        </div>
+    </div>
+
+</div><!-- End: content-inner -->
+
+<script type="text/javascript">
+    // <!-- ===============================================-->
+    // <!--    JavaScripts-->
+    // <!-- ===============================================-->
+    document.addEventListener('DOMContentLoaded', function () {
+       });
+	var name;
+	var department;
+    var Reporting_Time;
+    var Reporting_Date;
+    var incidentRelatedTo;
+    var tabledata =[]
+    var id=1;
+    var Party ;
+    var Type;
+    var consequences;
+    
+
+    function create_new_incident (){
+    
+    Reporting_Time = $("#Reporting_Time").html()
+    Reporting_Date = $("#Reporting_Date").html()
+    name = $("#name").html()
+    department = $("#department").html()
+
+console.log("WORKING")
+
+
+ 
+  // Retrieve data from All rows 
+  $("#Effected_party_table tbody tr").each(function(){
+    incidentRelatedTo = $("#incidentRelatedTo")
+     currentrow =$(this)
+    EType = currentrow.find('td:eq(0)').html()
+    Type = currentrow.find('td:eq(1)').html()
+    Consequences = currentrow.find('td:eq(2)').html()
+	console.log(EType)
+    obj={}
+    obj.EType=EType
+    obj.Type=Type
+    obj.Consequences=Consequences
+    
+    tabledata.push(obj)
+
+
+
+// onclick="window.location.href='incident-new-stage2.html'"
+    }   )
+    // $('#Stage-1').hide()
+    console.log(tabledata)
+    console.log(Reporting_Time,name,department)
+    console.log(Reporting_Date)
+    
+    $.ajax
+        ({
+        //url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('GA_Incidents')/items", //  CHANGE LIST NAME WHERE EVER OCCURING
+        url: "https://mgskw.sharepoint.com/sites/PowerAppLearning/PolicyAndProcedure/_api/web/lists/GetByTitle('GA_Incidents')/items",
+        type: "POST",
+        data: JSON.stringify
+        ({
+            __metadata:
+            {
+                type: "SP.Data.Org_x005f_DPI_Date_OF_Reporting "  // CHECK TYPE
+            },
+          DPI_Date_OF_Reporting : Reporting_Date
+        }),
+        headers:
+        {
+            "Accept": "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "X-HTTP-Method": "POST"
+        },
+        success: function(data, status, xhr)
+        {
+            // RetriveUnitItem();
+            console.log("congratsssss")
+        },
+        error: function(xhr, status, error)
+        {
+            console.log(xhr);
+        }
+    });
+   
+   
+return false;
+}
+
+function Effected_Party() {
+   Party = $("#select_party").val()
+   Type =$("#select_type").val()
+   consequences =$("#consequences").val()
+   console.log(Party,Type,consequences)
+   id1=id.toString()
+   id++
+   
+   if ( $("#select_party").val()==='' ||  $("#select_type").val() ==='' || $("#consequences").val() ==='')
+   {
+   
+   }
+	else{
+   
+   var html=
+   `
+   <tr >
+                                                            <td class="text-center">` + Party + `</td>
+                                                            <td class="text-center">` + Type + `</td>
+                                                            <td class="text-center">` + consequences + `</td>
+                                                            <td class="text-center">
+                                                                <div>
+                                                                    <button class="btn btn-link p-0" type="button" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                        title="Edit">
+                                                                        <span class="fas fa-edit text-primary-emphasis"></span>
+                                                                    </button>
+                                                                    <button class="btn btn-link p-0 ms-2" type="button" data-bs-toggle="tooltip"
+                                                                        data-bs-placement="top" title="Delete">
+                                                                        <span class="fas fa-trash text-danger"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+   `
+  
+   
+   
+   targetRow = $('#Effected_party_table tr#addnew');
+ $(html).insertBefore(targetRow);
+ var randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
+console.log(randomFourDigitNumber);
+  $.ajax
+        ({
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('GA_Incidents_Effected_Parties')/items", //  CHANGE LIST NAME WHERE EVER OCCURING
+
+      // url: "https://mgskw.sharepoint.com/sites/PowerAppLearning/PolicyAndProcedure/_api/web/lists/GetByTitle('GA_Effected_Parties')/items",
+        type: "POST",
+        data: JSON.stringify
+        ({
+            __metadata:
+            {
+                type: "SP.Data.Org_x005f_GA_External_Parties"//GA_Effected_Parties
+            },
+            Incident_Parent_ID : randomFourDigitNumber,
+            Effected_Parties : Party
+            
+                    }),
+        headers:
+        {
+            "Accept": "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "X-HTTP-Method": "POST"
+        },
+        success: function(data, status, xhr)
+        {
+            console.log("SUCCESS");
+        },
+        error: function(xhr, status, error)
+        {
+            console.log(xhr);
+        }
+    });
+ 
+ 
+ $("#select_party").val('')
+ $("#select_type").val('')
+ $("#consequences").val('')
+}
+console.log("skdl" + randomFourDigitNumber);
+   
+ }
+ 
+ function delete_Effected_party(id1)
+ {
+ $('#'+id1).remove();
+ }
+
+</script>
+
+
+<!-- ===============================================-->
+<!--    JavaScripts-->
+<!-- ===============================================-->
+<script src="../vendors/popper/popper.min.js"></script>
+<script src="../vendors/bootstrap/bootstrap.min.js"></script>
+<script src="../vendors/anchorjs/anchor.min.js"></script>
+<script src="../vendors/is/is.min.js"></script>
+<script src="../vendors/fontawesome/all.min.js"></script>
+<script src="../vendors/lodash/lodash.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+<script src="../vendors/list.js/list.min.js"></script>
+<script src="../vendors/dropzone/dropzone.min.js"></script>
+<script src="../vendors/select2/select2.min.js"></script>
+<script src="../vendors/select2/select2.full.min.js"></script>
+<script src="../assets/js/flatpickr.js"></script>
+<script src="../assets/js/theme.js"></script>
