@@ -1,0 +1,5 @@
+incident logs{
+    - no status column in DB
+    - changed values of Stage in dropdown
+    - pagination with URL or global items
+}

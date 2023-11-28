@@ -22,7 +22,9 @@
                 <div class="col">
                     <nav style="--falcon-breadcrumb-divider: 'Â»';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Improvement</a></li>
+                            <li class="breadcrumb-item"><a
+                                    href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                    Improvement</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Policy Log</li>
                         </ol>
                     </nav>
@@ -42,7 +44,7 @@
                                     filters:
                                 </div>
                                 <div class="col-12 col-xl-auto">
-                                    <select class="form-select form-select-sm">
+                                    <select id="search_status" class="form-select form-select-sm">
                                         <option value="" selected="">Status</option>
                                         <option value="in progress">in progress</option>
                                         <option value="closed">closed</option>
@@ -50,19 +52,19 @@
                                     </select>
                                 </div>
                                 <div class="col-12 col-xl-auto">
-                                    <select class="form-select form-select-sm">
+                                    <select id="search_stage" class="form-select form-select-sm">
                                         <option value="" selected="">Stage</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                        <option value="Quality">Quality</option>
+                                        <option value="Preparation Team">Preparation Team</option>
+                                        <option value="Completed">Completed</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-xl-auto">
-                                    <select class="form-select form-select-sm">
+                                    <select id="search_department" class="form-select form-select-sm">
                                         <option value="" selected="">Department</option>
-                                        <option value="A Driver">A</option>
-                                        <option value="B Driver">B</option>
-                                        <option value="C Driver">C</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
                                     </select>
                                 </div>
                             </div>
@@ -144,74 +146,165 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#pageTitle").text('Policy Log');
 
-        retriveListItem();
-    
+    let items = [];
+
+    $(document).ready(function () {
+        on_change_status();
+        on_change_stage();
+        on_change_department();
+
+
+        modify_page_details();
+        retrieve_table_data();
     });
-    // Add Levels tab retriveListItem 	
-    function retriveListItem() {
+
+
+    function modify_page_details() {
+        $("#pageTitle").text('Policy Log');
+    }
+
+    async function retrieve_table_data() {
+        items = await retrive_list_items();
+        populate_table('#tbl-policy-logs', items);
+
+    }
+
+    async function retrive_list_items() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/Items?$OrderBy=Modified desc",
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+
+
+    function populate_table(table_id, data) {
+        html = '';
+        if (data.length > 0) {
+            $(data).each(function (index, value) {
+                html += populate_table_row(value);
+            });
+        }
+        $(table_id).html(html);
+    }
+
+
+    function populate_table_row(value) {
+        return `
+            <tr>
+                <td class="id">${value.Sequence_Number}</td>
+                <td>
+                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+                        ${value.Request_title}
+                    </span>
+                </td>
+                <td class="stage text-center">
+                    <span>${value.Step_Stage}</span>
+                </td>
+                <td class="status text-center">
+                    <span class="badge rounded badge-subtle-info p-2 minw-80">New</span>
+                </td>
+                <td class="dueDate text-center">${new Date(value.Submit_Date).format('yyyy/MM/dd')}</td>
+                <td class="department text-center">${value.Department}</td>
+                <td class="documentLink text-center">
+                    <button class="btn btn-dquam-secondary btn-sm">
+                        <span class="fas fa-file"></span>
+                        View File
+                    </button>
+                </td>
+                <td class="text-center">
+                    <div class="btn-group font-sans-serif position-static">
+                        <button class="btn btn-link btn-sm text-600 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">
+                            <span class="fas fa-ellipsis-h fs--1"></span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="policy-request-readonly.html">View Details</a>
+                            <a class="dropdown-item" href="policy-request-history.html">View History</a>
+                            <a class="dropdown-item" href="request-meeting.html">Meeting Request</a>
+                            <a class="dropdown-item" href="#">Open MS Teams</a>
+                            <a class="dropdown-item" href="#">Dynamic Action</a>
+                            <button class="dropdown-item text-danter" onclick="delete_record(${value.ID})">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>`
+    }
+
+
+
+    function delete_record(record_id) {
+        event.preventDefault();
 
         $.ajax({
-            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/Items?$OrderBy=Modified desc",
-            method: "GET",
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/items(" + record_id + ")",
+            type: "POST",
+            async: false,
             headers: {
-                "ACCEPT": "application/json; odata=verbose"
+                "Accept": "application/json;odata=verbose",
+                "X-Http-Method": "DELETE",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                "If-Match": "*"
             },
             success: function (data) {
-                var html = '';
-                if (data.d.results.length > 0) {
-
-                    $(data.d.results).each(function (index, value) {
-
-
-                        html += `<tr>
-                            <td class="id">`+ value.Sequence_Number + `</td>
-                            <td>
-                                <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip" data-bs-placement="top" title="">
-                                    `+ value.Request_title + `
-                                </span>
-                            </td>
-                            <td class="stage text-center">
-                                <span>`+ value.Step_Stage + `</span>
-                            </td>
-                            <td class="status text-center">
-                                <span class="badge rounded badge-subtle-info p-2 minw-80">New</span>
-                            </td>
-                            <td class="dueDate text-center">`+ value.Submit_Date + `</td>
-                            <td class="department text-center">`+ value.Department + `</td>
-                            <td class="documentLink text-center">
-                                <button class="btn btn-dquam-secondary btn-sm">
-                                    <span class="fas fa-file"></span>
-                                    View File
-                                </button>
-                            </td>
-                            <td class="text-center">
-                                <div class="btn-group font-sans-serif position-static">
-                                    <button class="btn btn-link btn-sm text-600 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">
-                                        <span class="fas fa-ellipsis-h fs--1"></span>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="policy-request-readonly.html">View Details</a>
-                                        <a class="dropdown-item" href="policy-request-history.html">View History</a>
-                                        <a class="dropdown-item" href="request-meeting.html">Meeting Request</a>
-                                        <a class="dropdown-item" href="#">Open MS Teams</a>
-                                        <a class="dropdown-item" href="#">Dynamic Action</a>
-                                        <a class="dropdown-item text-danter" href="#">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        `;
-                    });
-                }
-                $('#tbl-policy-logs').html(html);
+                items = items.filter(item => item.ID !== record_id);
+                populate_table('#tbl-policy-logs', items);
             },
             error: function (error) {
-                console.log(JSON.stringify(error));
+                console.log(JSON.stringify(error))
             }
         });
+    }
+
+
+    function on_change_status() {
+        $('#search_status').on('change', function () {
+            filter_table();
+        });
+    }
+    
+    
+    function on_change_stage() {
+        $('#search_stage').on('change', function () {
+            filter_table();
+        });
+    }
+    
+    
+    function on_change_department() {
+        $('#search_department').on('change', function () {
+            filter_table();
+        });
+    }
+
+    function filter_table(){
+        let search_status = $('#search_status').val();
+        let search_stage = $('#search_stage').val();
+        let search_department = $('#search_department').val();
+
+        let filtered_items = items.filter(item => {
+            return (
+                (search_status === '' || item.Status == search_status) &&
+                (search_stage === '' || item.Step_Stage == search_stage) &&
+                (search_department === '' || item.Department == search_department)
+            );
+        });
+
+        populate_table('#tbl-policy-logs', filtered_items);
+
+
     }
 
 </script>
