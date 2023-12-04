@@ -1,5 +1,23 @@
-incident logs{
+policy logs{
     - no status column in DB
     - changed values of Stage in dropdown
     - pagination with URL or global items
 }
+
+
+
+new policy:
+
+as soon as its created:
+
+go to policy logs page -> (goes to quality department)
+
+
+Request Approval: Quality team
+
+Under Preparation: Preparation team
+
+Pending Approval: Stakeholders/Regulators
+
+
+all of them have access to policy logs page 
