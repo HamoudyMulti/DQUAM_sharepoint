@@ -23,7 +23,8 @@
                     <nav style="--falcon-breadcrumb-divider: 'Â»';" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a
-                                    href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
+                                    href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                    Documentation</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Policy Log</li>
                         </ol>
                     </nav>
@@ -53,9 +54,15 @@
                                 <div class="col-12 col-xl-auto">
                                     <select id="search_stage" class="form-select form-select-sm">
                                         <option value="" selected="">Stage</option>
-                                        <option value="Quality">Quality</option>
-                                        <option value="Preparation Team">Preparation Team</option>
-                                        <option value="Completed">Completed</option>
+                                        <option value="1">Quality Team</option>
+                                        <option value="2">Preparation Team</option>
+                                        <option value="3">Stakeholders</option>
+                                        <option value="4">Regulators</option>
+                                        <option value="5">Publish</option>
+                                        <option value="6">Completed</option>
+                                        <option value="11">Send Back By Quality</option>
+                                        <option value="33">Send Back By Stakeholders</option>
+                                        <option value="44">Send Back By Regulators</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-xl-auto">
@@ -125,10 +132,11 @@
                             </p>
                         </div>
                         <div class="col-auto d-flex">
-                            <button class="btn btn-sm btn-dquam-info" type="button" data-list-pagination="prev">
+                            <button id="previous_button" class="btn btn-sm btn-dquam-info" type="button"
+                                data-list-pagination="prev">
                                 <span>Previous</span>
                             </button>
-                            <button class="btn btn-sm btn-dquam-info px-4 ms-2" type="button"
+                            <button id="next_button" class="btn btn-sm btn-dquam-info px-4 ms-2" type="button"
                                 data-list-pagination="next">
                                 <span>Next</span>
                             </button>
@@ -146,16 +154,25 @@
 
 <script type="text/javascript">
 
-    let items = [];
+    let pagination_list = [""];
+    let page = 1;
+
+    let limit = 2;
+    let order_by = "ID desc";
+
+    let filter = "";
 
     $(document).ready(function () {
         on_change_status();
         on_change_stage();
         on_change_department();
 
+        on_click_next();
+        on_click_previous();
+
 
         modify_page_details();
-        retrieve_table_data();
+        retrieve_table_data("", "");
     });
 
 
@@ -163,22 +180,35 @@
         $("#pageTitle").text('Policy Log');
     }
 
-    async function retrieve_table_data() {
-        items = await retrive_list_items();
-        populate_table('#tbl-policy-logs', items);
+    async function retrieve_table_data(pagination, filter) {
+        if (pagination === "") {
+            page = 1;
+            pagination_list = [""];
+        }
+
+        let data = await retrive_list_items(pagination, filter);
+        if (data.__next) {
+            const regex = /p_ID%3d(\d+)/;
+            const match = data.__next.match(regex);
+            if (page === pagination_list.length) {
+                pagination_list.push(`%26p_ID=${match[1]}`);
+            }
+        }
+
+        populate_table('#tbl-policy-logs', data.results);
 
     }
 
-    async function retrive_list_items() {
+    async function retrive_list_items(pagination, filter) {
         return new Promise(function (resolve, reject) {
             $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/Items?$OrderBy=Modified desc",
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/Items?$OrderBy=${order_by}&$top=${limit}&$skiptoken=Paged=TRUE${pagination}&$filter=${filter}`,
                 method: "GET",
                 headers: {
                     "ACCEPT": "application/json; odata=verbose",
                 },
                 success: function (data) {
-                    resolve(data.d.results);
+                    resolve(data.d);
                 },
                 error: function (error) {
                     reject(error);
@@ -258,8 +288,7 @@
                 "If-Match": "*"
             },
             success: function (data) {
-                items = items.filter(item => item.ID !== record_id);
-                populate_table('#tbl-policy-logs', items);
+                retrieve_table_data("", filter);
             },
             error: function (error) {
                 console.log(JSON.stringify(error))
@@ -273,37 +302,63 @@
             filter_table();
         });
     }
-    
-    
+
+
     function on_change_stage() {
         $('#search_stage').on('change', function () {
             filter_table();
         });
     }
-    
-    
+
+
     function on_change_department() {
         $('#search_department').on('change', function () {
             filter_table();
         });
     }
 
-    function filter_table(){
+    function filter_table() {
+        filter = "";
         let search_status = $('#search_status').val();
         let search_stage = $('#search_stage').val();
         let search_department = $('#search_department').val();
 
-        let filtered_items = items.filter(item => {
-            return (
-                (search_status === '' || item.Status == search_status) &&
-                (search_stage === '' || item.Step_Stage == search_stage) &&
-                (search_department === '' || item.Department == search_department)
-            );
+
+        
+        if (search_department) {
+            filter += `Department eq '${search_department}'`;
+        }
+
+        if (search_stage) {
+            if (filter) {
+                filter += ' and ';
+            }
+            filter += `Step_Number eq '${search_stage}'`;
+        }
+
+        retrieve_table_data(``, filter);
+
+    }
+
+
+    function on_click_next() {
+        $("#next_button").click(function () {
+            if (page < pagination_list.length) {
+                page++;
+                retrieve_table_data(`${pagination_list[page - 1]}`, filter);
+            }
         });
+    }
 
-        populate_table('#tbl-policy-logs', filtered_items);
 
+    function on_click_previous() {
+        $("#previous_button").click(function () {
+            if (page > 1) {
+                page--;
+                retrieve_table_data(`${pagination_list[page - 1]}`, filter);
+            }
 
+        });
     }
 
 </script>
