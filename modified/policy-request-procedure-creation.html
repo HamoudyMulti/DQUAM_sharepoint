@@ -19,7 +19,9 @@
             <div class="col">
                 <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
                         <li class="breadcrumb-item active"><a href="#">Policy &amp; Procedure Request</a></li>
                     </ol>
                 </nav>
@@ -30,8 +32,10 @@
         <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
             <div class="col-12 col-xl-auto mb-2 mb-xl-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx" class="btn btn-dquam-primary" role="button">Details</a>
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx" class="btn btn-outline-secondary" role="button">History</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx"
+                        class="btn btn-dquam-primary" role="button">Details</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx"
+                        class="btn btn-outline-secondary" role="button">History</a>
                 </div>
             </div>
             <div class="col-12 col-xl-auto">
@@ -40,8 +44,8 @@
                         <button class="btn btn-dquam-secondary btn-sm" type="button">Back</button>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-dquam-primary-light btn-sm" type="button"
-                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request2.aspx'">Save &amp; Submit</button>
+                        <button class="btn btn-dquam-primary-light btn-sm" type="button" onclick="submit_changes()">Save
+                            &amp; Submit</button>
                     </div>
                 </div>
             </div>
@@ -81,7 +85,17 @@
                                                 <span class="fas fa-hourglass-end"></span>
                                             </span>
                                         </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Pending Approval</span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Stakeholders Approval</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-hourglass-end"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Regulators Approval</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -121,13 +135,11 @@
                             <div class="col-auto">
                                 <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Title</label>
                             </div>
-                            <div class="col-auto">
-                                <button class="btn btn-link p-0 text-info mb-1 fs--1">Edit</button>
-                            </div>
+
                         </div>
                     </div>
                     <div class="col-12">
-                        <span class="fs--1 text-600">
+                        <span id="policy_title" class="fs--1 text-600">
                             Lorem ipsum dolor set amet is a dummy text used in print media
                         </span>
                     </div>
@@ -139,7 +151,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Submit Date</label>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">Today's Date (05/12/2023)</span>
+                                <span id="policy_submit_date" class="fs--1 text-600">Today's Date (05/12/2023)</span>
                             </div>
                         </div>
                     </div>
@@ -150,13 +162,10 @@
                                     <div class="col-auto">
                                         <label class="form-label text-900 fs-0 mb-1">Department</label>
                                     </div>
-                                    <div class="col-auto">
-                                        <button class="btn btn-link p-0 text-info mb-1 fs--1">Edit</button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">DeparmentX</span>
+                                <span id="policy_department" class="fs--1 text-600">DeparmentX</span>
                             </div>
                         </div>
                     </div>
@@ -171,13 +180,8 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <select class="form-select js-choice" multiple="multiple" size="1"
+                        <select id="merge_policies_select" class="form-select js-choice" multiple="multiple" size="3"
                             data-options='{"removeItemButton":true,"placeholder":true}'>
-                            <option value="">Add Policy</option>
-                            <option>Policy1</option>
-                            <option>Policy2</option>
-                            <option>Policy3</option>
-                            <option>Policy4</option>
                         </select>
                     </div>
                 </div>
@@ -203,7 +207,7 @@
                                                     style="max-width: 400px">
                                                     <div class="modal-content position-relative">
                                                         <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
-                                                            <button
+                                                            <button id="closeModalButton1"
                                                                 class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -218,21 +222,15 @@
                                                                         <div
                                                                             class="dropdown dropdown-with-avatars font-sans-serif position-static">
                                                                             <button class="btn dropdown-toggle w-100"
-                                                                                id="dropdownMenuButton1" type="button"
-                                                                                data-bs-toggle="dropdown"
+                                                                                id="selected_team_member_preparation"
+                                                                                type="button" data-bs-toggle="dropdown"
                                                                                 aria-expanded="false">
                                                                                 <div
                                                                                     class="d-flex align-items-center justify-content-between">
                                                                                     <div
                                                                                         class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <span class="mb-0 title">John
-                                                                                            Doe</span>
+                                                                                        <span class="mb-0 title">Select
+                                                                                            Person</span>
                                                                                     </div>
                                                                                     <span
                                                                                         class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
@@ -245,75 +243,14 @@
                                                                                         class="form-control form-control-sm search-filter-input"
                                                                                         placeholder="Search..." />
                                                                                 </div>
-                                                                                <!--End: dropdown-item -->
+                                                                                <div
+                                                                                    id="select_team_member_preparation">
 
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l status-online me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                Lisa K</h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                John Doe</h6>
-                                                                                            <p
-                                                                                                class="fs--2 mb-0 d-flex search-filter-data">
-                                                                                                Technext Limited</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                Christina
-                                                                                            </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                         <!-- End: dropdown -->
-                                                                    </div>
-                                                                    <div class="mb-3">
-                                                                        <select class="form-select minw-150"
-                                                                            aria-label="Default select">
-                                                                            <option selected="">Role</option>
-                                                                            <option value="1">One</option>
-                                                                            <option value="2">Two</option>
-                                                                            <option value="3">Three</option>
-                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -321,14 +258,15 @@
                                                         <div class="modal-footer">
                                                             <div class="row w-100 g-2">
                                                                 <div class="col-auto">
-                                                                    <button class="btn btn-dquam-success w-100"
+                                                                    <button id="save_member_close_preparation"
+                                                                        class="btn btn-dquam-success w-100"
                                                                         type="button">
                                                                         Save
                                                                     </button>
                                                                 </div>
                                                                 <div class="col">
-                                                                    <button class="btn btn-dquam-info w-100"
-                                                                        type="button">
+                                                                    <button id="save_member_open_preparation"
+                                                                        class="btn btn-dquam-info w-100" type="button">
                                                                         Save &amp; add more
                                                                     </button>
                                                                 </div>
@@ -347,29 +285,28 @@
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/4-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/4-thumb.png"
+                                                                alt="" />
                                                         </div>
-                                                        <div
-                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                            <div class="avatar-name rounded-circle">
-                                                                <span>+50</span>
-                                                            </div>
-                                                        </div>
+
                                                     </div>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-250"
@@ -379,44 +316,10 @@
                                                             placeholder="Search..." />
                                                     </div>
                                                     <!--End: dropdown-item -->
+                                                    <div id="selected_users_preparation">
 
-                                                    <div class="dropdown-item px-x1 py-2">
-                                                        <div class="row align-items-center g-3">
-                                                            <div class="col">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar avatar-l me-2">
-                                                                        <img class="rounded-circle"
-                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg" alt="" />
-                                                                    </div>
-                                                                    <div class="flex-1">
-                                                                        <h6 class="mb-0">Lisa K</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <div class="btn-close-falcon text-danger"></div>
-                                                            </div>
-                                                        </div>
                                                     </div>
-                                                    <!--End: dropdown-item -->
-                                                    <div class="dropdown-item px-x1 py-2">
-                                                        <div class="row align-items-center g-3">
-                                                            <div class="col">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar avatar-l me-2">
-                                                                        <img class="rounded-circle"
-                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/6.jpg" alt="" />
-                                                                    </div>
-                                                                    <div class="flex-1">
-                                                                        <h6 class="mb-0">Linus Torvalds</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <div class="btn-close-falcon text-danger"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
                                                     <!--End: dropdown-item -->
                                                 </div>
                                                 <!-- End: dropdown-menu -->
@@ -448,7 +351,7 @@
                                                     style="max-width: 400px">
                                                     <div class="modal-content position-relative">
                                                         <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
-                                                            <button
+                                                            <button id="closeModalButton2"
                                                                 class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -463,21 +366,15 @@
                                                                         <div
                                                                             class="dropdown dropdown-with-avatars font-sans-serif position-static">
                                                                             <button class="btn dropdown-toggle w-100"
-                                                                                id="dropdownMenuButton2" type="button"
-                                                                                data-bs-toggle="dropdown"
+                                                                                id="selected_team_member_stakeholders"
+                                                                                type="button" data-bs-toggle="dropdown"
                                                                                 aria-expanded="false">
                                                                                 <div
                                                                                     class="d-flex align-items-center justify-content-between">
                                                                                     <div
                                                                                         class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <span class="mb-0 title">John
-                                                                                            Doe</span>
+                                                                                        <span class="mb-0 title">Select
+                                                                                            Person</span>
                                                                                     </div>
                                                                                     <span
                                                                                         class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
@@ -490,90 +387,32 @@
                                                                                         class="form-control form-control-sm search-filter-input"
                                                                                         placeholder="Search..." />
                                                                                 </div>
-                                                                                <!--End: dropdown-item -->
 
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l status-online me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                Lisa K</h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                John Doe</h6>
-                                                                                            <p
-                                                                                                class="fs--2 mb-0 d-flex search-filter-data">
-                                                                                                Technext Limited</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                Christina
-                                                                                            </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
+                                                                                <div
+                                                                                    id="select_team_member_stakeholders">
+
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                         <!-- End: dropdown -->
                                                                     </div>
-                                                                    <div class="mb-3">
-                                                                        <select class="form-select minw-150"
-                                                                            aria-label="Default select">
-                                                                            <option selected="">Role</option>
-                                                                            <option value="1">One</option>
-                                                                            <option value="2">Two</option>
-                                                                            <option value="3">Three</option>
-                                                                        </select>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <div class="row w-100 g-2">
                                                                 <div class="col-auto">
-                                                                    <button class="btn btn-dquam-success w-100"
+                                                                    <button id="save_member_close_stakeholders"
+                                                                        class="btn btn-dquam-success w-100"
                                                                         type="button">
                                                                         Save
                                                                     </button>
                                                                 </div>
                                                                 <div class="col">
-                                                                    <button class="btn btn-dquam-info w-100"
-                                                                        type="button">
+                                                                    <button id="save_member_open_stakeholders"
+                                                                        class="btn btn-dquam-info w-100" type="button">
                                                                         Save &amp; add more
                                                                     </button>
                                                                 </div>
@@ -592,29 +431,28 @@
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/4-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/4-thumb.png"
+                                                                alt="" />
                                                         </div>
-                                                        <div
-                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                            <div class="avatar-name rounded-circle">
-                                                                <span>+50</span>
-                                                            </div>
-                                                        </div>
+
                                                     </div>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-250"
@@ -624,45 +462,10 @@
                                                             placeholder="Search..." />
                                                     </div>
                                                     <!--End: dropdown-item -->
+                                                    <div id="selected_users_stakeholders">
 
-                                                    <div class="dropdown-item px-x1 py-2">
-                                                        <div class="row align-items-center g-3">
-                                                            <div class="col">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar avatar-l me-2">
-                                                                        <img class="rounded-circle"
-                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg" alt="" />
-                                                                    </div>
-                                                                    <div class="flex-1">
-                                                                        <h6 class="mb-0">Lisa K</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <div class="btn-close-falcon text-danger"></div>
-                                                            </div>
-                                                        </div>
                                                     </div>
-                                                    <!--End: dropdown-item -->
-                                                    <div class="dropdown-item px-x1 py-2">
-                                                        <div class="row align-items-center g-3">
-                                                            <div class="col">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar avatar-l me-2">
-                                                                        <img class="rounded-circle"
-                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/6.jpg" alt="" />
-                                                                    </div>
-                                                                    <div class="flex-1">
-                                                                        <h6 class="mb-0">Linus Torvalds</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <div class="btn-close-falcon text-danger"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--End: dropdown-item -->
+
                                                 </div>
                                                 <!-- End: dropdown-menu -->
                                             </div><!-- End: dropdown -->
@@ -693,7 +496,7 @@
                                                     style="max-width: 400px">
                                                     <div class="modal-content position-relative">
                                                         <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
-                                                            <button
+                                                            <button id="closeModalButton3"
                                                                 class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
@@ -708,21 +511,15 @@
                                                                         <div
                                                                             class="dropdown dropdown-with-avatars font-sans-serif position-static">
                                                                             <button class="btn dropdown-toggle w-100"
-                                                                                id="dropdownMenuButton1" type="button"
-                                                                                data-bs-toggle="dropdown"
+                                                                                id="selected_team_member_regulators"
+                                                                                type="button" data-bs-toggle="dropdown"
                                                                                 aria-expanded="false">
                                                                                 <div
                                                                                     class="d-flex align-items-center justify-content-between">
                                                                                     <div
                                                                                         class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <span class="mb-0 title">John
-                                                                                            Doe</span>
+                                                                                        <span class="mb-0 title">Select
+                                                                                            Person</span>
                                                                                     </div>
                                                                                     <span
                                                                                         class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
@@ -735,90 +532,30 @@
                                                                                         class="form-control form-control-sm search-filter-input"
                                                                                         placeholder="Search..." />
                                                                                 </div>
-                                                                                <!--End: dropdown-item -->
+                                                                                <div id="select_team_member_regulators">
 
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l status-online me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                Lisa K</h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                John Doe</h6>
-                                                                                            <p
-                                                                                                class="fs--2 mb-0 d-flex search-filter-data">
-                                                                                                Technext Limited</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
-                                                                                <a class="dropdown-item px-x1 py-2"
-                                                                                    href="#">
-                                                                                    <div
-                                                                                        class="d-flex align-items-center">
-                                                                                        <div
-                                                                                            class="avatar avatar-l me-2">
-                                                                                            <img class="rounded-circle"
-                                                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg"
-                                                                                                alt="" />
-                                                                                        </div>
-                                                                                        <div class="flex-1">
-                                                                                            <h6
-                                                                                                class="mb-0 search-filter-data">
-                                                                                                Christina
-                                                                                            </h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </a><!--End: dropdown-item -->
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                         <!-- End: dropdown -->
                                                                     </div>
-                                                                    <div class="mb-3">
-                                                                        <select class="form-select minw-150"
-                                                                            aria-label="Default select">
-                                                                            <option selected="">Role</option>
-                                                                            <option value="1">One</option>
-                                                                            <option value="2">Two</option>
-                                                                            <option value="3">Three</option>
-                                                                        </select>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <div class="row w-100 g-2">
                                                                 <div class="col-auto">
-                                                                    <button class="btn btn-dquam-success w-100"
+                                                                    <button id="save_member_close_regulators"
+                                                                        class="btn btn-dquam-success w-100"
                                                                         type="button">
                                                                         Save
                                                                     </button>
                                                                 </div>
                                                                 <div class="col">
-                                                                    <button class="btn btn-dquam-info w-100"
-                                                                        type="button">
+                                                                    <button id="save_member_open_regulators"
+                                                                        class="btn btn-dquam-info w-100" type="button">
                                                                         Save &amp; add more
                                                                     </button>
                                                                 </div>
@@ -837,29 +574,28 @@
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3-thumb.png"
+                                                                alt="" />
                                                         </div>
                                                         <div
                                                             class="avatar avatar-xl border border-3 border-light rounded-circle">
                                                             <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/4-thumb.png" alt="" />
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/4-thumb.png"
+                                                                alt="" />
                                                         </div>
-                                                        <div
-                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                            <div class="avatar-name rounded-circle">
-                                                                <span>+50</span>
-                                                            </div>
-                                                        </div>
+
                                                     </div>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-250"
@@ -870,42 +606,8 @@
                                                     </div>
                                                     <!--End: dropdown-item -->
 
-                                                    <div class="dropdown-item px-x1 py-2">
-                                                        <div class="row align-items-center g-3">
-                                                            <div class="col">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar avatar-l me-2">
-                                                                        <img class="rounded-circle"
-                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg" alt="" />
-                                                                    </div>
-                                                                    <div class="flex-1">
-                                                                        <h6 class="mb-0">Lisa K</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <div class="btn-close-falcon text-danger"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!--End: dropdown-item -->
-                                                    <div class="dropdown-item px-x1 py-2">
-                                                        <div class="row align-items-center g-3">
-                                                            <div class="col">
-                                                                <div class="d-flex align-items-center">
-                                                                    <div class="avatar avatar-l me-2">
-                                                                        <img class="rounded-circle"
-                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/6.jpg" alt="" />
-                                                                    </div>
-                                                                    <div class="flex-1">
-                                                                        <h6 class="mb-0">Linus Torvalds</h6>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <div class="btn-close-falcon text-danger"></div>
-                                                            </div>
-                                                        </div>
+                                                    <div id="selected_users_regulators">
+
                                                     </div>
                                                     <!--End: dropdown-item -->
                                                 </div>
@@ -924,13 +626,10 @@
                             <div class="col-auto">
                                 <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Description</label>
                             </div>
-                            <div class="col-auto">
-                                <button class="btn btn-link p-0 text-info mb-1 fs--1">Edit</button>
-                            </div>
                         </div>
                     </div>
                     <div class="col-12">
-                        <span class="fs--1 text-600">
+                        <span id="policy_description" class="fs--1 text-600">
                             Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
                             a dummy text used in print media
                             Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
@@ -945,20 +644,23 @@
                         <label class="form-label text-900 fs-0 mb-2">Supporting Documents</label>
                     </div>
                     <div class="col-12">
-                        <div class="dropzone dropzone-sm dropzone-multiple p-0" id="dropzonePolicyRequest"
+                        <div class="dropzone dropzone-sm dropzone-multiple p-0" id="dropzoneFiles"
                             data-dropzone="data-dropzone" action="#!">
                             <div class="fallback">
                                 <input name="file" type="file" multiple="multiple" />
                             </div>
                             <div class="dz-message" data-dz-message="data-dz-message">
-                                <img class="me-2" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/icons/cloud-upload.svg" width="25" alt="" /> Drop
+                                <img class="me-2"
+                                    src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/icons/cloud-upload.svg"
+                                    width="25" alt="" /> Drop
                                 files or click to
                                 browse
                             </div>
                             <div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
                                 <div class="d-flex media mb-3 pb-3 border-bottom btn-reveal-trigger">
-                                    <img class="dz-image" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/generic/image-file-2.png" alt="..."
-                                        data-dz-thumbnail="data-dz-thumbnail" />
+                                    <img class="dz-image"
+                                        src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/generic/image-file-2.png"
+                                        alt="..." data-dz-thumbnail="data-dz-thumbnail" />
                                     <div class="flex-1 d-flex flex-between-center">
                                         <div>
                                             <h6 data-dz-name="data-dz-name"></h6>
@@ -1043,8 +745,703 @@
 
 <script>
 
-    $(document).ready(function () {
-        $("#pageTitle").text('Policy & Procedure Request');
+    $(document).ready(async function () {
+        try {
+            on_click_user_choice();
+            on_click_save_member_close();
+            // on_click_save_member_open();
+
+            on_click_close_modal();
+
+            modify_page_details();
+            await populate_fields();
+        } catch (error) {
+            console.error(error);
+        }
     });
+
+    function on_click_close_modal() {
+        $('#closeModalButton1, #closeModalButton2, #closeModalButton3').on('click', function (event) {
+            event.preventDefault();
+
+        });
+    }
+
+
+    function modify_page_details() {
+        $("#pageTitle").text('Policy & Procedure Request');
+    }
+
+
+    async function populate_fields() {
+        const record_id = get_CNID_from_url();
+
+        let policy = await get_policy_info(record_id);
+
+        $("#policy_title").html(policy.Request_title);
+        $("#policy_description").html(policy.Policy_Description);
+        $("#policy_submit_date").html(`Today's Date ${getTodayDate()}`);
+        $("#policy_department").html(policy.Department);
+
+
+        let existing_policies = await get_existing_policies();
+        existing_policies.results.forEach(item => {
+            const $option = $('<option>', { value: item.ID, text: item.Request_title });
+            $('#merge_policies_select').append($option);
+        });
+
+
+        let users = await getUsers();
+        populate_users(users);
+
+
+    }
+
+    function get_CNID_from_url() {
+        let url = window.location.href;
+        const match = url.match(/[?&]CNID=([^&]*)/);
+        return match ? decodeURIComponent(match[1]) : null;
+    }
+
+    function get_policy_info(record_id) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/items(${record_id})`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    function getTodayDate() {
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+
+        const formattedDateString = `(${formattedDate})`;
+
+        return formattedDateString;
+    }
+
+    function get_existing_policies() {
+        let select = "$select=Id,Request_title";
+        let OrderBy = "$OrderBy=ID desc";
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/items?${select}&${OrderBy}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+    function getUsers() {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=Employee_OU_ID/ID,Employee_OU_ID/OU_Name,Employee_Name/Id,Employee_Name/Title,Employee_Name/EMail";
+            let expand = "$expand=Employee_OU_ID,Employee_Name";
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Org_Employee')/Items?${select}&${expand}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+    function on_click_user_choice() {
+        $('#select_team_member_preparation').on('click', '.select_current_user_preparation', function () {
+            const user_id = $(this).data('user-id');
+            const title = $(this).data('user-title');
+            const department = $(this).data('user-department');
+            const email = $(this).data('user-email');
+
+            let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + email;
+
+
+            const dropdownSelection = `<div id="selected_user_preparation"
+                data-user-id="${user_id}" 
+                data-user-title="${title}" 
+                data-user-department="${department}" 
+                data-user-email="${email}"
+                    class="d-flex align-items-center justify-content-between">
+                    <div
+                        class="d-flex align-items-center">
+                        <div
+                            class="avatar avatar-l me-2">
+                            <img class="rounded-circle"
+                                src="${image}"
+                                alt="" />
+                        </div>
+                        <span class="mb-0 title">${title}</span>
+                    </div>
+                    <span
+                        class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+                </div>`;
+
+            $('#selected_team_member_preparation').html(dropdownSelection);
+
+        });
+
+
+        $('#select_team_member_stakeholders').on('click', '.select_current_user_stakeholders', function () {
+            const user_id = $(this).data('user-id');
+            const title = $(this).data('user-title');
+            const department = $(this).data('user-department');
+            const email = $(this).data('user-email');
+
+            let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + email;
+
+
+            const dropdownSelection = `<div id="selected_user_stakeholders"
+                data-user-id="${user_id}" 
+                data-user-title="${title}" 
+                data-user-department="${department}" 
+                data-user-email="${email}"
+                    class="d-flex align-items-center justify-content-between">
+                    <div
+                        class="d-flex align-items-center">
+                        <div
+                            class="avatar avatar-l me-2">
+                            <img class="rounded-circle"
+                                src="${image}"
+                                alt="" />
+                        </div>
+                        <span class="mb-0 title">${title}</span>
+                    </div>
+                    <span
+                        class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+                </div>`;
+
+            $('#selected_team_member_stakeholders').html(dropdownSelection);
+
+        });
+
+
+        $('#select_team_member_regulators').on('click', '.select_current_user_regulators', function () {
+            const user_id = $(this).data('user-id');
+            const title = $(this).data('user-title');
+            const department = $(this).data('user-department');
+            const email = $(this).data('user-email');
+
+            let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + email;
+
+
+            const dropdownSelection = `<div id="selected_user_regulators"
+                data-user-id="${user_id}" 
+                data-user-title="${title}" 
+                data-user-department="${department}" 
+                data-user-email="${email}"
+                    class="d-flex align-items-center justify-content-between">
+                    <div
+                        class="d-flex align-items-center">
+                        <div
+                            class="avatar avatar-l me-2">
+                            <img class="rounded-circle"
+                                src="${image}"
+                                alt="" />
+                        </div>
+                        <span class="mb-0 title">${title}</span>
+                    </div>
+                    <span
+                        class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+                </div>`;
+
+            $('#selected_team_member_regulators').html(dropdownSelection);
+
+        });
+    }
+
+    function on_click_save_member_close() {
+        $('#save_member_close_preparation, #save_member_open_preparation').click(function () {
+            const user_id = $("#selected_user_preparation").data('user-id');
+            const title = $("#selected_user_preparation").data('user-title');
+            const department = $("#selected_user_preparation").data('user-department');
+            const email = $("#selected_user_preparation").data('user-email');
+
+            let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + email;
+
+            const user_selected_div = `
+                <div id="preparation_user_selection_${user_id}" class="dropdown-item px-x1 py-2">
+                    <div class="row align-items-center g-3">
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-l me-2">
+                                    <img class="rounded-circle"
+                                        src="${image}"
+                                        alt="" />
+                                </div>
+                                <div class="flex-1">
+                                    <h6 class="mb-0">${title}</h6>
+                                </div>
+                                <div onclick="remove_selected_user_preparation(${user_id})" class="col-auto">
+                                    <div class="btn-close-falcon text-danger"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+
+            $('#selected_users_preparation').append(user_selected_div);
+        });
+
+
+        $('#save_member_close_stakeholders, #save_member_open_stakeholders').click(function () {
+            const user_id = $("#selected_user_stakeholders").data('user-id');
+            const title = $("#selected_user_stakeholders").data('user-title');
+            const department = $("#selected_user_stakeholders").data('user-department');
+            const email = $("#selected_user_stakeholders").data('user-email');
+
+            let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + email;
+
+            const user_selected_div = `
+                <div id="stakeholders_user_selection_${user_id}" class="dropdown-item px-x1 py-2">
+                    <div class="row align-items-center g-3">
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-l me-2">
+                                    <img class="rounded-circle"
+                                        src="${image}"
+                                        alt="" />
+                                </div>
+                                <div class="flex-1">
+                                    <h6 class="mb-0">${title}</h6>
+                                </div>
+                                <div onclick="remove_selected_user_stakeholders(${user_id})" class="col-auto">
+                                    <div class="btn-close-falcon text-danger"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+
+            $('#selected_users_stakeholders').append(user_selected_div);
+        });
+
+
+
+        $('#save_member_close_regulators, #save_member_open_regulators').click(function () {
+            const user_id = $("#selected_user_regulators").data('user-id');
+            const title = $("#selected_user_regulators").data('user-title');
+            const department = $("#selected_user_regulators").data('user-department');
+            const email = $("#selected_user_regulators").data('user-email');
+
+            let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + email;
+
+            const user_selected_div = `
+                <div id="regulators_user_selection_${user_id}" class="dropdown-item px-x1 py-2">
+                    <div class="row align-items-center g-3">
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-l me-2">
+                                    <img class="rounded-circle"
+                                        src="${image}"
+                                        alt="" />
+                                </div>
+                                <div class="flex-1">
+                                    <h6 class="mb-0">${title}</h6>
+                                </div>
+                                <div onclick="remove_selected_user_regulators(${user_id})" class="col-auto">
+                                    <div class="btn-close-falcon text-danger"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+
+            $('#selected_users_regulators').append(user_selected_div);
+        });
+
+
+
+    }
+
+
+    function remove_selected_user_preparation(user_id) {
+        $(`#preparation_user_selection_${user_id}`).remove();
+    }
+
+    function remove_selected_user_stakeholders(user_id) {
+        $(`#stakeholders_user_selection_${user_id}`).remove();
+    }
+
+    function remove_selected_user_regulators(user_id) {
+        $(`#regulators_user_selection_${user_id}`).remove();
+    }
+
+
+    function populate_users(users) {
+
+        users.forEach(user => {
+            let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + user.Employee_Name.EMail;
+            let dropdownItem = `
+                <a class="dropdown-item px-x1 py-2 select_current_user_preparation" 
+                data-user-id="${user.Employee_Name.Id}" 
+                data-user-title="${user.Employee_Name.Title}" 
+                data-user-department="${user.Employee_OU_ID.OU_Name}" 
+                data-user-email="${user.Employee_Name.EMail}"
+                >
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l me-2">
+                    <img class="rounded-circle" src="${image}" alt="" />
+                    </div>
+                    <div class="flex-1">
+                    <h6 class="mb-0 search-filter-data">${user.Employee_Name.Title}</h6>
+                    <p class="fs--2 mb-0 d-flex search-filter-data"> ${user.Employee_OU_ID.OU_Name} </p>
+                    </div>
+                </div>
+                </a>`;
+
+            $('#select_team_member_preparation').append(dropdownItem);
+
+
+
+            dropdownItem = `
+                <a class="dropdown-item px-x1 py-2 select_current_user_stakeholders" 
+                data-user-id="${user.Employee_Name.Id}" 
+                data-user-title="${user.Employee_Name.Title}" 
+                data-user-department="${user.Employee_OU_ID.OU_Name}" 
+                data-user-email="${user.Employee_Name.EMail}"
+                >
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l me-2">
+                    <img class="rounded-circle" src="${image}" alt="" />
+                    </div>
+                    <div class="flex-1">
+                    <h6 class="mb-0 search-filter-data">${user.Employee_Name.Title}</h6>
+                    <p class="fs--2 mb-0 d-flex search-filter-data"> ${user.Employee_OU_ID.OU_Name} </p>
+                    </div>
+                </div>
+                </a>`;
+
+            $('#select_team_member_stakeholders').append(dropdownItem);
+
+
+
+            dropdownItem = `
+                <a class="dropdown-item px-x1 py-2 select_current_user_regulators" 
+                data-user-id="${user.Employee_Name.Id}" 
+                data-user-title="${user.Employee_Name.Title}" 
+                data-user-department="${user.Employee_OU_ID.OU_Name}" 
+                data-user-email="${user.Employee_Name.EMail}"
+                >
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l me-2">
+                    <img class="rounded-circle" src="${image}" alt="" />
+                    </div>
+                    <div class="flex-1">
+                    <h6 class="mb-0 search-filter-data">${user.Employee_Name.Title}</h6>
+                    <p class="fs--2 mb-0 d-flex search-filter-data"> ${user.Employee_OU_ID.OU_Name} </p>
+                    </div>
+                </div>
+                </a>`;
+
+            $('#select_team_member_regulators').append(dropdownItem);
+        });
+    }
+
+
+
+    function getSelectedUsers() {
+        const preparation_user_divs = $('[id^="preparation_user_selection_"]');
+
+        const preparation_users = preparation_user_divs.map(function () {
+            return this.id.replace('preparation_user_selection_', '');
+        }).get();
+
+
+        const stakeholders_user_divs = $('[id^="stakeholders_user_selection_"]');
+
+        const stakeholders_users = stakeholders_user_divs.map(function () {
+            return this.id.replace('stakeholders_user_selection_', '');
+        }).get();
+
+
+
+        const regulators_user_divs = $('[id^="regulators_user_selection_"]');
+
+        const regulators_users = regulators_user_divs.map(function () {
+            return this.id.replace('regulators_user_selection_', '');
+        }).get();
+
+        return { preparation_users, stakeholders_users, regulators_users };
+
+    }
+
+    async function add_users_to_DB(params) {
+        const {
+            record_id,
+            preparation_users,
+            stakeholders_users,
+            regulators_users
+        } = params;
+
+        const preparationPromises = preparation_users.map(user =>
+            addApprover('Preparation', user, 2, record_id, 0)
+        );
+
+        const stakeholdersPromises = stakeholders_users.map(user =>
+            addApprover('Stakeholders', user, 2, record_id, 0)
+        );
+
+        const regulatorsPromises = regulators_users.map(user =>
+            addApprover('Regulators', user, 2, record_id, 0)
+        );
+
+        try {
+            const results = await Promise.all([
+                ...preparationPromises,
+                ...stakeholdersPromises,
+                ...regulatorsPromises
+            ]);
+
+            return results;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function addApprover(approverType, approverName, stepNumber, requestID, approvalStatus) {
+        return new Promise((resolve, reject) => {
+            const obj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Policy_x005f_Approvers_x005f_ListListItem'
+                },
+                "Approver_Type": approverType,
+                "Approver_NameId": approverName,
+                "Approver_Step_Number": stepNumber,
+                "Request_ID": requestID,
+                "Approver_Approval_Status": approvalStatus
+            });
+
+            const headers = {
+                "accept": "application/json;odata=verbose",
+                "content-type": "application/json;odata=verbose",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            };
+
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_Approvers_List')/items",
+                method: "POST",
+                data: obj,
+                headers: headers,
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error.responseText);
+                }
+            });
+        });
+    }
+
+    function update_policy(record_id, merge_policies) {
+        return new Promise(function (resolve, reject) {
+            var seqObj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Policy_x005f_ListListItem'
+                },
+                "Merging_PolicyId": {
+                    "results": merge_policies
+                },
+
+            });
+
+            var seqHeaders = {
+                "Accept": "application/json;odata=verbose",
+                "Content-Type": "application/json;odata=verbose",
+                "IF-MATCH": "*",
+                "X-HTTP-Method": "MERGE",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            }
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/items(" + record_id + ")",
+                method: "POST",
+                async: false,
+                data: seqObj,
+                headers: seqHeaders,
+                success: function (data) {
+                    resolve();
+                },
+                error: function (error) {
+                    reject(error)
+                }
+            })
+
+        });
+    }
+
+    async function submit_changes() {
+        const record_id = get_CNID_from_url();
+
+        let { preparation_users, stakeholders_users, regulators_users } = getSelectedUsers();
+
+        await add_users_to_DB({
+            record_id,
+            preparation_users,
+            stakeholders_users,
+            regulators_users
+        });
+
+
+        let merging_policy_checkbox = $("#policyRequestReplaceOtherPolicies").prop("checked");
+
+
+        let merge_policies = $("#merge_policies_select").val();
+        if(merging_policy_checkbox){
+            await update_policy(record_id, merge_policies);
+        } else {
+            await update_policy(record_id, []);
+        }
+
+
+        if ($('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length > 0) {
+            await uploadFiles(record_id);
+        }
+
+        window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+
+
+
+    }
+
+
+    function uploadFiles(MainItemID) {
+        return new Promise(async function (resolve, reject) {
+            const fileCount = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length;
+            const uploadPromises = [];
+
+            for (let i = 0; i < fileCount; i++) {
+                try {
+                    const { result, index } = await getFileBuffer(i);
+                    const { result: addFile, newName, fileParts } = await addFileToFolderAsync(result, MainItemID, index);
+                    const listItem = await getListItemAsync(addFile.d.ListItemAllFields.__deferred.uri);
+                    await updateListItemAsync(listItem.d.__metadata, MainItemID, newName, fileParts);
+                } catch (error) {
+                    reject(error);
+                }
+            }
+
+            resolve();
+        });
+    }
+
+
+    async function getFileBuffer(i) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onloadend = function (e) {
+                resolve({ result: e.target.result, index: i });
+            };
+
+            reader.onerror = function (e) {
+                reject(e.target.error);
+            };
+
+            reader.readAsArrayBuffer($('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i]);
+        });
+    }
+
+    function addFileToFolderAsync(arrayBuffer, MainItemID, i) {
+        return new Promise(async (resolve, reject) => {
+            const fileName = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i].name;
+            const fileParts = fileName.split('.');
+            const newName = fileParts[0];
+
+            const serverUrl = _spPageContextInfo.webAbsoluteUrl;
+            const serverRelativeUrlToFolder = 'Policy Attachments';
+
+            const fileCollectionEndpoint = String.format(
+                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+                "/add(overwrite=true, url='{2}')",
+                serverUrl, serverRelativeUrlToFolder, "File" + newName + "-" + MainItemID + "." + fileParts[1]);
+
+            try {
+                const result = await $.ajax({
+                    url: fileCollectionEndpoint,
+                    type: "POST",
+                    data: arrayBuffer,
+                    processData: false,
+                    headers: {
+                        "accept": "application/json;odata=verbose",
+                        "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                    }
+                });
+
+                resolve({ result, newName, fileParts });
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+    }
+
+    async function getListItemAsync(fileListItemUri) {
+        return $.ajax({
+            url: fileListItemUri,
+            type: "GET",
+            headers: { "accept": "application/json;odata=verbose" }
+        });
+    }
+
+    async function updateListItemAsync(itemMetadata, MainItemID, newName, fileParts) {
+        const fileLeafRef = "File_" + newName + "-" + MainItemID;
+        const title = "File_" + newName + "-" + MainItemID + "." + fileParts[1];
+
+        const body = JSON.stringify({
+            '__metadata': {
+                'type': 'SP.Data.Policy_x0020_AttachmentsItem'
+            },
+            "FileLeafRef": fileLeafRef,
+            "Title": title,
+            "Policy_ItemId": MainItemID
+        });
+
+        return $.ajax({
+            url: itemMetadata.uri,
+            type: "POST",
+            data: body,
+            headers: {
+                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                "content-type": "application/json;odata=verbose",
+                "IF-MATCH": itemMetadata.etag,
+                "X-HTTP-Method": "MERGE"
+            }
+        });
+    }
 
 </script>

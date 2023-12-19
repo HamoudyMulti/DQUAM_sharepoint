@@ -21,3 +21,17 @@ Pending Approval: Stakeholders/Regulators
 
 
 all of them have access to policy logs page 
+
+
+
+
+
+
+
+===================================================================================================
+
+
+
+quality policy stage:
+
+question for fields: status - Revision Number - Next Revision Date - Publishing Date

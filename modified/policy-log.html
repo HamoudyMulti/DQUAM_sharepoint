@@ -157,7 +157,7 @@
     let pagination_list = [""];
     let page = 1;
 
-    let limit = 2;
+    let limit = 8;
     let order_by = "ID desc";
 
     let filter = "";
@@ -260,7 +260,7 @@
                             <span class="fas fa-ellipsis-h fs--1"></span>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="policy-request-readonly.html">View Details</a>
+                            <a class="dropdown-item" href="policy-request-readonly.html" onclick="view_details(${value.ID})">View Details</a>
                             <a class="dropdown-item" href="policy-request-history.html">View History</a>
                             <a class="dropdown-item" href="request-meeting.html">Meeting Request</a>
                             <a class="dropdown-item" href="#">Open MS Teams</a>
@@ -324,7 +324,7 @@
         let search_department = $('#search_department').val();
 
 
-        
+
         if (search_department) {
             filter += `Department eq '${search_department}'`;
         }
@@ -359,6 +359,88 @@
             }
 
         });
+    }
+
+
+    async function view_details(record_id) {
+        event.preventDefault();
+
+
+        let selected_policy = await get_policy_info(record_id);
+
+        let next_url = determine_next_url(selected_policy);
+
+        window.location.href = next_url;
+        
+        
+    }
+
+    function get_policy_info(record_id) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/items(${record_id})`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+    function determine_next_url(selected_policy) {
+        let url = "https://mgskw.sharepoint.com/sites/DQ/Pages/";
+
+        let step_number = selected_policy.Step_Number;
+
+
+        switch (step_number) {
+            case 1:
+                url += 'policy-request-procedure-creation.aspx';
+                break;
+            case 2:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            case 11:
+
+                break;
+            case 33:
+
+                break;
+            case 44:
+
+                break;
+            default:
+                url = null;
+                break;
+        }
+
+        if(url){
+            url += `?CNID=${selected_policy.Id}`;
+        }
+
+        return url;
     }
 
 </script>
