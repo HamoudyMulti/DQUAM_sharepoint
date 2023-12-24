@@ -19,7 +19,9 @@
             <div class="col">
                 <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
                         <li class="breadcrumb-item active"><a href="#">Policy &amp; Procedure Request</a></li>
                     </ol>
                 </nav>
@@ -30,8 +32,10 @@
         <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
             <div class="col-12 col-xl-auto mb-2 mb-xl-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx" class="btn btn-dquam-primary" role="button">Details</a>
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx" class="btn btn-outline-secondary" role="button">History</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx"
+                        class="btn btn-dquam-primary" role="button">Details</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx"
+                        class="btn btn-outline-secondary" role="button">History</a>
                 </div>
             </div>
             <div class="col-12 col-xl-auto">
@@ -42,43 +46,12 @@
                     </div>
                     <div class="col-auto">
                         <button class="btn btn-dquam-info btn-sm px-2 px-sm-3 minw-150" type="button"
-                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/request-meeting.aspx'">Request Meeting</button>
+                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/request-meeting.aspx'">Request
+                            Meeting</button>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-dquam-primary btn-sm px-2 px-sm-3 minw-150" type="button"
-                            data-bs-toggle="modal" data-bs-target="#modal-policy-request2-submit">Submit</button>
-                        <div class="modal fade" id="modal-policy-request2-submit" tabindex="-1" role="dialog"
-                            aria-hidden="true" data-bs-backdrop="static">
-                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                                <div class="modal-content position-relative">
-                                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
-                                        <button
-                                            class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
-                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body p-0">
-                                        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
-                                            <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Submission Comment
-                                            </h6>
-                                        </div>
-                                        <div class="p-4 pb-0 text-center">
-                                            <div>
-                                                <div class="mb-3">
-                                                    <h6 class="mb-0 text-600">Type Comment:</h6>
-                                                </div>
-                                                <div class="mb-4">
-                                                    <input class="form-control" type="text" placeholder="type comment">
-                                                </div>
-                                                <div class="mb-5">
-                                                    <button class="btn btn-dquam-primary btn-sm minw-150" type="button"
-                                                        onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request3.aspx'">Submit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End: modal -->
+                            <button class="btn btn-dquam-primary-light btn-sm" type="button" onclick="submit_changes()">Save
+                                &amp; Submit</button>
                     </div>
                 </div>
             </div>
@@ -120,7 +93,17 @@
                                                 <span class="fas fa-hourglass-end"></span>
                                             </span>
                                         </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Pending Approval</span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Stakeholders Approval</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-hourglass-end"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Regulators Approval</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -158,9 +141,7 @@
                         <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Title</label>
                     </div>
                     <div class="col-12">
-                        <span class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media
-                        </span>
+                        <span id="policy_title" class="fs--1 text-600"></span>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -168,14 +149,7 @@
                         <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Description</label>
                     </div>
                     <div class="col-12">
-                        <span class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                        </span>
+                        <span id="policy_description" class="fs--1 text-600"></span>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -183,15 +157,8 @@
                         <label class="form-label text-900 fs-0 mb-1">Supporting Documents</label>
                     </div>
                     <div class="col-12">
-                        <div class="d-flex flex-column777 flex-wrap">
-                            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
-                                <span class="fs-1 far fa-image"></span>
-                                <span class="ms-2 me-3">broken_tv_solve.jpg (873kb)</span>
-                                <a class="text-300 ms-auto" href="#!" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    aria-label="Download" data-bs-original-title="Download">
-                                    <span class="fas fa-arrow-down"></span>
-                                </a>
-                            </div>
+                        <div id="policy_docs" class="d-flex flex-column777 flex-wrap">
+                            
                             <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
                                 <span class="fs-1 fas fa-file"></span>
                                 <span class="ms-2 me-3">file2.ppt (873kb)</span>
@@ -262,8 +229,275 @@
 
 <script>
 
-    $(document).ready(function () {
-        $("#pageTitle").text('Policy & Procedure Request');
+    $(document).ready(async function () {
+        try {
+            const record_id = get_CNID_from_url();
+            let current_user = _spPageContextInfo.userId;
+
+            let selected_policy = await get_policy_info(record_id);
+
+            let access = await check_user_access(record_id, selected_policy, current_user);
+
+            if (access == 'unauthorized') {
+                window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+                return;
+            }
+
+            console.log("access", access);
+
+            let step_number = selected_policy.Step_Number;
+
+
+            let permission = check_user_permissions(access, step_number);
+            if (permission == 'none') {
+                window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+                return;
+            }
+
+            console.log("permission", permission);
+
+
+
+
+
+            modify_page_details();
+            await populate_fields(selected_policy, record_id);
+        } catch (error) {
+            console.error(error);
+        }
     });
+
+    function modify_page_details() {
+        $("#pageTitle").text('Policy & Procedure Request');
+    }
+
+
+
+    function submit_changes(){
+
+        console.log("button work");
+        // window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+    }
+
+
+    async function populate_fields(policy, record_id) {
+        $("#policy_title").html(policy.Request_title);
+        $("#policy_description").html(policy.Policy_Description);
+
+        await populate_documents(record_id);
+    }
+
+
+    async function populate_documents(record_id) {
+        let documents = await get_policy_documents(record_id);
+        let html = ``;
+        documents.forEach(doc => {
+            html+= `
+            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
+                <span class="fs-1 far fa-image"></span>
+                <span class="ms-2 me-3">${doc.LinkFilename}</span>
+                <a class="text-300 ms-auto" href="${doc.EncodedAbsUrl}" target="_blank" data-bs-toggle="tooltip" data-bs-placement="right"
+                    aria-label="Download" data-bs-original-title="Download">
+                    <span class="fas fa-arrow-down"></span>
+                </a>
+            </div>
+            `
+        });
+
+        $("#policy_docs").html(html);
+    }
+
+    function get_policy_documents(record_id) {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=Title,LinkFilename,EncodedAbsUrl,ID";
+            let filter = `$filter=Policy_Item eq ${record_id}`;
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy Attachments')/items?${select}&${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+    function check_user_permissions(access, step_number) {
+
+        /*
+            Step_Number=1,"Quality Team"
+            Step_Number=2,"Preparation Team"
+            Step_Number=3,"Stakeholders"
+            Step_Number=4,"Regulators"
+            Step_Number=5,"Publish"
+            Step_Number=6,"Completed"
+            Step_Number=11,"Send Back By Quality"
+            Step_Number=33,"Send Back By Stakeholders"
+            Step_Number=44,"Send Back By Regulators"
+        */
+
+        const permissions = {
+            1: { initiator: "read", quality: "write", preparation: "none", stakeholders: "none", regulators: "none" },
+            2: { initiator: "read", quality: "read", preparation: "write", stakeholders: "none", regulators: "none" },
+            3: { initiator: "read", quality: "read", preparation: "read", stakeholders: "write", regulators: "none" },
+            4: { initiator: "read", quality: "read", preparation: "read", stakeholders: "read", regulators: "write" },
+            5: { initiator: "read", quality: "write", preparation: "read", stakeholders: "read", regulators: "read" },
+            6: { initiator: "read", quality: "write", preparation: "read", stakeholders: "read", regulators: "read" },
+
+            11: { initiator: "write", quality: "read", preparation: "none", stakeholders: "none", regulators: "none" },
+            33: { initiator: "read", quality: "read", preparation: "write", stakeholders: "read", regulators: "none" },
+            44: { initiator: "read", quality: "read", preparation: "write", stakeholders: "read", regulators: "read" },
+        };
+
+        return permissions[step_number][access];
+    }
+
+    async function check_user_access(record_id, selected_policy, current_user) {
+
+        if (initiator_check(current_user, selected_policy)) {
+            return 'initiator';
+        }
+        if (await quality_team_check(current_user)) {
+            return 'quality';
+        }
+
+        let approvers_list = await get_approvers_list(record_id);
+
+
+        if (preparation_check("Preparation", approvers_list, current_user)) {
+            return 'preparation';
+        }
+
+        if (stakeholders_check("Stakeholders", approvers_list, current_user)) {
+            return 'stakeholders';
+        }
+
+        if (regulators_check("Regulators", approvers_list, current_user)) {
+            return 'regulators';
+        }
+
+
+        return 'unauthorized';
+
+
+    }
+
+    function get_approvers_list(record_id) {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=*,Approver_Name/Id,Approver_Name/Title";
+            let expand = "$expand=Approver_Name";
+            let filter = `$filter=Request_ID eq ${record_id}`;
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Approvers_List')/items?${select}&${expand}&${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+    function initiator_check(current_user, selected_policy) {
+        return selected_policy.Author.Id === current_user;
+    }
+
+
+    async function quality_team_check(current_user) {
+        let quality_team_members = await get_quality_team_members();
+
+        const isMatchFound = quality_team_members.some(record => {
+            return record.Approver_Name.Id === current_user;
+
+            return false;
+        });
+
+        return isMatchFound;
+
+    }
+
+    function get_quality_team_members() {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=*,Approver_Name/Id,Approver_Name/Title";
+            let expand = "$expand=Approver_Name";
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Quality_Approvers')/items?${select}&${expand}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    function preparation_check(type, approvers_list, current_user) {
+        return find_user_in_list(type, approvers_list, current_user);
+    }
+
+    function stakeholders_check(type, approvers_list, current_user) {
+        return find_user_in_list(type, approvers_list, current_user);
+    }
+
+    function regulators_check(type, approvers_list, current_user) {
+        return find_user_in_list(type, approvers_list, current_user);
+    }
+
+    function find_user_in_list(type, approvers_list, current_user) {
+        const isMatchFound = approvers_list.some(record => {
+            if (record.Approver_Type === type) {
+                return record.Approver_Name.Id === current_user;
+            }
+
+            return false;
+        });
+
+        return isMatchFound;
+    }
+
+
+    function get_policy_info(record_id) {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=*,Author/Id";
+            let expand = "$expand=Author";
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/items(${record_id})?${select}&${expand}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    function get_CNID_from_url() {
+        let url = window.location.href;
+        const match = url.match(/[?&]CNID=([^&]*)/);
+        return match ? decodeURIComponent(match[1]) : null;
+    }
 
 </script>
