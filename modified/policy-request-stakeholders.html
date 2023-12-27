@@ -1,0 +1,356 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
+<div class="content">
+
+    <div class="row">
+        <div class="col">
+            <h5 class="fs-0 pt-2 pb-3 d-lg-none">Policy &amp; Procedure Request</h5>
+        </div>
+    </div>
+
+
+    <!-- ################################### Inner Contents ################################ -->
+
+    <div class="content-inner p-lg-4">
+        <!-- BreadCrumb-->
+        <div class="row mb-3 mb-xl-4">
+            <div class="col">
+                <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
+                        <li class="breadcrumb-item active"><a href="#">Policy &amp; Procedure Request</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Details/History tabs -->
+        <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
+            <div class="col-12 col-xl-auto mb-2 mb-xl-0">
+                <div class="btn-group btn-group-sm" role="group">
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx"
+                        class="btn btn-dquam-primary" role="button">Details</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx"
+                        class="btn btn-outline-secondary" role="button">History</a>
+                </div>
+            </div>
+            <div class="col-12 col-xl-auto">
+                <div class="row g-2">
+                    <div class="col-auto">
+                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button" disabled>Send
+                            Back</button>
+
+                    </div>
+                    <div class="col-auto">
+                        <button id="open_ms_team_button" class="btn btn-dquam-info btn-sm" type="button" disabled>Open MS
+                            Team</button>
+                    </div>
+                    <div class="col-auto">
+                        <button id="request_meeting_button" class="btn btn-dquam-info btn-sm" type="button"
+                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/request-meeting.aspx'" disabled>Request
+                            Meeting</button>
+                    </div>
+                    <div class="col-auto">
+                        <button id="submit_button" class="btn btn-dquam-primary btn-sm" type="button"
+                            onclick="submit_changes('Stakeholders', 4)" disabled>Approve</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ page contents here... =========== -->
+
+        <div class="card p-0 mb-4">
+            <div class="card-body p-xl-3">
+
+                <div class="row">
+                    <div class="col">
+                        <div class="theme-wizard theme-wizard-common-style">
+                            <ul class="nav justify-content-between nav-wizard">
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold done">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-hourglass-end"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Request Approval</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold done">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-magic"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Under Preparation</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold active">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-hourglass-end"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Stakeholders Approval</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-hourglass-end"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Regulators Approval</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-location-arrow"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Publish</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-check"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Completed</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div><!--End: theme-wizard -->
+                    </div>
+                </div>
+
+            </div><!--End: card-body -->
+        </div><!--End: card -->
+
+        <div class="card">
+            <div class="card-body p-xl-5">
+                <div class="row justify-content-end mb-3">
+                    <div class="col-auto">
+                        <button class="btn btn-dquam-info" type="button">
+                            <span class="fas fa-file"></span>
+                            <span class="ms-1">View File</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure
+                            Title</label>
+                    </div>
+                    <div class="col-12">
+                        <span id="policy_title" class="fs--1 text-600"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Description</label>
+                    </div>
+                    <div class="col-12">
+                        <span id="policy_description" class="fs--1 text-600"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="form-label text-900 fs-0 mb-1">Supporting Documents</label>
+                    </div>
+                    <div class="col-12">
+                        <div id="policy_docs" class="d-flex flex-column777 flex-wrap">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-between">
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label class="form-label text-900 fs-0 mb-1">Status</label>
+                            </div>
+                            <div class="col-12">
+                                <span class="badge rounded badge-subtle-danger p-2 minw-80">Delayed</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label class="form-label text-900 fs-0 mb-1">Revision Number</label>
+                            </div>
+                            <div class="col-12">
+                                <span class="fs--1 text-600">
+                                    2
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label class="form-label text-900 fs-0 mb-1">Next Revision Date</label>
+                            </div>
+                            <div class="col-12">
+                                <span class="fs--1 text-600">
+                                    15/02/2023
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label class="form-label text-900 fs-0 mb-1">Publishing Date</label>
+                            </div>
+                            <div class="col-12">
+                                <span class="fs--1 text-600">
+                                    15/02/2023
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--End: card -->
+
+    </div><!-- End: content-inner -->
+
+</div><!-- End: content -->
+
+
+
+<script>
+
+    $(document).ready(async function () {
+        try {
+            const record_id = get_CNID_from_url();
+
+            let current_user = get_current_user_id();
+
+            console.log("current_user",current_user)
+
+            let selected_policy = await get_policy_info(record_id, "$select=*,Author/Id", "$expand=Author");
+
+            let approvers_list = await get_approvers_list(record_id, null);
+
+            let step_number = selected_policy.Step_Number;
+
+            step_number_check(step_number, [3]);
+
+
+
+            let access = await check_user_access(record_id, selected_policy, current_user, approvers_list);
+            if (access == 'unauthorized') {
+                redirect_user_to_home_page();
+                return;
+            }
+            console.log("access", access);
+
+
+
+            let permission = check_user_permissions(access, step_number);
+            if (permission == 'none') {
+                redirect_user_to_home_page();
+                return;
+            }
+            console.log("permission", permission);
+
+
+
+            modify_page_details();
+            await populate_fields(selected_policy, record_id);
+            apply_permissions(permission);
+
+
+
+
+            let user_previously_approved = current_user_approved_check(access, approvers_list, current_user, "stakeholders", "Stakeholders");
+            if (user_previously_approved) {
+                modify_main_buttons('disable');
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    function modify_page_details() {
+        $("#pageTitle").text('Policy & Procedure Request');
+    }
+
+
+
+    function apply_permissions(permission) {
+        if (permission == 'read') {
+            modify_main_buttons('disable');
+        }
+
+        if (permission == 'write') {
+            modify_main_buttons('enable');
+        }
+    }
+
+
+    function modify_main_buttons(status) {
+        if (status == 'disable') {
+            $('#submit_button').prop('disabled', true);
+            $('#request_meeting_button').prop('disabled', true);
+            $('#open_ms_team_button').prop('disabled', true);
+            $('#send_back_button').prop('disabled', true);
+        }
+
+        if (status == 'enable') {
+            $('#submit_button').prop('disabled', false);
+            $('#request_meeting_button').prop('disabled', false);
+            $('#open_ms_team_button').prop('disabled', false);
+            $('#send_back_button').prop('disabled', false);
+
+        }
+    }
+
+
+
+    async function populate_fields(policy, record_id) {
+        $("#policy_title").html(policy.Request_title);
+        $("#policy_description").html(policy.Policy_Description);
+
+        await populate_documents(record_id);
+    }
+
+
+    async function populate_documents(record_id) {
+        let documents = await get_policy_documents(record_id);
+        let html = ``;
+        documents.forEach(doc => {
+            html += `
+            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
+                <span class="fs-1 far fa-image"></span>
+                <span class="ms-2 me-3">${doc.LinkFilename}</span>
+                <a class="text-300 ms-auto" href="${doc.EncodedAbsUrl}" target="_blank" data-bs-toggle="tooltip" data-bs-placement="right"
+                    aria-label="Download" data-bs-original-title="Download">
+                    <span class="fas fa-arrow-down"></span>
+                </a>
+            </div>
+            `
+        });
+
+        $("#policy_docs").html(html);
+    }
+
+</script>
