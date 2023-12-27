@@ -315,10 +315,10 @@ function get_policy_info(record_id, select, expand) {
 
 function get_current_user_id(){
     // return _spPageContextInfo.userId;
-    return 25;
+    return 26;
 }
 
-async function submit_changes(type) {
+async function submit_changes(type, next_step_number) {
     const record_id = get_CNID_from_url();
 
     let current_user = get_current_user_id();
@@ -336,7 +336,7 @@ async function submit_changes(type) {
         console.log("is_last_approver",is_last_approver)
 
         if (is_last_approver) {
-            await proceed_to_next_stage(record_id, 3);
+            await proceed_to_next_stage(record_id, next_step_number);
         }
     }
 
