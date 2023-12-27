@@ -2,6 +2,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 <div class="content">
 
     <div class="row">
@@ -54,7 +56,7 @@
                     </div>
                     <div class="col-auto">
                         <button id="submit_button" class="btn btn-dquam-primary-light btn-sm" type="button"
-                            onclick="submit_changes()" disabled>Save
+                            onclick="submit_changes('Preparation')" disabled>Save
                             &amp; Submit</button>
                     </div>
                 </div>
@@ -163,14 +165,7 @@
                     <div class="col-12">
                         <div id="policy_docs" class="d-flex flex-column777 flex-wrap">
 
-                            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
-                                <span class="fs-1 fas fa-file"></span>
-                                <span class="ms-2 me-3">file2.ppt (873kb)</span>
-                                <a class="text-300 ms-auto" href="#!" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    aria-label="Download" data-bs-original-title="Download">
-                                    <span class="fas fa-arrow-down"></span>
-                                </a>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -236,27 +231,25 @@
     $(document).ready(async function () {
         try {
             const record_id = get_CNID_from_url();
-            let current_user = _spPageContextInfo.userId;
             
+            let current_user = get_current_user_id();
 
-            let selected_policy = await get_policy_info(record_id);
+
+            let selected_policy = await get_policy_info(record_id, "$select=*,Author/Id", "$expand=Author");
 
             let approvers_list = await get_approvers_list(record_id, null);
 
             let step_number = selected_policy.Step_Number;
 
-            if(step_number != 2 && step_number != 33 && step_number != 44){
-                redirect_user_to_home_page();
-                return;
-            }
+            step_number_check(step_number, [2, 33, 44]);
+
+
 
             let access = await check_user_access(record_id, selected_policy, current_user, approvers_list);
-
             if (access == 'unauthorized') {
                 redirect_user_to_home_page();
                 return;
             }
-
             console.log("access", access);
 
 
@@ -266,19 +259,22 @@
                 redirect_user_to_home_page();
                 return;
             }
-
             console.log("permission", permission);
-
-
 
 
 
             modify_page_details();
             await populate_fields(selected_policy, record_id);
-
             apply_permissions(permission);
 
-            current_preparation_user_approved_check(access, approvers_list, current_user);
+            
+
+
+            let user_previously_approved = current_user_approved_check(access, approvers_list, current_user, "preparation", "Preparation");
+            if(user_previously_approved){
+                modify_main_buttons('disable');
+            }
+
         } catch (error) {
             console.error(error);
         }
@@ -288,29 +284,6 @@
         $("#pageTitle").text('Policy & Procedure Request');
     }
 
-
-    function redirect_user_to_home_page(){
-        window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
-        return;
-    }
-
-
-    function current_preparation_user_approved_check(access, approvers_list, current_user) {
-        if (access === 'preparation') {
-            const isMatchFound = approvers_list.some(record => {
-                if (record.Approver_Type === 'Preparation' && record.Approver_Name.Id === current_user && record.Approver_Approval_Status === 1) {
-                    return true;
-                }
-                return false;
-            });
-
-            if (isMatchFound) {
-                modify_main_buttons('disable');
-            }
-
-        }
-
-    }
 
 
     function apply_permissions(permission) {
@@ -339,123 +312,6 @@
         }
     }
 
-    async function submit_changes() {
-        const record_id = get_CNID_from_url();
-
-        let type = "Preparation";
-        let current_user = _spPageContextInfo.userId;
-        
-
-        let preparation_list = await get_approvers_list(record_id, type);
-
-        let approver_record = get_approver_record_for_current_user(preparation_list, current_user);
-
-        const is_last_approver = is_last_approver_check(preparation_list);
-
-        if (approver_record) {
-            await update_user_approval(approver_record);
-            console.log("approver_record",approver_record)
-            console.log("is_last_approver",is_last_approver)
-
-            if (is_last_approver) {
-                await proceed_to_next_stage(record_id);
-            }
-        }
-
-        redirect_user_to_home_page();
-        return;
-
-        
-    }
-
-    function proceed_to_next_stage(record_id) {
-        return new Promise(function (resolve, reject) {
-            var seqObj = JSON.stringify({
-                '__metadata': {
-                    'type': 'SP.Data.Policy_x005f_ListListItem'
-                },
-                "Step_Number": 3
-
-            });
-
-            var seqHeaders = {
-                "Accept": "application/json;odata=verbose",
-                "Content-Type": "application/json;odata=verbose",
-                "IF-MATCH": "*",
-                "X-HTTP-Method": "MERGE",
-                "X-RequestDigest": $("#__REQUESTDIGEST").val()
-            }
-
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/items(" + record_id + ")",
-                method: "POST",
-                async: false,
-                data: seqObj,
-                headers: seqHeaders,
-                success: function (data) {
-                    resolve();
-                },
-                error: function (error) {
-                    reject(error)
-                }
-            })
-
-        });
-    }
-
-    function get_approver_record_for_current_user(preparation_list, current_user) {
-        const matchingRecords = preparation_list.filter(record => record.Approver_Name.Id === current_user);
-
-        if (matchingRecords.length > 0) {
-            return matchingRecords[0].ID;
-        }
-
-        return null;
-    }
-
-    function update_user_approval(approver_record) {
-        return new Promise(function (resolve, reject) {
-            var seqObj = JSON.stringify({
-                '__metadata': {
-                    'type': 'SP.Data.Policy_x005f_Approvers_x005f_ListListItem'
-                },
-                "Approver_Approval_Status": 1
-
-            });
-
-            var seqHeaders = {
-                "Accept": "application/json;odata=verbose",
-                "Content-Type": "application/json;odata=verbose",
-                "IF-MATCH": "*",
-                "X-HTTP-Method": "MERGE",
-                "X-RequestDigest": $("#__REQUESTDIGEST").val()
-            }
-
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_Approvers_List')/items(" + approver_record + ")",
-                method: "POST",
-                async: false,
-                data: seqObj,
-                headers: seqHeaders,
-                success: function (data) {
-                    resolve();
-                },
-                error: function (error) {
-                    reject(error)
-                }
-            })
-
-        });
-    }
-
-    function is_last_approver_check(preparation_list) {
-
-        const count_users = preparation_list.length;
-
-        const count_approved_users = preparation_list.filter(record => record.Approver_Approval_Status === 1).length;
-
-        return count_users - count_approved_users === 1;
-    }
 
 
     async function populate_fields(policy, record_id) {
@@ -485,197 +341,8 @@
         $("#policy_docs").html(html);
     }
 
-    function get_policy_documents(record_id) {
-        return new Promise(function (resolve, reject) {
-            let select = "$select=Title,LinkFilename,EncodedAbsUrl,ID";
-            let filter = `$filter=Policy_Item eq ${record_id}`;
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy Attachments')/items?${select}&${filter}`,
-                method: "GET",
-                headers: {
-                    "ACCEPT": "application/json; odata=verbose",
-                },
-                success: function (data) {
-                    resolve(data.d.results);
-                },
-                error: function (error) {
-                    reject(error);
-                }
-            });
-        });
-    }
 
 
-    function check_user_permissions(access, step_number) {
 
-        /*
-            Step_Number=1,"Quality Team"
-            Step_Number=2,"Preparation Team"
-            Step_Number=3,"Stakeholders"
-            Step_Number=4,"Regulators"
-            Step_Number=5,"Publish"
-            Step_Number=6,"Completed"
-            Step_Number=11,"Send Back By Quality"
-            Step_Number=33,"Send Back By Stakeholders"
-            Step_Number=44,"Send Back By Regulators"
-        */
-
-        const permissions = {
-            1: { initiator: "read", quality: "write", preparation: "none", stakeholders: "none", regulators: "none" },
-            2: { initiator: "read", quality: "read", preparation: "write", stakeholders: "none", regulators: "none" },
-            3: { initiator: "read", quality: "read", preparation: "read", stakeholders: "write", regulators: "none" },
-            4: { initiator: "read", quality: "read", preparation: "read", stakeholders: "read", regulators: "write" },
-            5: { initiator: "read", quality: "write", preparation: "read", stakeholders: "read", regulators: "read" },
-            6: { initiator: "read", quality: "write", preparation: "read", stakeholders: "read", regulators: "read" },
-
-            11: { initiator: "write", quality: "read", preparation: "none", stakeholders: "none", regulators: "none" },
-            33: { initiator: "read", quality: "read", preparation: "write", stakeholders: "read", regulators: "none" },
-            44: { initiator: "read", quality: "read", preparation: "write", stakeholders: "read", regulators: "read" },
-        };
-
-        return permissions[step_number][access];
-    }
-
-    async function check_user_access(record_id, selected_policy, current_user, approvers_list) {
-
-        if (initiator_check(current_user, selected_policy)) {
-            return 'initiator';
-        }
-        if (await quality_team_check(current_user)) {
-            return 'quality';
-        }
-
-
-        if (preparation_check("Preparation", approvers_list, current_user)) {
-            return 'preparation';
-        }
-
-        if (stakeholders_check("Stakeholders", approvers_list, current_user)) {
-            return 'stakeholders';
-        }
-
-        if (regulators_check("Regulators", approvers_list, current_user)) {
-            return 'regulators';
-        }
-
-
-        return 'unauthorized';
-
-
-    }
-
-    function get_approvers_list(record_id, type) {
-        return new Promise(function (resolve, reject) {
-            let select = "$select=*,Approver_Name/Id,Approver_Name/Title";
-            let expand = "$expand=Approver_Name";
-            let filter = `$filter=Request_ID eq ${record_id}`;
-
-            if (type) {
-                filter += ` and Approver_Type eq '${type}'`
-            }
-
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Approvers_List')/items?${select}&${expand}&${filter}`,
-                method: "GET",
-                headers: {
-                    "ACCEPT": "application/json; odata=verbose",
-                },
-                success: function (data) {
-                    resolve(data.d.results);
-                },
-                error: function (error) {
-                    reject(error);
-                }
-            });
-        });
-    }
-
-
-    function initiator_check(current_user, selected_policy) {
-        return selected_policy.Author.Id === current_user;
-    }
-
-
-    async function quality_team_check(current_user) {
-        let quality_team_members = await get_quality_team_members();
-
-        const isMatchFound = quality_team_members.some(record => {
-            return record.Approver_Name.Id === current_user;
-        });
-
-        return isMatchFound;
-
-    }
-
-    function get_quality_team_members() {
-        return new Promise(function (resolve, reject) {
-            let select = "$select=*,Approver_Name/Id,Approver_Name/Title";
-            let expand = "$expand=Approver_Name";
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Quality_Approvers')/items?${select}&${expand}`,
-                method: "GET",
-                headers: {
-                    "ACCEPT": "application/json; odata=verbose",
-                },
-                success: function (data) {
-                    resolve(data.d.results);
-                },
-                error: function (error) {
-                    reject(error);
-                }
-            });
-        });
-    }
-
-    function preparation_check(type, approvers_list, current_user) {
-        return find_user_in_list(type, approvers_list, current_user);
-    }
-
-    function stakeholders_check(type, approvers_list, current_user) {
-        return find_user_in_list(type, approvers_list, current_user);
-    }
-
-    function regulators_check(type, approvers_list, current_user) {
-        return find_user_in_list(type, approvers_list, current_user);
-    }
-
-    function find_user_in_list(type, approvers_list, current_user) {
-        const isMatchFound = approvers_list.some(record => {
-            if (record.Approver_Type === type) {
-                return record.Approver_Name.Id === current_user;
-            }
-
-            return false;
-        });
-
-        return isMatchFound;
-    }
-
-
-    function get_policy_info(record_id) {
-        return new Promise(function (resolve, reject) {
-            let select = "$select=*,Author/Id";
-            let expand = "$expand=Author";
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/items(${record_id})?${select}&${expand}`,
-                method: "GET",
-                headers: {
-                    "ACCEPT": "application/json; odata=verbose",
-                },
-                success: function (data) {
-                    resolve(data.d);
-                },
-                error: function (error) {
-                    reject(error);
-                }
-            });
-        });
-    }
-
-    function get_CNID_from_url() {
-        let url = window.location.href;
-        const match = url.match(/[?&]CNID=([^&]*)/);
-        return match ? decodeURIComponent(match[1]) : null;
-    }
 
 </script>
