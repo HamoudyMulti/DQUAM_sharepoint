@@ -200,6 +200,21 @@
     }
 
     async function retrive_list_items(pagination, filter) {
+
+        let current_user = get_current_user_id();
+
+        let user_filter_conditions = "";
+
+        // if (await quality_team_check(current_user)) {
+        //     // Quality team check passed, no user filter
+        // } else {
+        //     if (filter) {
+        //         filter += ' and ';
+        //     }
+        //     filter += `Step_Number eq '${search_stage}'`;
+        // }
+        
+
         return new Promise(function (resolve, reject) {
             $.ajax({
                 url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/Items?$OrderBy=${order_by}&$top=${limit}&$skiptoken=Paged=TRUE${pagination}&$filter=${filter}`,
