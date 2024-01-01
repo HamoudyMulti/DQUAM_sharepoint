@@ -1199,7 +1199,7 @@
 
     }
 
-    async function add_users_to_DB(params) {
+    async function add_users_to_policy_approvers_list_DB(params) {
         const {
             record_id,
             preparation_users,
@@ -1212,11 +1212,11 @@
         );
 
         const stakeholdersPromises = stakeholders_users.map(user =>
-            addApprover('Stakeholders', user, 2, record_id, 0)
+            addApprover('Stakeholders', user, 3, record_id, 0)
         );
 
         const regulatorsPromises = regulators_users.map(user =>
-            addApprover('Regulators', user, 2, record_id, 0)
+            addApprover('Regulators', user, 4, record_id, 0)
         );
 
         try {
@@ -1226,10 +1226,47 @@
                 ...regulatorsPromises
             ]);
 
-            return results;
+            let policy_approvers_list_record_ids = results.map(item => item.Id);
+
+            return policy_approvers_list_record_ids;
         } catch (error) {
             console.log(error);
         }
+    }
+
+    function add_users_to_policy_list_DB(users){
+        return new Promise((resolve, reject) => {
+            const obj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Policy_x005f_Approvers_x005f_ListListItem'
+                },
+                "Approver_Type": approverType,
+                "Approver_NameId": approverName,
+                "Approver_Step_Number": stepNumber,
+                "Request_ID": requestID,
+                "Approver_Approval_Status": approvalStatus
+            });
+
+            const headers = {
+                "accept": "application/json;odata=verbose",
+                "content-type": "application/json;odata=verbose",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            };
+
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_Approvers_List')/items",
+                method: "POST",
+                data: obj,
+                headers: headers,
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error.responseText);
+                }
+            });
+        });
     }
 
     function addApprover(approverType, approverName, stepNumber, requestID, approvalStatus) {
@@ -1309,12 +1346,16 @@
 
         let { preparation_users, stakeholders_users, regulators_users } = getSelectedUsers();
 
-        await add_users_to_DB({
+        let policy_approvers_list_record_ids = await add_users_to_policy_approvers_list_DB({
             record_id,
             preparation_users,
             stakeholders_users,
             regulators_users
         });
+
+
+        await add_users_to_policy_list_DB(policy_approvers_list_record_ids);
+
 
 
         let merging_policy_checkbox = $("#policyRequestReplaceOtherPolicies").prop("checked");
@@ -1332,7 +1373,7 @@
             await uploadFiles(record_id);
         }
 
-        window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+        //window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
 
 
 
