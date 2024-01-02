@@ -2,6 +2,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 <div class="content">
 
     <div class="container px-0">
@@ -201,18 +203,38 @@
 
     async function retrive_list_items(pagination, filter) {
 
-        // let current_user = get_current_user_id();
+        let current_user = get_current_user_id();
 
-        // let user_filter_conditions = "";
+        if (await quality_team_check(current_user)) {
+            // Quality team check passed, no user filter
+        } else {
+            if (filter) {
+                filter += ' and ';
+            }
+            filter += `
+            (
+                (
+                    Preparation_Approvers/Approver_Name_User_ID eq ${current_user} and 
+                    (Step_Number eq 2 or Step_Number eq 3 or Step_Number eq 4 or Step_Number eq 5 or Step_Number eq 6 or Step_Number eq 33 or Step_Number eq 44)
+                )
 
-        // if (await quality_team_check(current_user)) {
-        //     // Quality team check passed, no user filter
-        // } else {
-        //     if (filter) {
-        //         filter += ' and ';
-        //     }
-        //     filter += `Step_Number eq '${search_stage}'`;
-        // }
+                or 
+                (
+                    Stakeholders_Approvers/Approver_Name_User_ID eq ${current_user} and 
+                    (Step_Number eq 3 or Step_Number eq 4 or Step_Number eq 5 or Step_Number eq 6 or Step_Number eq 33 or Step_Number eq 44)
+                )
+                or
+                (
+                    Regulators_Approvers/Approver_Name_User_ID eq ${current_user} and 
+                    (Step_Number eq 4 or Step_Number eq 5 or Step_Number eq 6 or Step_Number eq 44)
+                )
+                or
+                (
+                    AuthorId eq ${current_user}
+                )
+            )
+             `;
+        }
         
 
         return new Promise(function (resolve, reject) {

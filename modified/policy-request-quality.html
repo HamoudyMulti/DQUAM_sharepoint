@@ -1226,9 +1226,18 @@
                 ...regulatorsPromises
             ]);
 
-            let policy_approvers_list_record_ids = results.map(item => item.Id);
 
-            return policy_approvers_list_record_ids;
+
+            const stakeholders_approvers = filter_approvers_by_type(results, 'Stakeholders');
+            const preparation_approvers = filter_approvers_by_type(results, 'Preparation');
+            const regulators_approvers = filter_approvers_by_type(results, 'Regulators');
+
+
+            return {
+                preparation_approvers,
+                stakeholders_approvers,
+                regulators_approvers
+            };
         } catch (error) {
             console.log(error);
         }
@@ -1271,7 +1280,7 @@
         });
     }
 
-    function update_policy(record_id, merge_policies, policy_approvers_list_record_ids) {
+    function update_policy(record_id, merge_policies, preparation_approvers, stakeholders_approvers, regulators_approvers) {
         return new Promise(function (resolve, reject) {
             var seqObj = JSON.stringify({
                 '__metadata': {
@@ -1280,8 +1289,14 @@
                 "Merging_PolicyId": {
                     "results": merge_policies
                 },
-                "Policy_ApproversId": {
-                    "results": policy_approvers_list_record_ids
+                "Preparation_ApproversId": {
+                    "results": preparation_approvers
+                },
+                "Stakeholders_ApproversId": {
+                    "results": stakeholders_approvers
+                },
+                "Regulators_ApproversId": {
+                    "results": regulators_approvers
                 },
                 "Step_Number": 2
 
@@ -1312,35 +1327,51 @@
         });
     }
 
+    function filter_approvers_by_type(approvers, approver_type) {
+        return approvers.filter(approver => approver.Approver_Type === approver_type)
+            .map(approver => approver.Id);
+    }
+
+
+
     async function submit_changes() {
-        const record_id = get_CNID_from_url();
+        try {
+            const record_id = get_CNID_from_url();
 
-        let { preparation_users, stakeholders_users, regulators_users } = getSelectedUsers();
+            let { preparation_users, stakeholders_users, regulators_users } = getSelectedUsers();
 
-        let policy_approvers_list_record_ids = await add_users_to_policy_approvers_list_DB({
-            record_id,
-            preparation_users,
-            stakeholders_users,
-            regulators_users
-        });
+            let {
+                preparation_approvers,
+                stakeholders_approvers,
+                regulators_approvers
+            } = await add_users_to_policy_approvers_list_DB({
+                record_id,
+                preparation_users,
+                stakeholders_users,
+                regulators_users
+            });
 
 
-        let merging_policy_checkbox = $("#policyRequestReplaceOtherPolicies").prop("checked");
-        let merge_policies = merging_policy_checkbox ? $("#merge_policies_select").val() : [];
+            let merging_policy_checkbox = $("#policyRequestReplaceOtherPolicies").prop("checked");
+            let merge_policies = merging_policy_checkbox ? $("#merge_policies_select").val() : [];
 
-        await update_policy(record_id, merge_policies, policy_approvers_list_record_ids);
-        
 
-        
+            await update_policy(record_id, merge_policies, preparation_approvers, stakeholders_approvers, regulators_approvers);
 
-        if ($('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length > 0) {
-            await uploadFiles(record_id);
+
+
+
+            if ($('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length > 0) {
+                await uploadFiles(record_id);
+            }
+
+
+
+            window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+
+        } catch (error) {
+            console.log(error);
         }
-
-
-
-        window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
-
 
 
     }
