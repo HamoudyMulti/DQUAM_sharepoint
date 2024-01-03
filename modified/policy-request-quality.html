@@ -44,7 +44,7 @@
                         <button class="btn btn-dquam-secondary btn-sm" type="button">Back</button>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-dquam-primary-light btn-sm" type="button" onclick="submit_changes()">Save
+                        <button class="btn btn-dquam-primary-light btn-sm" type="button" onclick="apply_changes()">Save
                             &amp; Submit</button>
                     </div>
                 </div>
@@ -1334,7 +1334,7 @@
 
 
 
-    async function submit_changes() {
+    async function apply_changes() {
         try {
             const record_id = get_CNID_from_url();
 

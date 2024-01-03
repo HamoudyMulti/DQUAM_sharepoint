@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-auto">
                         <button id="submit_button" class="btn btn-dquam-primary btn-sm" type="button"
-                            onclick="submit_changes('Stakeholders', 4)" disabled>Approve</button>
+                            onclick="submit_changes('Regulators', 5)" disabled>Approve</button>
 
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link fw-semi-bold active">
+                                    <a class="nav-link fw-semi-bold done">
                                         <span class="nav-item-circle-parent">
                                             <span class="nav-item-circle">
                                                 <span class="fas fa-hourglass-end"></span>
@@ -104,7 +104,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link fw-semi-bold">
+                                    <a class="nav-link fw-semi-bold active">
                                         <span class="nav-item-circle-parent">
                                             <span class="nav-item-circle">
                                                 <span class="fas fa-hourglass-end"></span>
@@ -251,7 +251,7 @@
 
             let step_number = selected_policy.Step_Number;
 
-            step_number_check(step_number, [3]);
+            step_number_check(step_number, [4]);
 
 
 
@@ -280,7 +280,7 @@
 
 
 
-            let user_previously_approved = current_user_approved_check(access, approvers_list, current_user, "stakeholders", "Stakeholders");
+            let user_previously_approved = current_user_approved_check(access, approvers_list, current_user, "regulators", "Regulators");
             if (user_previously_approved) {
                 modify_main_buttons('disable');
             }

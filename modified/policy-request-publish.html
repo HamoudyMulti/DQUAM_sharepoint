@@ -2,6 +2,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 
 <div class="content">
 
@@ -21,7 +23,9 @@
             <div class="col">
                 <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
                         <li class="breadcrumb-item active"><a href="#">Policy &amp; Procedure Request</a></li>
                     </ol>
                 </nav>
@@ -32,274 +36,19 @@
         <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
             <div class="col-12 col-xl-auto mb-2 mb-xl-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx" class="btn btn-dquam-primary" role="button">Details</a>
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx" class="btn btn-outline-secondary" role="button">History</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx"
+                        class="btn btn-dquam-primary" role="button">Details</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx"
+                        class="btn btn-outline-secondary" role="button">History</a>
                 </div>
             </div>
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
                     <div class="col-auto">
-                        <button class="btn btn-dquam-info btn-sm" type="button">Open MS Team</button>
+                        <button id="open_ms_team_button" class="btn btn-dquam-info btn-sm" type="button" disabled>Open MS Team</button>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-dquam-primary btn-sm" type="button" data-bs-toggle="modal"
-                            data-bs-target="#modal-policy-request4-publish">Publish</button>
-                        <div class="modal fade" id="modal-policy-request4-publish" tabindex="-1" role="dialog"
-                            aria-hidden="true" data-bs-backdrop="static">
-                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                                <div class="modal-content position-relative">
-                                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
-                                        <button
-                                            class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
-                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body p-0">
-                                        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
-                                            <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Publishing List
-                                            </h6>
-                                        </div>
-                                        <div class="p-4 pb-0 text-center">
-                                            <div>
-                                                <div class="mb-3">
-                                                    <h6 class="mb-0 text-600">Select user or group:</h6>
-                                                </div>
-                                                <div class="mb-4">
-                                                    <div class="col-12 mb-3">
-                                                        <div class="border bg-white rounded p-3">
-                                                            <div
-                                                                class="row align-items-center justify-content-center g-2 mb-3">
-                                                                <div class="col-auto">
-                                                                    <div
-                                                                        class="dropdown dropdown-with-avatars font-sans-serif position-static">
-                                                                        <button
-                                                                            class="btn dropdown-toggle border border-0"
-                                                                            id="dropdownMenuButton2" type="button"
-                                                                            data-bs-toggle="dropdown"
-                                                                            data-bs-auto-close="outside"
-                                                                            aria-expanded="false">
-                                                                            <div
-                                                                                class="avatar-group avatar-group-dense">
-                                                                                <div
-                                                                                    class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                                                    <img class="rounded-circle"
-                                                                                        src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png"
-                                                                                        alt="" />
-                                                                                </div>
-                                                                                <div
-                                                                                    class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                                                    <img class="rounded-circle"
-                                                                                        src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png"
-                                                                                        alt="" />
-                                                                                </div>
-                                                                                <div
-                                                                                    class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                                                    <div
-                                                                                        class="avatar-name rounded-circle">
-                                                                                        <span>+50</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </button>
-                                                                        <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-250"
-                                                                            aria-labelledby="dropdownMenuButton2">
-                                                                            <div class="dropdown-item">
-                                                                                <input type="search"
-                                                                                    class="form-control form-control-sm"
-                                                                                    placeholder="Search..." />
-                                                                            </div>
-                                                                            <!--End: dropdown-item -->
-
-                                                                            <div class="dropdown-item px-x1 py-2">
-                                                                                <div class="row align-items-center g-3">
-                                                                                    <div class="col">
-                                                                                        <div
-                                                                                            class="d-flex align-items-center">
-                                                                                            <div
-                                                                                                class="avatar avatar-l me-2">
-                                                                                                <img class="rounded-circle"
-                                                                                                    src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg"
-                                                                                                    alt="" />
-                                                                                            </div>
-                                                                                            <div class="flex-1">
-                                                                                                <h6 class="mb-0">
-                                                                                                    Lisa
-                                                                                                    K
-                                                                                                </h6>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-auto">
-                                                                                        <div
-                                                                                            class="btn-close-falcon text-danger">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!--End: dropdown-item -->
-                                                                            <div class="dropdown-item px-x1 py-2">
-                                                                                <div class="row align-items-center g-3">
-                                                                                    <div class="col">
-                                                                                        <div
-                                                                                            class="d-flex align-items-center">
-                                                                                            <div
-                                                                                                class="avatar avatar-l me-2">
-                                                                                                <img class="rounded-circle"
-                                                                                                    src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/6.jpg"
-                                                                                                    alt="" />
-                                                                                            </div>
-                                                                                            <div class="flex-1">
-                                                                                                <h6 class="mb-0">
-                                                                                                    Linus
-                                                                                                    Torvalds
-                                                                                                </h6>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-auto">
-                                                                                        <div
-                                                                                            class="btn-close-falcon text-danger">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!--End: dropdown-item -->
-                                                                        </div>
-                                                                        <!-- End: dropdown-menu -->
-                                                                    </div>
-                                                                    <!-- End: dropdown -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-12 mb-3">
-                                                                    <div
-                                                                        class="dropdown dropdown-with-avatars font-sans-serif position-static">
-                                                                        <button class="btn dropdown-toggle w-100"
-                                                                            id="dropdownMenuButton1" type="button"
-                                                                            data-bs-toggle="dropdown"
-                                                                            data-bs-auto-close="outside"
-                                                                            aria-expanded="false">
-                                                                            <div
-                                                                                class="d-flex align-items-center justify-content-between">
-                                                                                <div class="d-flex align-items-center">
-                                                                                    <div class="avatar avatar-l me-2">
-                                                                                        <img class="rounded-circle"
-                                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                            alt="" />
-                                                                                    </div>
-                                                                                    <span class="mb-0 title">John
-                                                                                        Doe</span>
-                                                                                </div>
-                                                                                <span
-                                                                                    class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
-                                                                            </div>
-                                                                        </button>
-                                                                        <div class="dropdown-menu dropdown-menu-start py-2 scrollbar search-filter-parent"
-                                                                            aria-labelledby="dropdownMenuButton1">
-                                                                            <div class="dropdown-item">
-                                                                                <input type="search"
-                                                                                    class="form-control form-control-sm search-filter-input"
-                                                                                    placeholder="Search..." />
-                                                                            </div>
-                                                                            <!--End: dropdown-item -->
-
-                                                                            <a class="dropdown-item px-x1 py-2"
-                                                                                href="#">
-                                                                                <div class="d-flex align-items-center">
-                                                                                    <div
-                                                                                        class="avatar avatar-l status-online me-2">
-                                                                                        <img class="rounded-circle"
-                                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg"
-                                                                                            alt="" />
-                                                                                    </div>
-                                                                                    <div class="flex-1">
-                                                                                        <h6
-                                                                                            class="mb-0 search-filter-data">
-                                                                                            Lisa
-                                                                                            K
-                                                                                        </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </a><!--End: dropdown-item -->
-                                                                            <a class="dropdown-item px-x1 py-2"
-                                                                                href="#">
-                                                                                <div class="d-flex align-items-center">
-                                                                                    <div class="avatar avatar-l me-2">
-                                                                                        <img class="rounded-circle"
-                                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                                                            alt="" />
-                                                                                    </div>
-                                                                                    <div class="flex-1">
-                                                                                        <h6
-                                                                                            class="mb-0 search-filter-data">
-                                                                                            John
-                                                                                            Doe
-                                                                                        </h6>
-                                                                                        <p
-                                                                                            class="fs--2 mb-0 d-flex search-filter-data">
-                                                                                            Technext
-                                                                                            Limited
-                                                                                        </p>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </a><!--End: dropdown-item -->
-                                                                            <a class="dropdown-item px-x1 py-2"
-                                                                                href="#">
-                                                                                <div class="d-flex align-items-center">
-                                                                                    <div class="avatar avatar-l me-2">
-                                                                                        <img class="rounded-circle"
-                                                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg"
-                                                                                            alt="" />
-                                                                                    </div>
-                                                                                    <div class="flex-1">
-                                                                                        <h6
-                                                                                            class="mb-0 search-filter-data">
-                                                                                            Christina
-                                                                                        </h6>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </a><!--End: dropdown-item -->
-                                                                        </div>
-                                                                    </div><!-- End: dropdown -->
-                                                                </div>
-                                                                <div class="col-12 mb-3">
-                                                                    <select class="form-select minw-150"
-                                                                        aria-label="Default select">
-                                                                        <option selected="">Role</option>
-                                                                        <option value="1">One</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="row justify-content-center g-2">
-                                                                        <div class="col-auto">
-                                                                            <button
-                                                                                class="btn btn-sm btn-dquam-success w-100"
-                                                                                type="button">
-                                                                                Save
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="col-auto">
-                                                                            <button
-                                                                                class="btn btn-sm btn-dquam-info w-100"
-                                                                                type="button">
-                                                                                Save &amp; add more
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div><!--End: border, bg-white -->
-                                                    </div>
-                                                </div>
-                                                <div class="mb-5">
-                                                    <button class="btn btn-dquam-primary btn-sm minw-150" type="button"
-                                                        onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request5.aspx'">Publish</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End: modal -->
+                        <button id="submit_button" class="btn btn-dquam-primary btn-sm" type="button" onclick="apply_changes()" disabled>Publish</button>
                     </div>
                 </div>
             </div>
@@ -341,7 +90,17 @@
                                                 <span class="fas fa-hourglass-end"></span>
                                             </span>
                                         </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Pending Approval</span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Stakeholders Approval</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semi-bold done">
+                                        <span class="nav-item-circle-parent">
+                                            <span class="nav-item-circle">
+                                                <span class="fas fa-hourglass-end"></span>
+                                            </span>
+                                        </span>
+                                        <span class="d-none d-md-block mt-1 fs--1">Regulators Approval</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -387,9 +146,7 @@
                         <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Title</label>
                     </div>
                     <div class="col-12">
-                        <span class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media
-                        </span>
+                        <span id="policy_title" class="fs--1 text-600"></span>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -397,14 +154,7 @@
                         <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Description</label>
                     </div>
                     <div class="col-12">
-                        <span class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                        </span>
+                        <span id="policy_description" class="fs--1 text-600"></span>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -412,23 +162,8 @@
                         <label class="form-label text-900 fs-0 mb-1">Supporting Documents</label>
                     </div>
                     <div class="col-12">
-                        <div class="d-flex flex-column777 flex-wrap">
-                            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
-                                <span class="fs-1 far fa-image"></span>
-                                <span class="ms-2 me-3">broken_tv_solve.jpg (873kb)</span>
-                                <a class="text-300 ms-auto" href="#!" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    aria-label="Download" data-bs-original-title="Download">
-                                    <span class="fas fa-arrow-down"></span>
-                                </a>
-                            </div>
-                            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
-                                <span class="fs-1 fas fa-file"></span>
-                                <span class="ms-2 me-3">file2.ppt (873kb)</span>
-                                <a class="text-300 ms-auto" href="#!" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    aria-label="Download" data-bs-original-title="Download">
-                                    <span class="fas fa-arrow-down"></span>
-                                </a>
-                            </div>
+                        <div id="policy_docs" class="d-flex flex-column777 flex-wrap">
+                            
                         </div>
                     </div>
                 </div>
@@ -491,8 +226,160 @@
 
 <script>
 
-    $(document).ready(function () {
-        $("#pageTitle").text('Policy & Procedure Request');
+    $(document).ready(async function () {
+        try {
+            const record_id = get_CNID_from_url();
+
+            let current_user = get_current_user_id();
+
+            console.log("current_user", current_user)
+
+            let selected_policy = await get_policy_info(record_id, "$select=*,Author/Id", "$expand=Author");
+
+            let approvers_list = await get_approvers_list(record_id, null);
+
+            let step_number = selected_policy.Step_Number;
+
+            step_number_check(step_number, [5]);
+
+
+
+            let access = await check_user_access(record_id, selected_policy, current_user, approvers_list);
+            if (access == 'unauthorized') {
+                redirect_user_to_home_page();
+                return;
+            }
+            console.log("access", access);
+
+
+
+            let permission = check_user_permissions(access, step_number);
+            if (permission == 'none') {
+                redirect_user_to_home_page();
+                return;
+            }
+            console.log("permission", permission);
+
+
+
+            modify_page_details();
+            await populate_fields(selected_policy, record_id);
+            apply_permissions(permission);
+
+
+
+        } catch (error) {
+            console.error(error);
+        }
     });
+
+    function modify_page_details() {
+        $("#pageTitle").text('Policy & Procedure Request');
+    }
+
+
+    async function apply_changes() {
+        try {
+            const record_id = get_CNID_from_url();
+            await update_policy(record_id);
+
+            window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+    }
+
+    function update_policy(record_id) {
+        return new Promise(function (resolve, reject) {
+            var seqObj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Policy_x005f_ListListItem'
+                },
+                "Step_Number": 6
+
+            });
+
+            var seqHeaders = {
+                "Accept": "application/json;odata=verbose",
+                "Content-Type": "application/json;odata=verbose",
+                "IF-MATCH": "*",
+                "X-HTTP-Method": "MERGE",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            }
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/items(" + record_id + ")",
+                method: "POST",
+                async: false,
+                data: seqObj,
+                headers: seqHeaders,
+                success: function (data) {
+                    resolve();
+                },
+                error: function (error) {
+                    reject(error)
+                }
+            })
+
+        });
+    }
+
+
+
+    function apply_permissions(permission) {
+        if (permission == 'read') {
+            modify_main_buttons('disable');
+        }
+
+        if (permission == 'write') {
+            modify_main_buttons('enable');
+        }
+    }
+
+
+    function modify_main_buttons(status) {
+        if (status == 'disable') {
+            $('#submit_button').prop('disabled', true);
+            $('#open_ms_team_button').prop('disabled', true);
+        }
+
+        if (status == 'enable') {
+            $('#submit_button').prop('disabled', false);
+            $('#open_ms_team_button').prop('disabled', false);
+
+        }
+    }
+
+
+
+    async function populate_fields(policy, record_id) {
+        $("#policy_title").html(policy.Request_title);
+        $("#policy_description").html(policy.Policy_Description);
+
+        await populate_documents(record_id);
+    }
+
+
+    async function populate_documents(record_id) {
+        let documents = await get_policy_documents(record_id);
+        let html = ``;
+        documents.forEach(doc => {
+            html += `
+            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
+                <span class="fs-1 far fa-image"></span>
+                <span class="ms-2 me-3">${doc.LinkFilename}</span>
+                <a class="text-300 ms-auto" href="${doc.EncodedAbsUrl}" target="_blank" data-bs-toggle="tooltip" data-bs-placement="right"
+                    aria-label="Download" data-bs-original-title="Download">
+                    <span class="fas fa-arrow-down"></span>
+                </a>
+            </div>
+            `
+        });
+
+        $("#policy_docs").html(html);
+    }
 
 </script>
