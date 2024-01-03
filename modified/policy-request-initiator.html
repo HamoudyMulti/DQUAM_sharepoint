@@ -2,6 +2,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 <div class="content">
 
     <div class="row">
@@ -294,109 +296,5 @@
     }
 
 
-    function uploadFiles(MainItemID) {
-        return new Promise(async function (resolve, reject) {
-            const fileCount = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length;
-            const uploadPromises = [];
-
-            for (let i = 0; i < fileCount; i++) {
-                try {
-                    const { result, index } = await getFileBuffer(i);
-                    const { result: addFile, newName, fileParts } = await addFileToFolderAsync(result, MainItemID, index);
-                    const listItem = await getListItemAsync(addFile.d.ListItemAllFields.__deferred.uri);
-                    await updateListItemAsync(listItem.d.__metadata, MainItemID, newName, fileParts);
-                } catch (error) {
-                    reject(error);
-                }
-            }
-            
-            resolve();
-        });
-    }
-
-
-    async function getFileBuffer(i) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onloadend = function (e) {
-                resolve({ result: e.target.result, index: i });
-            };
-
-            reader.onerror = function (e) {
-                reject(e.target.error);
-            };
-
-            reader.readAsArrayBuffer($('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i]);
-        });
-    }
-
-    function addFileToFolderAsync(arrayBuffer, MainItemID, i) {
-        return new Promise(async (resolve, reject) => {
-            const fileName = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i].name;
-            const fileParts = fileName.split('.');
-            const newName = fileParts[0];
-
-            const serverUrl = _spPageContextInfo.webAbsoluteUrl;
-            const serverRelativeUrlToFolder = 'Policy Attachments';
-
-            const fileCollectionEndpoint = String.format(
-                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
-                "/add(overwrite=true, url='{2}')",
-                serverUrl, serverRelativeUrlToFolder, "File" + newName + "-" + MainItemID + "." + fileParts[1]);
-
-            try {
-                const result = await $.ajax({
-                    url: fileCollectionEndpoint,
-                    type: "POST",
-                    data: arrayBuffer,
-                    processData: false,
-                    headers: {
-                        "accept": "application/json;odata=verbose",
-                        "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
-                    }
-                });
-
-                resolve({ result, newName, fileParts });
-            } catch (error) {
-                reject(error);
-            }
-
-        });
-    }
-
-    async function getListItemAsync(fileListItemUri) {
-        return $.ajax({
-            url: fileListItemUri,
-            type: "GET",
-            headers: { "accept": "application/json;odata=verbose" }
-        });
-    }
-
-    async function updateListItemAsync(itemMetadata, MainItemID, newName, fileParts) {
-        const fileLeafRef = "File_" + newName + "-" + MainItemID;
-        const title = "File_" + newName + "-" + MainItemID + "." + fileParts[1];
-
-        const body = JSON.stringify({
-            '__metadata': {
-                'type': 'SP.Data.Policy_x0020_AttachmentsItem'
-            },
-            "FileLeafRef": fileLeafRef,
-            "Title": title,
-            "Policy_ItemId": MainItemID
-        });
-
-        return $.ajax({
-            url: itemMetadata.uri,
-            type: "POST",
-            data: body,
-            headers: {
-                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
-                "content-type": "application/json;odata=verbose",
-                "IF-MATCH": itemMetadata.etag,
-                "X-HTTP-Method": "MERGE"
-            }
-        });
-    }
 
 </script>

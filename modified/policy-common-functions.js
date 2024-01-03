@@ -271,21 +271,21 @@ function get_approver_record_for_current_user(list, current_user) {
 }
 
 
-function redirect_user_to_home_page(){
+function redirect_user_to_home_page() {
     window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
     return;
 }
 
 
 function current_user_approved_check(access, approvers_list, current_user, access_type, type) {
-    if(access === access_type){
+    if (access === access_type) {
         const isMatchFound = approvers_list.some(record => {
             if (record.Approver_Type === type && record.Approver_Name.Id === current_user && record.Approver_Approval_Status === 1) {
                 return true;
             }
             return false;
         });
-        
+
         return isMatchFound;
     }
 
@@ -313,8 +313,8 @@ function get_policy_info(record_id, select, expand) {
 }
 
 
-function get_current_user_id(){
-    return 26;
+function get_current_user_id() {
+    return 23;
     return _spPageContextInfo.userId;
 }
 
@@ -322,7 +322,7 @@ async function submit_changes(type, next_step_number) {
     const record_id = get_CNID_from_url();
 
     let current_user = get_current_user_id();
-    
+
 
     let list = await get_approvers_list(record_id, type);
 
@@ -332,8 +332,8 @@ async function submit_changes(type, next_step_number) {
 
     if (approver_record) {
         await update_user_approval(approver_record, 1);
-        console.log("approver_record",approver_record)
-        console.log("is_last_approver",is_last_approver)
+        console.log("approver_record", approver_record)
+        console.log("is_last_approver", is_last_approver)
 
         if (is_last_approver) {
             await proceed_to_next_stage(record_id, next_step_number);
@@ -342,7 +342,7 @@ async function submit_changes(type, next_step_number) {
 
     redirect_user_to_home_page();
     return;
-    
+
 }
 
 
@@ -377,4 +377,110 @@ async function send_back_change(previous_step_number) {
     } catch (error) {
         console.log(error);
     }
+}
+
+
+function uploadFiles(MainItemID) {
+    return new Promise(async function (resolve, reject) {
+        const fileCount = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length;
+        const uploadPromises = [];
+
+        for (let i = 0; i < fileCount; i++) {
+            try {
+                const { result, index } = await getFileBuffer(i);
+                const { result: addFile, newName, fileParts } = await addFileToFolderAsync(result, MainItemID, index);
+                const listItem = await getListItemAsync(addFile.d.ListItemAllFields.__deferred.uri);
+                await updateListItemAsync(listItem.d.__metadata, MainItemID, newName, fileParts);
+            } catch (error) {
+                reject(error);
+            }
+        }
+
+        resolve();
+    });
+}
+
+
+async function getFileBuffer(i) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onloadend = function (e) {
+            resolve({ result: e.target.result, index: i });
+        };
+
+        reader.onerror = function (e) {
+            reject(e.target.error);
+        };
+
+        reader.readAsArrayBuffer($('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i]);
+    });
+}
+
+function addFileToFolderAsync(arrayBuffer, MainItemID, i) {
+    return new Promise(async (resolve, reject) => {
+        const fileName = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i].name;
+        const fileParts = fileName.split('.');
+        const newName = fileParts[0];
+
+        const serverUrl = _spPageContextInfo.webAbsoluteUrl;
+        const serverRelativeUrlToFolder = 'Policy Attachments';
+
+        const fileCollectionEndpoint = String.format(
+            "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
+            "/add(overwrite=true, url='{2}')",
+            serverUrl, serverRelativeUrlToFolder, "File" + newName + "-" + MainItemID + "." + fileParts[1]);
+
+        try {
+            const result = await $.ajax({
+                url: fileCollectionEndpoint,
+                type: "POST",
+                data: arrayBuffer,
+                processData: false,
+                headers: {
+                    "accept": "application/json;odata=verbose",
+                    "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+                }
+            });
+
+            resolve({ result, newName, fileParts });
+        } catch (error) {
+            reject(error);
+        }
+
+    });
+}
+
+async function getListItemAsync(fileListItemUri) {
+    return $.ajax({
+        url: fileListItemUri,
+        type: "GET",
+        headers: { "accept": "application/json;odata=verbose" }
+    });
+}
+
+async function updateListItemAsync(itemMetadata, MainItemID, newName, fileParts) {
+    const fileLeafRef = "File_" + newName + "-" + MainItemID;
+    const title = "File_" + newName + "-" + MainItemID + "." + fileParts[1];
+
+    const body = JSON.stringify({
+        '__metadata': {
+            'type': 'SP.Data.Policy_x0020_AttachmentsItem'
+        },
+        "FileLeafRef": fileLeafRef,
+        "Title": title,
+        "Policy_ItemId": MainItemID
+    });
+
+    return $.ajax({
+        url: itemMetadata.uri,
+        type: "POST",
+        data: body,
+        headers: {
+            "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
+            "content-type": "application/json;odata=verbose",
+            "IF-MATCH": itemMetadata.etag,
+            "X-HTTP-Method": "MERGE"
+        }
+    });
 }

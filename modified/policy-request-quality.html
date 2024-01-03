@@ -2,6 +2,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 <div class="content">
 
     <div class="row">
@@ -41,10 +43,12 @@
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
                     <div class="col-auto">
-                        <button class="btn btn-dquam-secondary btn-sm" type="button">Back</button>
+                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button" disabled>Send
+                            Back</button>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-dquam-primary-light btn-sm" type="button" onclick="apply_changes()">Save
+                        <button id="submit_button" class="btn btn-dquam-primary-light btn-sm" type="button"
+                            onclick="apply_changes()" disabled>Save
                             &amp; Submit</button>
                     </div>
                 </div>
@@ -753,17 +757,79 @@
 
             on_click_close_modal();
 
+
+            const record_id = get_CNID_from_url();
+
+            let current_user = get_current_user_id();
+
+            console.log("current_user", current_user)
+
+            let selected_policy = await get_policy_info(record_id, "$select=*,Author/Id", "$expand=Author");
+
+            let approvers_list = await get_approvers_list(record_id, null);
+
+            let step_number = selected_policy.Step_Number;
+
+            step_number_check(step_number, [1]);
+
+
+
+            let access = await check_user_access(record_id, selected_policy, current_user, approvers_list);
+            if (access == 'unauthorized') {
+                redirect_user_to_home_page();
+                return;
+            }
+            console.log("access", access);
+
+
+
+            let permission = check_user_permissions(access, step_number);
+            if (permission == 'none') {
+                redirect_user_to_home_page();
+                return;
+            }
+            console.log("permission", permission);
+
+
+
             modify_page_details();
-            await populate_fields();
+            await populate_fields(selected_policy, record_id);
+            apply_permissions(permission);
+
         } catch (error) {
             console.error(error);
         }
     });
 
+    function apply_permissions(permission) {
+        if (permission == 'read') {
+            modify_main_buttons('disable');
+        }
+
+        if (permission == 'write') {
+            modify_main_buttons('enable');
+        }
+    }
+
+
+    function modify_main_buttons(status) {
+        if (status == 'disable') {
+            $('#submit_button').prop('disabled', true);
+            $('#send_back_button').prop('disabled', true);
+        }
+
+        if (status == 'enable') {
+            $('#submit_button').prop('disabled', false);
+            $('#send_back_button').prop('disabled', false);
+
+        }
+    }
+
+
+
     function on_click_close_modal() {
         $('#closeModalButton1, #closeModalButton2, #closeModalButton3').on('click', function (event) {
             event.preventDefault();
-
         });
     }
 
@@ -773,15 +839,11 @@
     }
 
 
-    async function populate_fields() {
-        const record_id = get_CNID_from_url();
-
-        let policy = await get_policy_info(record_id);
-
-        $("#policy_title").html(policy.Request_title);
-        $("#policy_description").html(policy.Policy_Description);
+    async function populate_fields(selected_policy, record_id) {
+        $("#policy_title").html(selected_policy.Request_title);
+        $("#policy_description").html(selected_policy.Policy_Description);
         $("#policy_submit_date").html(`Today's Date ${getTodayDate()}`);
-        $("#policy_department").html(policy.Department);
+        $("#policy_department").html(selected_policy.Department);
 
 
         let existing_policies = await get_existing_policies();
@@ -796,30 +858,7 @@
 
 
     }
-
-    function get_CNID_from_url() {
-        let url = window.location.href;
-        const match = url.match(/[?&]CNID=([^&]*)/);
-        return match ? decodeURIComponent(match[1]) : null;
-    }
-
-    function get_policy_info(record_id) {
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/items(${record_id})`,
-                method: "GET",
-                headers: {
-                    "ACCEPT": "application/json; odata=verbose",
-                },
-                success: function (data) {
-                    resolve(data.d);
-                },
-                error: function (error) {
-                    reject(error);
-                }
-            });
-        });
-    }
+    
 
     function getTodayDate() {
         const today = new Date();
@@ -1377,109 +1416,6 @@
     }
 
 
-    function uploadFiles(MainItemID) {
-        return new Promise(async function (resolve, reject) {
-            const fileCount = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length;
-            const uploadPromises = [];
-
-            for (let i = 0; i < fileCount; i++) {
-                try {
-                    const { result, index } = await getFileBuffer(i);
-                    const { result: addFile, newName, fileParts } = await addFileToFolderAsync(result, MainItemID, index);
-                    const listItem = await getListItemAsync(addFile.d.ListItemAllFields.__deferred.uri);
-                    await updateListItemAsync(listItem.d.__metadata, MainItemID, newName, fileParts);
-                } catch (error) {
-                    reject(error);
-                }
-            }
-
-            resolve();
-        });
-    }
-
-
-    async function getFileBuffer(i) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.onloadend = function (e) {
-                resolve({ result: e.target.result, index: i });
-            };
-
-            reader.onerror = function (e) {
-                reject(e.target.error);
-            };
-
-            reader.readAsArrayBuffer($('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i]);
-        });
-    }
-
-    function addFileToFolderAsync(arrayBuffer, MainItemID, i) {
-        return new Promise(async (resolve, reject) => {
-            const fileName = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i].name;
-            const fileParts = fileName.split('.');
-            const newName = fileParts[0];
-
-            const serverUrl = _spPageContextInfo.webAbsoluteUrl;
-            const serverRelativeUrlToFolder = 'Policy Attachments';
-
-            const fileCollectionEndpoint = String.format(
-                "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
-                "/add(overwrite=true, url='{2}')",
-                serverUrl, serverRelativeUrlToFolder, "File" + newName + "-" + MainItemID + "." + fileParts[1]);
-
-            try {
-                const result = await $.ajax({
-                    url: fileCollectionEndpoint,
-                    type: "POST",
-                    data: arrayBuffer,
-                    processData: false,
-                    headers: {
-                        "accept": "application/json;odata=verbose",
-                        "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
-                    }
-                });
-
-                resolve({ result, newName, fileParts });
-            } catch (error) {
-                reject(error);
-            }
-
-        });
-    }
-
-    async function getListItemAsync(fileListItemUri) {
-        return $.ajax({
-            url: fileListItemUri,
-            type: "GET",
-            headers: { "accept": "application/json;odata=verbose" }
-        });
-    }
-
-    async function updateListItemAsync(itemMetadata, MainItemID, newName, fileParts) {
-        const fileLeafRef = "File_" + newName + "-" + MainItemID;
-        const title = "File_" + newName + "-" + MainItemID + "." + fileParts[1];
-
-        const body = JSON.stringify({
-            '__metadata': {
-                'type': 'SP.Data.Policy_x0020_AttachmentsItem'
-            },
-            "FileLeafRef": fileLeafRef,
-            "Title": title,
-            "Policy_ItemId": MainItemID
-        });
-
-        return $.ajax({
-            url: itemMetadata.uri,
-            type: "POST",
-            data: body,
-            headers: {
-                "X-RequestDigest": jQuery("#__REQUESTDIGEST").val(),
-                "content-type": "application/json;odata=verbose",
-                "IF-MATCH": itemMetadata.etag,
-                "X-HTTP-Method": "MERGE"
-            }
-        });
-    }
+    
 
 </script>
