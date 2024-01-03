@@ -42,17 +42,20 @@
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
                     <div class="col-auto">
-                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button" disabled>Send
+                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button"
+                            onclick="send_back_change(33)" disabled>Send
                             Back</button>
 
                     </div>
                     <div class="col-auto">
-                        <button id="open_ms_team_button" class="btn btn-dquam-info btn-sm" type="button" disabled>Open MS
+                        <button id="open_ms_team_button" class="btn btn-dquam-info btn-sm" type="button" disabled>Open
+                            MS
                             Team</button>
                     </div>
                     <div class="col-auto">
                         <button id="request_meeting_button" class="btn btn-dquam-info btn-sm" type="button"
-                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/request-meeting.aspx'" disabled>Request
+                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/request-meeting.aspx'"
+                            disabled>Request
                             Meeting</button>
                     </div>
                     <div class="col-auto">
@@ -243,7 +246,7 @@
 
             let current_user = get_current_user_id();
 
-            console.log("current_user",current_user)
+            console.log("current_user", current_user)
 
             let selected_policy = await get_policy_info(record_id, "$select=*,Author/Id", "$expand=Author");
 

@@ -178,13 +178,13 @@ function get_policy_documents(record_id) {
 }
 
 
-function update_user_approval(approver_record) {
+function update_user_approval(approver_record, status) {
     return new Promise(function (resolve, reject) {
         var seqObj = JSON.stringify({
             '__metadata': {
                 'type': 'SP.Data.Policy_x005f_Approvers_x005f_ListListItem'
             },
-            "Approver_Approval_Status": 1
+            "Approver_Approval_Status": status
 
         });
 
@@ -314,8 +314,8 @@ function get_policy_info(record_id, select, expand) {
 
 
 function get_current_user_id(){
-    // return _spPageContextInfo.userId;
     return 26;
+    return _spPageContextInfo.userId;
 }
 
 async function submit_changes(type, next_step_number) {
@@ -331,7 +331,7 @@ async function submit_changes(type, next_step_number) {
     const is_last_approver = is_last_approver_check(list);
 
     if (approver_record) {
-        await update_user_approval(approver_record);
+        await update_user_approval(approver_record, 1);
         console.log("approver_record",approver_record)
         console.log("is_last_approver",is_last_approver)
 
@@ -349,5 +349,32 @@ async function submit_changes(type, next_step_number) {
 function step_number_check(step_number, valid_step_numbers) {
     if (!valid_step_numbers.includes(step_number)) {
         redirect_user_to_home_page();
+    }
+}
+
+
+async function send_back_change(previous_step_number) {
+    try {
+        const record_id = get_CNID_from_url();
+
+        let list = await get_approvers_list(record_id, null);
+
+        const approvers_record_ids = list.map(item => item.Id);
+
+        const approvers_record_promises = approvers_record_ids.map(user =>
+            update_user_approval(user, 0)
+        );
+
+        await Promise.all([
+            ...approvers_record_promises,
+        ]);
+
+        await proceed_to_next_stage(record_id, previous_step_number);
+
+        redirect_user_to_home_page();
+        return;
+
+    } catch (error) {
+        console.log(error);
     }
 }
