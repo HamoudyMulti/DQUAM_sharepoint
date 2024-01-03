@@ -94,12 +94,12 @@
                     <div class="col">
                         <div class="row justify-content-between">
                             <div class="col-auto">
-                                <button class="btn btn-dquam-danger px-2 px-sm-3 mb-3 minw-150"
-                                    type="button">Cancel</button>
+                                <button id="cancel_button" class="btn btn-dquam-danger px-2 px-sm-3 mb-3 minw-150"
+                                    type="button" disabled>Cancel</button>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-dquam-primary-light px-2 px-sm-5 mb-3 minw-250" type="button"
-                                    onclick="create_item()">Next</button>
+                                <button id="next_button" class="btn btn-dquam-primary-light px-2 px-sm-5 mb-3 minw-250"
+                                    type="button" onclick="update_item()" disabled>Next</button>
                             </div>
                         </div>
                     </div>
@@ -113,12 +113,134 @@
 
 <script>
 
-    $(document).ready(function () {
-        $("#pageTitle").text('New Policy & Procedure Request');
+    $(document).ready(async function () {
+        const record_id = get_CNID_from_url();
+
+        let current_user = get_current_user_id();
+
+        console.log("current_user", current_user)
+
+        let selected_policy = await get_policy_info(record_id, "$select=*,Author/Id", "$expand=Author");
+
+        let approvers_list = await get_approvers_list(record_id, null);
+
+        let step_number = selected_policy.Step_Number;
+
+        step_number_check(step_number, [11]);
+
+
+
+        let access = await check_user_access(record_id, selected_policy, current_user, approvers_list);
+        if (access == 'unauthorized') {
+            redirect_user_to_home_page();
+            return;
+        }
+        console.log("access", access);
+
+
+
+        let permission = check_user_permissions(access, step_number);
+        if (permission == 'none') {
+            redirect_user_to_home_page();
+            return;
+        }
+        console.log("permission", permission);
+
+
+
+        modify_page_details();
+        await populate_fields(selected_policy, record_id);
+        apply_permissions(permission);
+
     });
 
-    async function create_item() {
+    function modify_page_details() {
+        $("#pageTitle").text('Policy & Procedure Request');
+    }
+
+
+
+    function apply_permissions(permission) {
+        if (permission == 'read') {
+            modify_main_buttons('disable');
+        }
+
+        if (permission == 'write') {
+            modify_main_buttons('enable');
+        }
+    }
+
+
+    function modify_main_buttons(status) {
+        if (status == 'disable') {
+            $('#cancel_button').prop('disabled', true);
+            $('#next_button').prop('disabled', true);
+        }
+
+        if (status == 'enable') {
+            $('#cancel_button').prop('disabled', false);
+            $('#next_button').prop('disabled', false);
+
+        }
+    }
+
+
+
+    async function populate_fields(policy, record_id) {
+        $("#policy_title").val(policy.Request_title);
+        $("#policy_description").html(policy.Policy_Description);
+
+        // await populate_documents(record_id);
+    }
+
+
+    async function populate_documents(record_id) {
+        let documents = await get_policy_documents(record_id);
+        let html = ``;
+        documents.forEach(doc => {
+            html += `
+                <div class="d-flex media mb-3 pb-3 border-bottom btn-reveal-trigger"> <img class="dz-image"
+                        src="https://mgskw.sharepoint.com/_vti_bin/afdcache.ashx/authitem/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM%20Configs/DQUAM%20Configs/assets/img/generic/image-file-2.png?_oat_=1704351909_7e0f44f4c30f3d97ef30d19941a0cccec0b4e507075ea01a14b78c67504b69bc&amp;P1=1704320693&amp;P2=-537118837&amp;P3=1&amp;P4=MsGZsKijt2CCpyJO8WsgmOOwMUTXUw4amFBFSM3d8n%2fO0GWQxvgsq5yhAmd3ZT9wDcu1xothE8D6fns%2f5AeSntU7ksY3BMV6qKZGh1mXIi4UNeYPfTwjlrxnTiJS8OTWMcyjgxpkUvcJ9mNOeQrSpmIhlD%2fi%2br1%2fmTCuTCluyDvCNfzXRBb57ruSCARgya5VyW1M9ev%2bmzXbHhG6auVDF%2fH7WP2b5C3Ppg4OrLEt3WkNTz4u81Hc6j9gDmbnPlTyk0LaIm1HYEgB03%2fFkULEThIJn4cgYJblAr%2fd1mFJVEAUExkkU%2b8QPLAz9S6%2bhkLosPBwW%2f%2bK4B7ogaaFmIwosA%3d%3d"
+                        alt="..." data-dz-thumbnail="data-dz-thumbnail" data-themekey="#">
+                    <div class="flex-1 d-flex flex-between-center">
+                        <div>
+                            <h6 data-dz-name="data-dz-name">${doc.LinkFilename}</h6>
+                            <div class="d-flex align-items-center">
+                                <p class="mb-0 fs--1 text-400 lh-1" data-dz-size="data-dz-size"><strong></strong></p>
+                                <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
+                            </div><span class="fs--2 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
+                        </div>
+                        <div class="dropdown font-sans-serif"> <button
+                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg
+                                    class="svg-inline--fa fa-ellipsis-h fa-w-16" aria-hidden="true" focusable="false"
+                                    data-prefix="fas" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512" data-fa-i2svg="">
+                                    <path fill="currentColor"
+                                        d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
+                                        data-darkreader-inline-fill="" style="--darkreader-inline-fill: currentColor;"></path>
+                                </svg><!-- <span class="fas fa-ellipsis-h"></span> Font Awesome fontawesome.com --> </button>
+                            <div class="dropdown-menu dropdown-menu-end border py-2"> 
+                                <a class="dropdown-item" href="${doc.EncodedAbsUrl}" target="_blank"
+                                    data-dz-remove="data-dz-remove">View File</a> 
+                                <a class="dropdown-item" href="#!"
+                                    data-dz-remove="data-dz-remove">Remove File</a> 
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+            `
+
+
+        });
+
+        $("#policy_docs").html(html);
+    }
+
+    async function update_item() {
         try {
+            const record_id = get_CNID_from_url();
+
             let policy_title = $('#policy_title').val();
             let policy_description = $('#policy_description').val();
 
@@ -129,19 +251,15 @@
                 return;
             }
 
-            let sequence_number = await handle_sequence_number();
-            let department = await get_current_user_department();
 
-
-            let item = await request_add_item({
-                sequence_number,
-                department,
+            let item = await request_update_item(
+                record_id,
                 policy_title,
                 policy_description
-            });
+            );
 
             if ($('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length > 0) {
-                await uploadFiles(item.ID);
+                await uploadFiles(record_id);
             }
 
             window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
@@ -151,54 +269,16 @@
 
     }
 
-
-    function is_empty_field(field, validation_text) {
-        if (field === '') {
-            Swal.fire({
-                title: "Warning!",
-                html: "<b>" + validation_text + "</b>",
-                icon: "warning"
-            });
-            return true;
-        }
-
-        return false;
-    }
-
-
-    async function handle_sequence_number() {
-        let sequence_item = await get_sequence_item();
-        await update_sequence_item(sequence_item);
-
-        return sequence_item.Request_Number;
-
-    }
-
-    function get_sequence_item() {
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Sequence_List')/items?$filter=Request_Type eq 'Policy'",
-                method: "GET",
-                async: false,
-                headers: { "Accept": "application/json; odata=verbose" },
-                success: function (data) {
-                    resolve(data.d.results[0]);
-                },
-                error: function (error) {
-                    reject(error)
-                }
-            })
-        });
-    }
-
-
-    function update_sequence_item(item) {
+    function request_update_item(record_id, policy_title, policy_description) {
         return new Promise(function (resolve, reject) {
             var seqObj = JSON.stringify({
                 '__metadata': {
-                    'type': 'SP.Data.Sequence_x005f_ListListItem'
+                    'type': 'SP.Data.Policy_x005f_ListListItem'
                 },
-                "Sequence_Number": item.Sequence_Number + 1
+                "Step_Number": 1,
+                "Request_title": policy_title,
+                "Policy_Description": policy_description,
+
             });
 
             var seqHeaders = {
@@ -210,7 +290,7 @@
             }
 
             $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Sequence_List')/items(" + item.ID + ")",
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/items(" + record_id + ")",
                 method: "POST",
                 async: false,
                 data: seqObj,
@@ -226,75 +306,19 @@
         });
     }
 
-    function request_add_item(params) {
-        return new Promise(function (resolve, reject) {
-            const {
-                sequence_number,
-                department,
-                policy_title,
-                policy_description,
-            } = params;
 
-            var obj = JSON.stringify({
-                '__metadata': {
-                    'type': 'SP.Data.Policy_x005f_ListListItem'
-                },
-                "Step_Number": 1,
-                "Sequence_Number": sequence_number,
-                "Request_title": policy_title,
-                "Policy_Description": policy_description,
-                "Department": department,
-            })
+    function is_empty_field(field, validation_text) {
+        if (field === '') {
+            Swal.fire({
+                title: "Warning!",
+                html: "<b>" + validation_text + "</b>",
+                icon: "warning"
+            });
+            return true;
+        }
 
-            var headers = {
-                "accept": "application/json;odata=verbose",
-                "content-type": "application/json;odata=verbose",
-                "X-RequestDigest": $("#__REQUESTDIGEST").val()
-            }
-
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/items",
-                method: "POST",
-                data: obj,
-                headers: headers,
-                success: function (data) {
-                    resolve(data.d);
-                },
-                error: function (error) {
-                    reject(error.responseText);
-                }
-            })
-
-        });
-
+        return false;
     }
-
-
-    function get_current_user_department() {
-        return new Promise(function (resolve, reject) {
-            let select = "$select=*,Employee_OU_ID/ID,Employee_OU_ID/OU_Name,Employee_Name/Id,Employee_Name/Title";
-            let expand = "$expand=Employee_OU_ID,Employee_Name";
-            let filter = `$filter=Employee_Name/Id eq ${_spPageContextInfo.userId}`;
-
-            $.ajax({
-                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Org_Employee')/Items?${select}&${expand}&${filter}`,
-                method: "GET",
-                async: false,
-                headers: { "Accept": "application/json; odata=verbose" },
-                success: function (data) {
-                    if (data.d.results.length == 0 || data.d.results.length > 1) {
-                        reject("User not found in List Org_Employee");
-                    }
-
-                    resolve(data.d.results[0].Employee_OU_ID.OU_Name);
-                },
-                error: function (error) {
-                    reject(error)
-                }
-            })
-        });
-    }
-
 
 
 </script>
