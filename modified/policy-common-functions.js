@@ -353,21 +353,23 @@ function step_number_check(step_number, valid_step_numbers) {
 }
 
 
-async function send_back_change(previous_step_number) {
+async function send_back_change(previous_step_number, update_approvers) {
     try {
         const record_id = get_CNID_from_url();
 
-        let list = await get_approvers_list(record_id, null);
-
-        const approvers_record_ids = list.map(item => item.Id);
-
-        const approvers_record_promises = approvers_record_ids.map(user =>
-            update_user_approval(user, 0)
-        );
-
-        await Promise.all([
-            ...approvers_record_promises,
-        ]);
+        if(update_approvers){
+            let list = await get_approvers_list(record_id, null);
+    
+            const approvers_record_ids = list.map(item => item.Id);
+    
+            const approvers_record_promises = approvers_record_ids.map(user =>
+                update_user_approval(user, 0)
+            );
+    
+            await Promise.all([
+                ...approvers_record_promises,
+            ]);
+        }
 
         await proceed_to_next_stage(record_id, previous_step_number);
 

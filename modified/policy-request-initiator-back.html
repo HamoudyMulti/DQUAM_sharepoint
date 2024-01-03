@@ -2,11 +2,13 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 <div class="content">
 
     <div class="row">
         <div class="col">
-            <h5 class="fs-0 pt-2 pb-3 d-lg-none">Policy &amp; Procedure Request</h5>
+            <h5 class="fs-0 pt-2 pb-3 d-lg-none">New Policy &amp; Procedure Request</h5>
         </div>
     </div>
 
@@ -19,240 +21,92 @@
             <div class="col">
                 <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
-                        <li class="breadcrumb-item active"><a href="#">Policy &amp; Procedure Request</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
+                        <li class="breadcrumb-item active"><a href="#">New Policy &amp; Procedure Request</a></li>
                     </ol>
                 </nav>
             </div>
         </div>
 
-        <!-- Details/History tabs -->
-        <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
-            <div class="col-12 col-xl-auto mb-2 mb-xl-0">
-                <div class="btn-group btn-group-sm" role="group">
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx" class="btn btn-dquam-primary" role="button">Details</a>
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx" class="btn btn-outline-secondary" role="button">History</a>
-                </div>
-            </div>
-            <div class="col-12 col-xl-auto">
-                <div class="row g-2">
-                    <div class="col-auto">
-                        <button class="btn btn-dquam-danger btn-sm px-2 px-sm-3 minw-150" type="button"
-                            data-bs-toggle="modal" data-bs-target="#modal-reject-policy-request">Reject</button>
-                        <div class="modal fade" id="modal-reject-policy-request" tabindex="-1" role="dialog"
-                            aria-hidden="true" data-bs-backdrop="static">
-                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
-                                <div class="modal-content position-relative">
-                                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
-                                        <button
-                                            class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
-                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body p-0">
-                                        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
-                                            <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Reject Reason</h6>
+        <!-- ============ page contents here... =========== -->
+
+        <!--  Basic Information Form -->
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-12 mb-3">
+                        <label class="form-label" for="policy_title">Policy &amp; Procedure Title</label>
+                        <input class="form-control" id="policy_title" type="text" placeholder="Policy Title" />
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label" for="policy_description">Policy &amp; Procedure Description</label>
+                        <textarea id="policy_description" class="form-control" rows="3"
+                            placeholder="Policy Description"></textarea>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Upload Supporting Documents</label>
+                        <div class="dropzone dropzone-sm dropzone-multiple p-0" id="dropzoneFiles"
+                            data-dropzone="data-dropzone" action="#!">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple="multiple" />
+                            </div>
+                            <div class="dz-message" data-dz-message="data-dz-message">
+                                <img class="me-2"
+                                    src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/icons/cloud-upload.svg"
+                                    width="25" alt="" /> Drop files or click to
+                                browse
+                            </div>
+                            <div class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
+                                <div class="d-flex media mb-3 pb-3 border-bottom btn-reveal-trigger">
+                                    <img class="dz-image"
+                                        src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/generic/image-file-2.png"
+                                        alt="..." data-dz-thumbnail="data-dz-thumbnail" />
+                                    <div class="flex-1 d-flex flex-between-center">
+                                        <div>
+                                            <h6 data-dz-name="data-dz-name"></h6>
+                                            <div class="d-flex align-items-center">
+                                                <p class="mb-0 fs--1 text-400 lh-1" data-dz-size="data-dz-size"></p>
+                                                <div class="dz-progress"><span class="dz-upload"
+                                                        data-dz-uploadprogress=""></span></div>
+                                            </div><span class="fs--2 text-danger"
+                                                data-dz-errormessage="data-dz-errormessage"></span>
                                         </div>
-                                        <div class="p-4 pb-0 text-center">
-                                            <div>
-                                                <div class="mb-3">
-                                                    <h6 class="mb-0 text-600">Type Rejection Reason:</h6>
-                                                </div>
-                                                <div class="mb-4">
-                                                    <input class="form-control" type="text" placeholder="type reason">
-                                                </div>
-                                                <div class="mb-5">
-                                                    <button class="btn btn-dquam-info btn-sm minw-150" type="button"
-                                                        data-bs-dismiss="modal">Send</button>
-                                                </div>
+                                        <div class="dropdown font-sans-serif">
+                                            <button
+                                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none"
+                                                type="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false"><span class="fas fa-ellipsis-h"></span>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end border py-2">
+                                                <a class="dropdown-item" href="#!"
+                                                    data-dz-remove="data-dz-remove">Remove File</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div><!-- End: modal -->
+                        </div>
                     </div>
-                    <div class="col-auto">
-                        <button class="btn btn-dquam-info btn-sm px-2 px-sm-3 minw-150" type="button"
-                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/request-meeting.aspx'">Request Meeting</button>
-                    </div>
-                    <div class="col-auto">
-                        <button class="btn btn-dquam-primary-light btn-sm px-2 px-sm-5 minw-150" type="button"
-                            onclick="window.location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-procedure-creation.aspx'">Proceed</button>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <button class="btn btn-dquam-danger px-2 px-sm-3 mb-3 minw-150"
+                                    type="button">Cancel</button>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-dquam-primary-light px-2 px-sm-5 mb-3 minw-250" type="button"
+                                    onclick="create_item()">Next</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- ============ page contents here... =========== -->
-
-        <div class="card p-0 mb-4">
-            <div class="card-body p-xl-3">
-
-                <div class="row">
-                    <div class="col">
-                        <div class="theme-wizard theme-wizard-common-style">
-                            <ul class="nav justify-content-between nav-wizard">
-                                <li class="nav-item">
-                                    <a class="nav-link fw-semi-bold active">
-                                        <span class="nav-item-circle-parent">
-                                            <span class="nav-item-circle">
-                                                <span class="fas fa-hourglass-end"></span>
-                                            </span>
-                                        </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Request Approval</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link fw-semi-bold">
-                                        <span class="nav-item-circle-parent">
-                                            <span class="nav-item-circle">
-                                                <span class="fas fa-magic"></span>
-                                            </span>
-                                        </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Under Preparation</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link fw-semi-bold">
-                                        <span class="nav-item-circle-parent">
-                                            <span class="nav-item-circle">
-                                                <span class="fas fa-hourglass-end"></span>
-                                            </span>
-                                        </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Pending Approval</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link fw-semi-bold">
-                                        <span class="nav-item-circle-parent">
-                                            <span class="nav-item-circle">
-                                                <span class="fas fa-location-arrow"></span>
-                                            </span>
-                                        </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Publish</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link fw-semi-bold">
-                                        <span class="nav-item-circle-parent">
-                                            <span class="nav-item-circle">
-                                                <span class="fas fa-check"></span>
-                                            </span>
-                                        </span>
-                                        <span class="d-none d-md-block mt-1 fs--1">Completed</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><!--End: theme-wizard -->
-                    </div>
-                </div>
-
-            </div><!--End: card-body -->
-        </div><!--End: card -->
-
-        <div class="card">
-            <div class="card-body p-xl-5">
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Title</label>
-                    </div>
-                    <div class="col-12">
-                        <span class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media
-                        </span>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <label class="form-label text-900 fs-0 mb-1">Policy &amp; Procedure Description</label>
-                    </div>
-                    <div class="col-12">
-                        <span class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                        </span>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <label class="form-label text-900 fs-0 mb-1">Supporting Documents</label>
-                    </div>
-                    <div class="col-12">
-                        <div class="d-flex flex-column777 flex-wrap">
-                            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
-                                <span class="fs-1 far fa-image"></span>
-                                <span class="ms-2 me-3">broken_tv_solve.jpg (873kb)</span>
-                                <a class="text-300 ms-auto" href="#!" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    aria-label="Download" data-bs-original-title="Download">
-                                    <span class="fas fa-arrow-down"></span>
-                                </a>
-                            </div>
-                            <div class="border p-2 rounded-3 d-flex bg-white dark__bg-1000 fs--1 m-2">
-                                <span class="fs-1 fas fa-file"></span>
-                                <span class="ms-2 me-3">file2.ppt (873kb)</span>
-                                <a class="text-300 ms-auto" href="#!" data-bs-toggle="tooltip" data-bs-placement="right"
-                                    aria-label="Download" data-bs-original-title="Download">
-                                    <span class="fas fa-arrow-down"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-between">
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label class="form-label text-900 fs-0 mb-1">Status</label>
-                            </div>
-                            <div class="col-12">
-                                <span class="badge rounded badge-subtle-info p-2 minw-80">New</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label class="form-label text-900 fs-0 mb-1">Revision Number</label>
-                            </div>
-                            <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    2
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label class="form-label text-900 fs-0 mb-1">Next Revision Date</label>
-                            </div>
-                            <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    15/02/2023
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label class="form-label text-900 fs-0 mb-1">Publishing Date</label>
-                            </div>
-                            <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    15/02/2023
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><!--End: card -->
-
+        <!--End:  Basic Information Form -->
     </div><!-- End: content-inner -->
 
 </div><!-- End: content -->
@@ -260,7 +114,187 @@
 <script>
 
     $(document).ready(function () {
-        $("#pageTitle").text('Policy & Procedure Request');
+        $("#pageTitle").text('New Policy & Procedure Request');
     });
+
+    async function create_item() {
+        try {
+            let policy_title = $('#policy_title').val();
+            let policy_description = $('#policy_description').val();
+
+            if (
+                is_empty_field(policy_title, "Please enter an Policy Title") ||
+                is_empty_field(policy_description, "Please enter an Policy Description")
+            ) {
+                return;
+            }
+
+            let sequence_number = await handle_sequence_number();
+            let department = await get_current_user_department();
+
+
+            let item = await request_add_item({
+                sequence_number,
+                department,
+                policy_title,
+                policy_description
+            });
+
+            if ($('#dropzoneFiles')[0].dropzone.getAcceptedFiles().length > 0) {
+                await uploadFiles(item.ID);
+            }
+
+            window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+
+    function is_empty_field(field, validation_text) {
+        if (field === '') {
+            Swal.fire({
+                title: "Warning!",
+                html: "<b>" + validation_text + "</b>",
+                icon: "warning"
+            });
+            return true;
+        }
+
+        return false;
+    }
+
+
+    async function handle_sequence_number() {
+        let sequence_item = await get_sequence_item();
+        await update_sequence_item(sequence_item);
+
+        return sequence_item.Request_Number;
+
+    }
+
+    function get_sequence_item() {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('Sequence_List')/items?$filter=Request_Type eq 'Policy'",
+                method: "GET",
+                async: false,
+                headers: { "Accept": "application/json; odata=verbose" },
+                success: function (data) {
+                    resolve(data.d.results[0]);
+                },
+                error: function (error) {
+                    reject(error)
+                }
+            })
+        });
+    }
+
+
+    function update_sequence_item(item) {
+        return new Promise(function (resolve, reject) {
+            var seqObj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Sequence_x005f_ListListItem'
+                },
+                "Sequence_Number": item.Sequence_Number + 1
+            });
+
+            var seqHeaders = {
+                "Accept": "application/json;odata=verbose",
+                "Content-Type": "application/json;odata=verbose",
+                "IF-MATCH": "*",
+                "X-HTTP-Method": "MERGE",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            }
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Sequence_List')/items(" + item.ID + ")",
+                method: "POST",
+                async: false,
+                data: seqObj,
+                headers: seqHeaders,
+                success: function (data) {
+                    resolve();
+                },
+                error: function (error) {
+                    reject(error)
+                }
+            })
+
+        });
+    }
+
+    function request_add_item(params) {
+        return new Promise(function (resolve, reject) {
+            const {
+                sequence_number,
+                department,
+                policy_title,
+                policy_description,
+            } = params;
+
+            var obj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Policy_x005f_ListListItem'
+                },
+                "Step_Number": 1,
+                "Sequence_Number": sequence_number,
+                "Request_title": policy_title,
+                "Policy_Description": policy_description,
+                "Department": department,
+            })
+
+            var headers = {
+                "accept": "application/json;odata=verbose",
+                "content-type": "application/json;odata=verbose",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            }
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_List')/items",
+                method: "POST",
+                data: obj,
+                headers: headers,
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error.responseText);
+                }
+            })
+
+        });
+
+    }
+
+
+    function get_current_user_department() {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=*,Employee_OU_ID/ID,Employee_OU_ID/OU_Name,Employee_Name/Id,Employee_Name/Title";
+            let expand = "$expand=Employee_OU_ID,Employee_Name";
+            let filter = `$filter=Employee_Name/Id eq ${_spPageContextInfo.userId}`;
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Org_Employee')/Items?${select}&${expand}&${filter}`,
+                method: "GET",
+                async: false,
+                headers: { "Accept": "application/json; odata=verbose" },
+                success: function (data) {
+                    if (data.d.results.length == 0 || data.d.results.length > 1) {
+                        reject("User not found in List Org_Employee");
+                    }
+
+                    resolve(data.d.results[0].Employee_OU_ID.OU_Name);
+                },
+                error: function (error) {
+                    reject(error)
+                }
+            })
+        });
+    }
+
+
 
 </script>
