@@ -1,0 +1,42 @@
+fields in policy log:
+
+status
+due date
+Document Link (when to show/unshow)
+
+
+
+fields in flow:
+
+status: (when does it change - possible values)
+revision number: (which stage does it increase - does it stay 1 the whole flow until stage is reached)
+next revision date: (when does this value get set, changed, etc..)
+publishing date: (is this date after completing step number 5? when quality team presses publish - does it ever get changed)
+submit date: (when quality team completes step number 1? does it change?)
+view file: displayed on stages 3 and onwards? when does the URL gets saved? how to display it?
+
+
+quality publish stage:
+people picker: choose people and roles? what are possible values of roles?
+what happens to the people picked? move which document? place access where? is there a list?
+
+
+quality completed stage:
+make obsolete: what exactly happens when I press it? only status gets set? what stage does it move into?
+change request: what happens here?
+
+
+reinitiating the flow:
+how does a completed flow gets started again? 
+what happens to existing fields:
+status
+revision number
+next revision date
+publishing date
+submit date
+due date
+view file
+
+
+published policy logs:
+display same table as policy logs but are published instead? with ofcourse different fields?
