@@ -1,18 +1,53 @@
+published policy logs{
+    show published policies only Step_Number=6
+}
+
+
 fields in policy log:
 
-status
-due date
-Document Link (when to show/unshow)
+status {
+    new: when request gets initiated (backend)
+    in progress: after quality team approves (backend)
+    active: after quality publish (after step 5) (backend)
+    delayed: (Preparation - Stakeholders - Regulators) (backend)
+    obsolete: {
+        backend: merging policies marked as obsolete
+        frontend (manual): change status and step number to obsolete
+    }
+}
+
+due date (backend) {
+    populated based on SLA
+
+    when quality approves (get that date + SLA duration = due date)
+}
+
+
+Document Link (when to show/unshow) {
+    dont show doc until preparation step (after quality approves)
+    dont show doc if status is NEW (disabled button)
+
+    read from tempate_url for steps 2 to 5
+    read from publish_url for steps 6 and 7
+}
+
+
+publishing list {
+    choose users
+    fill list: Policy_Acknowledgment_List
+    change stage to completed
+}
+
 
 
 
 fields in flow:
 
 status: (when does it change - possible values)
-revision number: (which stage does it increase - does it stay 1 the whole flow until stage is reached)
-next revision date: (when does this value get set, changed, etc..)
-publishing date: (is this date after completing step number 5? when quality team presses publish - does it ever get changed)
-submit date: (when quality team completes step number 1? does it change?)
+revision number: (backend)
+next revision date: (backend)
+publishing date: when quality publishes document (add field publish_date)
+submit date: when initiator creates it (Created) (delete submit_date)
 view file: displayed on stages 3 and onwards? when does the URL gets saved? how to display it?
 
 
@@ -26,7 +61,12 @@ make obsolete: what exactly happens when I press it? only status gets set? what 
 change request: what happens here?
 
 
-reinitiating the flow:
+reinitiating the flow {
+    change request (change Step_Number to 1) (repopulate users)
+    next revision date approaches (backend)
+}
+
+
 how does a completed flow gets started again? 
 what happens to existing fields:
 status
@@ -38,5 +78,3 @@ due date
 view file
 
 
-published policy logs:
-display same table as policy logs but are published instead? with ofcourse different fields?
