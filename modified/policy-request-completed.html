@@ -5,7 +5,7 @@
 <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
 
 <div class="content">
-   
+
 
     <div class="row">
         <div class="col">
@@ -22,7 +22,9 @@
             <div class="col">
                 <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
                         <li class="breadcrumb-item active"><a href="#">Policy &amp; Procedure Request</a></li>
                     </ol>
                 </nav>
@@ -33,17 +35,21 @@
         <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
             <div class="col-12 col-xl-auto mb-2 mb-xl-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx" class="btn btn-dquam-primary" role="button">Details</a>
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx" class="btn btn-outline-secondary" role="button">History</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx"
+                        class="btn btn-dquam-primary" role="button">Details</a>
+                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx"
+                        class="btn btn-outline-secondary" role="button">History</a>
                 </div>
             </div>
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
                     <div class="col-auto">
-                        <button id="make_obsolete_button" class="btn btn-dquam-info btn-sm" type="button" onclick="apply_changes()" disabled>Make Obsolete</button>
+                        <button id="make_obsolete_button" class="btn btn-dquam-info btn-sm" type="button"
+                            onclick="apply_changes()" disabled>Make Obsolete</button>
                     </div>
                     <div class="col-auto">
-                        <button id="change_request_button" class="btn btn-dquam-primary btn-sm" type="button" disabled>Change Request</button>
+                        <button id="change_request_button" class="btn btn-dquam-primary btn-sm" type="button"
+                            onclick="apply_change_request()" disabled>Change Request</button>
                     </div>
                 </div>
             </div>
@@ -158,7 +164,7 @@
                     </div>
                     <div class="col-12">
                         <div id="policy_docs" class="d-flex flex-column777 flex-wrap">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -169,7 +175,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Status</label>
                             </div>
                             <div class="col-12">
-                                <span class="badge rounded badge-subtle-success p-2 minw-80">Active</span>
+                                <span id="policy_status" class="badge rounded p-2 minw-80"></span>
                             </div>
                         </div>
                     </div>
@@ -179,9 +185,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Revision Number</label>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    2
-                                </span>
+                                <span id="policy_revision_number" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -191,9 +195,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Next Revision Date</label>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    15/02/2023
-                                </span>
+                                <span id="policy_revision_date" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -203,9 +205,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Publishing Date</label>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    15/02/2023
-                                </span>
+                                <span id="policy_publishing_date" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
 
             let step_number = selected_policy.Step_Number;
 
-            step_number_check(step_number, [6]);
+            step_number_check(step_number, [6, 7]);
 
 
 
@@ -275,7 +275,7 @@
     async function apply_changes() {
         try {
             const record_id = get_CNID_from_url();
-            // await update_policy(record_id);
+            await update_policy(record_id, 7, "obsolete");
 
             window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
 
@@ -286,13 +286,28 @@
 
     }
 
-    function update_policy(record_id) {
+    async function apply_change_request() {
+        try {
+            const record_id = get_CNID_from_url();
+            await update_policy(record_id, 1, null);
+
+            window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+    }
+
+    function update_policy(record_id, step_number, status) {
         return new Promise(function (resolve, reject) {
             var seqObj = JSON.stringify({
                 '__metadata': {
                     'type': 'SP.Data.Policy_x005f_ListListItem'
                 },
-                "Step_Number": 6
+                "Step_Number": step_number,
+                ...(status && { "Status": status })
 
             });
 
@@ -350,8 +365,41 @@
 
 
     async function populate_fields(policy, record_id) {
+
+        let status_class;
+
+        switch (policy.Status) {
+            case "new":
+                status_class = "badge-subtle-info";
+                break;
+            case "in progress":
+                status_class = "badge-subtle-warning";
+                break;
+            case "active":
+                status_class = "badge-subtle-success";
+                break;
+            case "delayed":
+                status_class = "badge-subtle-danger";
+                break;
+            case "obsolete":
+                status_class = "badge-subtle-primary";
+                break;
+            default:
+                status_class = "badge-subtle-info";
+                break;
+        }
+
         $("#policy_title").html(policy.Request_title);
         $("#policy_description").html(policy.Policy_Description);
+
+        $("#policy_status").html(policy.Status);
+        $("#policy_status").addClass(status_class);
+
+        $("#policy_revision_number").html(policy.Revision_Number !== null ? policy.Revision_Number : '');
+        $("#policy_revision_date").html(new Date(policy.Next_Revision_Date).format('dd/MM/yyyy'));
+        $("#policy_publishing_date").html(new Date(policy.Publish_Date).format('dd/MM/yyyy'));
+
+
 
         await populate_documents(record_id);
     }

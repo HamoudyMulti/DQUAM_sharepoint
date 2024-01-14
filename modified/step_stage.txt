@@ -4,18 +4,7 @@ IF(Step_Number=3,"Stakeholders",
 IF(Step_Number=4,"Regulators",
 IF(Step_Number=5,"Publish",
 IF(Step_Number=6,"Completed",
+IF(Step_Number=7,"Obsolete",
 IF(Step_Number=11,"Send Back By Quality",
 IF(Step_Number=33,"Send Back By Stakeholders",
-IF(Step_Number=44,"Send Back By Regulators")))))))))
-
-
-
-https://mgskw.sharepoint.com/sites/DQ/_api/web/lists/GetByTitle('Policy_List')/Items(7)?
-$select=*,
-Merging_Policy/Department,
-Merging_Policy/Request_title,
-Merging_Policy/AnotherLookupField
-&
-$expand=
-Merging_Policy, 
-Merging_Policy/AnotherLookupField
+IF(Step_Number=44,"Send Back By Regulators"))))))))))

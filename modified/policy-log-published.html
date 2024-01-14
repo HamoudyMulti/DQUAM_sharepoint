@@ -2,385 +2,121 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 <div class="content">
 
-    <div class="row">
-        <div class="col">
-            <h5 class="fs-0 pt-2 pb-3 d-lg-none">Published Policy Log</h5>
-        </div>
-    </div>
+    <div class="container px-0">
 
 
-    <!-- ################################### Inner Contents ################################ -->
-
-    <div class="content-inner p-lg-4">
-        <!-- BreadCrumb-->
-        <div class="row mb-3 mb-xl-4">
+        <div class="row">
             <div class="col">
-                <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Published Policy Log</li>
-                    </ol>
-                </nav>
+                <h5 class="fs-0 pt-2 pb-3 d-lg-none">Published Policy Log</h5>
             </div>
         </div>
 
-        <!-- ============ page contents here... =========== -->
-        <div class="card z-1 mb-3">
-            <div class="card-header">
-                <div class="row flex-between-center">
-                    <div class="col-12 col-xl order-2 order-xl-1 collapse-lower-than-120077 collapse d-xl-flex"
-                        id="PolicyLogFilters">
-                        <div class="row g-3 align-items-center">
-                            <div class="col-12 col-xl-auto">
-                                <span class="fas fa-filter" data-fa-transform="shrink-3"></span>
-                                filters:
-                            </div>
-                            <div class="col-12 col-xl-auto">
-                                <select class="form-select form-select-sm">
-                                    <option value="" selected="">Department</option>
-                                    <option value="A Driver">A</option>
-                                    <option value="B Driver">B</option>
-                                    <option value="C Driver">C</option>
-                                </select>
-                            </div>
-                            <div class="col-12 col-xl-auto">
-                                <div class="search-box w-100" data-list='{"valueNames":["title"]}'>
-                                    <div class="position-relative" data-bs-toggle="search" data-bs-display="static">
-                                        <input class="form-control form-control-sm search-input fuzzy-search rounded-3"
+
+        <!-- ################################### Inner Contents ################################ -->
+
+        <div class="content-inner p-lg-4">
+            <!-- BreadCrumb-->
+            <div class="row mb-3 mb-xl-4">
+                <div class="col">
+                    <nav style="--falcon-breadcrumb-divider: 'Â»';" aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a
+                                    href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                    Documentation</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Published Policy Log</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- ============ page contents here... =========== -->
+            <div class="card z-1 mb-3" id="tablePolicyLog"
+                data-list='{"valueNames":["id","stage","status","dueDate","department","documentLink"],"page":5,"pagination":true}'>
+                <div class="card-header">
+                    <div class="row flex-between-center">
+                        <div class="col-12 col-xl order-2 order-xl-1 collapse-lower-than-120077 collapse d-xl-flex"
+                            id="PolicyLogFilters">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-12 col-xl-auto">
+                                    <span class="fas fa-filter" data-fa-transform="shrink-3"></span>
+                                    filters:
+                                </div>
+                                <div class="col-12 col-xl-auto">
+                                    <select id="search_status" class="form-select form-select-sm">
+                                        <option value="" selected="">Status</option>
+                                        <option value="active">active</option>
+                                        <option value="obsolete">obsolete</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-xl-auto">
+                                    <select id="search_department" class="form-select form-select-sm">
+                                        <option value="" selected="">Department</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12 col-xl-auto">
+                                    <div class="search-box w-100" data-list='{"valueNames":["title"]}'>
+                                        <input id="search_title" class="form-control form-control-sm search-input fuzzy-search rounded-3"
                                             type="search" placeholder="Search title..." aria-label="Search" />
                                         <span class="fas fa-search search-box-icon"></span>
+                                       
                                     </div>
-                                    <div class="btn-close-falcon-container position-absolute end-0 top-50 translate-middle shadow-none"
-                                        data-bs-dismiss="search">
-                                        <button class="btn btn-link btn-close-falcon p-0" aria-label="Close"></button>
-                                    </div>
-                                    <div class="dropdown-menu border font-base start-0 mt-2 py-0 overflow-hidden w-100">
-                                        <div class="scrollbar list py-3" style="max-height: 24rem;">
-                                            <h6 class="dropdown-header fw-medium text-uppercase px-x1 fs--2 pt-0 pb-2">
-                                                Recently Browsed</h6><a
-                                                class="dropdown-item fs--1 px-x1 py-1 hover-primary"
-                                                href="../app/events/event-detail.html">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="fas fa-circle me-2 text-300 fs--2"></span>
+                                </div>
 
-                                                    <div class="fw-normal title">Pages <span
-                                                            class="fas fa-chevron-right mx-1 text-500 fs--2"
-                                                            data-fa-transform="shrink-2"></span> Events</div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item fs--1 px-x1 py-1 hover-primary"
-                                                href="../app/e-commerce/customers.html">
-                                                <div class="d-flex align-items-center">
-                                                    <span class="fas fa-circle me-2 text-300 fs--2"></span>
 
-                                                    <div class="fw-normal title">E-commerce <span
-                                                            class="fas fa-chevron-right mx-1 text-500 fs--2"
-                                                            data-fa-transform="shrink-2"></span> Customers</div>
-                                                </div>
-                                            </a>
 
-                                            <hr class="text-200 dark__text-900" />
-                                            <h6 class="dropdown-header fw-medium text-uppercase px-x1 fs--2 pt-0 pb-2">
-                                                Suggested Filter</h6><a class="dropdown-item px-x1 py-1 fs-0"
-                                                href="../app/e-commerce/customers.html">
-                                                <div class="d-flex align-items-center"><span
-                                                        class="badge fw-medium text-decoration-none me-2 badge-subtle-warning">customers:</span>
-                                                    <div class="flex-1 fs--1 title">All customers list</div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item px-x1 py-1 fs-0"
-                                                href="../app/events/event-detail.html">
-                                                <div class="d-flex align-items-center"><span
-                                                        class="badge fw-medium text-decoration-none me-2 badge-subtle-success">events:</span>
-                                                    <div class="flex-1 fs--1 title">Latest events in current month</div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item px-x1 py-1 fs-0"
-                                                href="../app/e-commerce/product/product-grid.html">
-                                                <div class="d-flex align-items-center"><span
-                                                        class="badge fw-medium text-decoration-none me-2 badge-subtle-info">products:</span>
-                                                    <div class="flex-1 fs--1 title">Most popular products</div>
-                                                </div>
-                                            </a>
 
-                                            <hr class="text-200 dark__text-900" />
-                                            <h6 class="dropdown-header fw-medium text-uppercase px-x1 fs--2 pt-0 pb-2">
-                                                Files
-                                            </h6><a class="dropdown-item px-x1 py-2" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="file-thumbnail me-2"><img
-                                                            class="border h-100 w-100 object-fit-cover rounded-3"
-                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/products/3-thumb.png" alt="" /></div>
-                                                    <div class="flex-1">
-                                                        <h6 class="mb-0 title">iPhone</h6>
-                                                        <p class="fs--2 mb-0 d-flex"><span
-                                                                class="fw-semi-bold">Antony</span><span
-                                                                class="fw-medium text-600 ms-2">27 Sep at 10:30
-                                                                AM</span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item px-x1 py-2" href="#!">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="file-thumbnail me-2"><img class="img-fluid"
-                                                            src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/icons/zip.png" alt="" /></div>
-                                                    <div class="flex-1">
-                                                        <h6 class="mb-0 title">Falcon v1.8.2</h6>
-                                                        <p class="fs--2 mb-0 d-flex"><span
-                                                                class="fw-semi-bold">John</span><span
-                                                                class="fw-medium text-600 ms-2">30 Sep at 12:30
-                                                                PM</span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <hr class="text-200 dark__text-900" />
-                                            <h6 class="dropdown-header fw-medium text-uppercase px-x1 fs--2 pt-0 pb-2">
-                                                Members</h6><a class="dropdown-item px-x1 py-2"
-                                                href="../pages/user/profile.html">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-l status-online me-2">
-                                                        <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg"
-                                                            alt="" />
-
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <h6 class="mb-0 title">Anna Karinina</h6>
-                                                        <p class="fs--2 mb-0 d-flex">Technext Limited</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item px-x1 py-2" href="../pages/user/profile.html">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-l me-2">
-                                                        <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg"
-                                                            alt="" />
-
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <h6 class="mb-0 title">Antony Hopkins</h6>
-                                                        <p class="fs--2 mb-0 d-flex">Brain Trust</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <a class="dropdown-item px-x1 py-2" href="../pages/user/profile.html">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-l me-2">
-                                                        <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg"
-                                                            alt="" />
-
-                                                    </div>
-                                                    <div class="flex-1">
-                                                        <h6 class="mb-0 title">Emma Watson</h6>
-                                                        <p class="fs--2 mb-0 d-flex">Google</p>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                        </div>
-                                        <div class="text-center mt-n3">
-                                            <p class="fallback fw-bold fs-1 d-none">No Result Found.</p>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-auto order-1 order-xl-2 mb-1 mb-xl-0">
+                            <div class="row g-2 align-items-center justify-content-end">
+                                <div class="col-auto">
+                                    <button class="btn btn-falcon-default btn-sm d-xl-none" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#PolicyLogFilters"
+                                        aria-expanded="false" aria-controls="PolicyLogFilters">
+                                        <span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span>
+                                    </button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-dquam-success btn-sm" type="button"
+                                        onclick="location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-initiator.aspx'">
+                                        <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
+                                        <span class="d-none d-sm-inline-block ms-1">New</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-xl-auto order-1 order-xl-2 mb-1 mb-xl-0">
-                        <div class="row g-2 align-items-center justify-content-end">
-                            <div class="col-auto">
-                                <button class="btn btn-falcon-default btn-sm d-xl-none" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#PolicyLogFilters" aria-expanded="false"
-                                    aria-controls="PolicyLogFilters">
-                                    <span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span>
-                                </button>
-                            </div>
-                            <div class="col-auto">
-                                <button class="btn btn-dquam-success btn-sm" type="button"
-                                    onclick="location.href='https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-new.aspx'">
-                                    <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
-                                    <span class="d-none d-sm-inline-block ms-1">New</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- End: card-header -->
-            <div class="card-body px-0 py-0" id="tablePolicyLogPublished"
-                data-list='{"valueNames":["nextRevisionDate","publishingDate"],"page":5,"pagination":true}'>
-                <div class="table-responsive scrollbar">
-                    <table class="table table-bordered table-striped fs--1 mb-0">
-                        <thead class="bg-200 text-900">
-                            <tr>
-                                <th class="sort" data-sort="id">Policy No.</th>
-                                <th>Title</th>
-                                <th class="text-center">Revision No.</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center" data-sort="nextRevisionDate">Next Revision Date</th>
-                                <th class="text-center" data-sort="publishingDate">Publishing Date</th>
-                                <th class="text-center">Document Link</th>
-                            </tr>
-                        </thead>
-                        <tbody class="list">
-                            <tr>
-                                <td>MGS.PR.22/23</td>
-                                <td>
-                                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Lorem ipsum dolor set amet is a dummy text used in print media because it's a lorem ipsum">
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    1
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge rounded badge-subtle-success p-2 minw-80">Active</span>
-                                </td>
-                                <td class="nextRevisionDate text-center">12/02/2023</td>
-                                <td class="publishingDate text-center">12/02/2023</td>
-                                <td class="documentLink text-center">
-                                    <button class="btn btn-dquam-secondary btn-sm">
-                                        <span class="fas fa-file"></span>
-                                        View File
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>MGS.PR.22/23</td>
-                                <td>
-                                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Lorem ipsum dolor set amet is a dummy text used in print media because it's a lorem ipsum">
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    2
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge rounded badge-subtle-success p-2 minw-80">Active</span>
-                                </td>
-                                <td class="nextRevisionDate text-center">12/02/2023</td>
-                                <td class="publishingDate text-center">12/02/2023</td>
-                                <td class="documentLink text-center">
-                                    <button class="btn btn-dquam-secondary btn-sm">
-                                        <span class="fas fa-file"></span>
-                                        View File
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>MGS.PR.22/23</td>
-                                <td>
-                                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Lorem ipsum dolor set amet is a dummy text used in print media because it's a lorem ipsum">
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    3
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge rounded badge-subtle-success p-2 minw-80">Active</span>
-                                </td>
-                                <td class="nextRevisionDate text-center">12/02/2023</td>
-                                <td class="publishingDate text-center">12/02/2023</td>
-                                <td class="documentLink text-center">
-                                    <button class="btn btn-dquam-secondary btn-sm">
-                                        <span class="fas fa-file"></span>
-                                        View File
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>MGS.PR.22/23</td>
-                                <td>
-                                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Lorem ipsum dolor set amet is a dummy text used in print media because it's a lorem ipsum">
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    4
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge rounded badge-subtle-success p-2 minw-80">Active</span>
-                                </td>
-                                <td class="nextRevisionDate text-center">12/02/2023</td>
-                                <td class="publishingDate text-center">12/02/2023</td>
-                                <td class="documentLink text-center">
-                                    <button class="btn btn-dquam-secondary btn-sm">
-                                        <span class="fas fa-file"></span>
-                                        View File
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>MGS.PR.22/23</td>
-                                <td>
-                                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Lorem ipsum dolor set amet is a dummy text used in print media because it's a lorem ipsum">
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    5
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge rounded badge-subtle-success p-2 minw-80">Active</span>
-                                </td>
-                                <td class="nextRevisionDate text-center">12/02/2023</td>
-                                <td class="publishingDate text-center">12/02/2023</td>
-                                <td class="documentLink text-center">
-                                    <button class="btn btn-dquam-secondary btn-sm">
-                                        <span class="fas fa-file"></span>
-                                        View File
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>MGS.PR.22/23</td>
-                                <td>
-                                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip"
-                                        data-bs-placement="top"
-                                        title="Lorem ipsum dolor set amet is a dummy text used in print media because it's a lorem ipsum">
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    6
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge rounded badge-subtle-success p-2 minw-80">Active</span>
-                                </td>
-                                <td class="nextRevisionDate text-center">12/02/2023</td>
-                                <td class="publishingDate text-center">12/02/2023</td>
-                                <td class="documentLink text-center">
-                                    <button class="btn btn-dquam-secondary btn-sm">
-                                        <span class="fas fa-file"></span>
-                                        View File
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div><!-- End: table-responsive -->
+                </div><!-- End: card-header -->
+                <div class="card-body px-0 py-0">
+                    <div class="table-responsive scrollbar">
+                        <table class="table table-bordered table-striped fs--1 mb-0">
+                            <thead class="bg-200 text-900">
+                                <tr>
+                                    <th class="sort" data-sort="id">Policy No.</th>
+                                    <th>Title</th>
+                                    <th class="sort text-center">Revision No.</th>
+                                    <th class="sort text-center">Status</th>
+                                    <th class="sort text-center">Next Revision Date</th>
+                                    <th class="sort text-center">Publishing Date</th>
+                                    <th class="sort text-center">Document Link</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list" id="tbl-policy-logs">
 
-                <div class="p-3">
+                            </tbody>
+                        </table>
+                    </div><!-- End: table-responsive -->
+                </div><!-- End: card-body -->
+                <div class="card-footer">
                     <div class="row align-items-center mt-3">
                         <div class="pagination d-none"></div>
                         <div class="col">
@@ -396,28 +132,310 @@
                             </p>
                         </div>
                         <div class="col-auto d-flex">
-                            <button class="btn btn-sm btn-dquam-info" type="button" data-list-pagination="prev">
+                            <button id="previous_button" class="btn btn-sm btn-dquam-info" type="button"
+                                data-list-pagination="prev">
                                 <span>Previous</span>
                             </button>
-                            <button class="btn btn-sm btn-dquam-info px-4 ms-2" type="button"
+                            <button id="next_button" class="btn btn-sm btn-dquam-info px-4 ms-2" type="button"
                                 data-list-pagination="next">
                                 <span>Next</span>
                             </button>
                         </div>
                     </div>
-                </div>
-            </div><!-- End: card-body -->
-        </div><!-- End: #tablePolicyLogPublished -->
+                </div><!-- End: card-footer -->
+            </div><!-- End: #tablePolicyLog -->
 
-    </div><!-- End: content-inner -->
+        </div><!-- End: content-inner -->
 
-</div><!-- End: content -->
+    </div><!-- End: content -->
+
+</div><!-- End: container -->
 
 
-<script>
+<script type="text/javascript">
+
+    let pagination_list = [""];
+    let page = 1;
+
+    let limit = 8;
+    let order_by = "ID desc";
+
+    let filter = "";
 
     $(document).ready(function () {
-        $("#pageTitle").text('Published Policy Log');
+        on_change_status();
+        on_change_department();
+        on_change_title();
+
+
+        on_click_next();
+        on_click_previous();
+
+
+        modify_page_details();
+        retrieve_table_data("", "");
     });
+
+
+    function modify_page_details() {
+        $("#pageTitle").text('Published Policy Log');
+    }
+
+    async function retrieve_table_data(pagination, filter) {
+        if (pagination === "") {
+            page = 1;
+            pagination_list = [""];
+        }
+
+        let data = await retrive_list_items(pagination, filter);
+        if (data.__next) {
+            const regex = /p_ID%3d(\d+)/;
+            const match = data.__next.match(regex);
+            if (page === pagination_list.length) {
+                pagination_list.push(`%26p_ID=${match[1]}`);
+            }
+        }
+
+        populate_table('#tbl-policy-logs', data.results);
+
+    }
+
+    async function retrive_list_items(pagination, filter) {
+
+        let current_user = get_current_user_id();
+
+        if (filter) {
+            filter += ' and ';
+        }
+        filter += `(Step_Number eq 6 or Step_Number eq 7)`;
+        
+
+        if (await quality_team_check(current_user)) {
+            // Quality team check passed, no user filter
+        } else {
+            if (filter) {
+                filter += ' and ';
+            }
+            filter += `
+            (
+                (
+                    Preparation_Approvers/Approver_Name_User_ID eq ${current_user} and 
+                    (Step_Number eq 6 or Step_Number eq 7)
+                )
+
+                or 
+                (
+                    Stakeholders_Approvers/Approver_Name_User_ID eq ${current_user} and 
+                    (Step_Number eq 6 or Step_Number eq 7)
+                )
+                or
+                (
+                    Regulators_Approvers/Approver_Name_User_ID eq ${current_user} and 
+                    (Step_Number eq 6 or Step_Number eq 7)
+                )
+                or
+                (
+                    AuthorId eq ${current_user}
+                )
+            )
+             `;
+        }
+
+
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_List')/Items?$OrderBy=${order_by}&$top=${limit}&$skiptoken=Paged=TRUE${pagination}&$filter=${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+
+
+    function populate_table(table_id, data) {
+        html = '';
+        if (data.length > 0) {
+            $(data).each(function (index, value) {
+                html += populate_table_row(value);
+            });
+        }
+        $(table_id).html(html);
+    }
+
+
+    function populate_table_row(value) {
+
+        let status_class;
+
+        switch (value.Status) {
+            case "new":
+                status_class = "badge-subtle-info";
+                break;
+            case "in progress":
+                status_class = "badge-subtle-warning";
+                break;
+            case "active":
+                status_class = "badge-subtle-success";
+                break;
+            case "delayed":
+                status_class = "badge-subtle-danger";
+                break;
+            case "obsolete":
+                status_class = "badge-subtle-primary";
+                break;
+            default:
+                status_class = "badge-subtle-info";
+                break;
+        }
+
+
+        let view_file_html;
+
+        switch (value.Step_Number) {
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                view_file_html = `
+                    <td class="documentLink text-center">
+                        <button type="button" onclick="open_doc_new_tab('${value.Policy_Template_URL}')" class="btn btn-dquam-secondary btn-sm">
+                            <span class="fas fa-file"></span>
+                            View File
+                        </button>
+                    </td>
+                `
+                break;
+            case 6:
+            case 7:
+                view_file_html = `
+                    <td class="documentLink text-center">
+                        <button type="button" onclick="open_doc_new_tab('${value.Policy_Published_URL}')" class="btn btn-dquam-secondary btn-sm">
+                            <span class="fas fa-file"></span>
+                            View File
+                        </button>
+                    </td>
+                `
+                break;
+            default:
+                view_file_html = `<td></td>`;
+                break;
+        }
+
+
+
+        return `
+            <tr>
+                <td class="id">${value.Sequence_Number}</td>
+                <td>
+                    <span class="d-inline-block text-truncate maxw-250" data-bs-toggle="tooltip" data-bs-placement="top" title="">
+                        ${value.Request_title}
+                    </span>
+                </td>
+                <td class="stage text-center">
+                    <span>${value.Revision_Number !== null ? value.Revision_Number : ''}</span>
+                </td>
+                <td class="status text-center">
+                    <span class="badge rounded ${status_class} p-2 minw-80">${value.Status !== null ? value.Status : ''}</span>
+                </td>
+                <td class="dueDate text-center">${new Date(value.Next_Revision_Date).format('dd/MM/yyyy')}</td>
+                <td class="dueDate text-center">${new Date(value.Publish_Date).format('dd/MM/yyyy')}</td>
+                ${view_file_html}
+            </tr>`
+    }
+
+    function open_doc_new_tab(url) {
+        window.open(url, '_blank');
+
+    }
+
+
+
+
+    function on_change_status() {
+        $('#search_status').on('change', function () {
+            filter_table();
+        });
+    }
+
+
+
+    function on_change_department() {
+        $('#search_department').on('change', function () {
+            filter_table();
+        });
+    }
+
+    function on_change_title(){
+        $('#search_title').on('input', function () {
+            filter_table();
+        });
+    }
+
+    function filter_table() {
+        filter = "";
+        let search_status = $('#search_status').val();
+        let search_department = $('#search_department').val();
+        let search_title = $('#search_title').val();
+
+
+
+        if (search_department) {
+            filter += `Department eq '${search_department}'`;
+        }
+
+
+        if (search_status) {
+            if (filter) {
+                filter += ' and ';
+            }
+            filter += `Status eq '${search_status}'`;
+        }
+
+        if (search_title) {
+            if (filter) {
+                filter += ' and ';
+            }
+            filter += `substringof('${search_title}', Request_title)`;
+        }
+
+        retrieve_table_data(``, filter);
+
+    }
+
+
+    function on_click_next() {
+        $("#next_button").click(function () {
+            if (page < pagination_list.length) {
+                page++;
+                retrieve_table_data(`${pagination_list[page - 1]}`, filter);
+            }
+        });
+    }
+
+
+    function on_click_previous() {
+        $("#previous_button").click(function () {
+            if (page > 1) {
+                page--;
+                retrieve_table_data(`${pagination_list[page - 1]}`, filter);
+            }
+
+        });
+    }
+
+
+
+
+
 
 </script>

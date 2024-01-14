@@ -111,6 +111,7 @@ function check_user_permissions(access, step_number) {
         4: { initiator: "read", quality: "read", preparation: "read", stakeholders: "read", regulators: "write" },
         5: { initiator: "read", quality: "write", preparation: "read", stakeholders: "read", regulators: "read" },
         6: { initiator: "read", quality: "write", preparation: "read", stakeholders: "read", regulators: "read" },
+        7: { initiator: "read", quality: "write", preparation: "read", stakeholders: "read", regulators: "read" },
 
         11: { initiator: "write", quality: "read", preparation: "none", stakeholders: "none", regulators: "none" },
         33: { initiator: "read", quality: "read", preparation: "write", stakeholders: "read", regulators: "none" },
@@ -314,8 +315,8 @@ function get_policy_info(record_id, select, expand) {
 
 
 function get_current_user_id() {
-    return 23;
     return _spPageContextInfo.userId;
+    return 23;
 }
 
 async function submit_changes(type, next_step_number) {

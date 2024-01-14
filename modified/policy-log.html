@@ -48,9 +48,11 @@
                                 <div class="col-12 col-xl-auto">
                                     <select id="search_status" class="form-select form-select-sm">
                                         <option value="" selected="">Status</option>
+                                        <option value="new">new</option>
                                         <option value="in progress">in progress</option>
-                                        <option value="closed">closed</option>
-                                        <option value="sticky">sticky</option>
+                                        <option value="active">active</option>
+                                        <option value="delayed">delayed</option>
+                                        <option value="obsolete">obsolete</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-xl-auto">
@@ -62,6 +64,7 @@
                                         <option value="4">Regulators</option>
                                         <option value="5">Publish</option>
                                         <option value="6">Completed</option>
+                                        <option value="7">Obsolete</option>
                                         <option value="11">Send Back By Quality</option>
                                         <option value="33">Send Back By Stakeholders</option>
                                         <option value="44">Send Back By Regulators</option>
@@ -102,7 +105,7 @@
                         <table class="table table-bordered table-striped fs--1 mb-0">
                             <thead class="bg-200 text-900">
                                 <tr>
-                                    <th class="sort" data-sort="id">Policy No.....</th>
+                                    <th class="sort" data-sort="id">Policy No.</th>
                                     <th>Title</th>
                                     <th class="sort text-center" data-sort="stage">Stage</th>
                                     <th class="sort text-center" data-sort="status">Status</th>
@@ -235,7 +238,7 @@
             )
              `;
         }
-        
+
 
         return new Promise(function (resolve, reject) {
             $.ajax({
@@ -269,6 +272,65 @@
 
 
     function populate_table_row(value) {
+
+        let status_class;
+
+        switch (value.Status) {
+            case "new":
+                status_class = "badge-subtle-info";
+                break;
+            case "in progress":
+                status_class = "badge-subtle-warning";
+                break;
+            case "active":
+                status_class = "badge-subtle-success";
+                break;
+            case "delayed":
+                status_class = "badge-subtle-danger";
+                break;
+            case "obsolete":
+                status_class = "badge-subtle-primary";
+                break;
+            default:
+                status_class = "badge-subtle-info";
+                break;
+        }
+
+
+        let view_file_html;
+
+        switch(value.Step_Number){
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+                view_file_html = `
+                    <td class="documentLink text-center">
+                        <button type="button" onclick="open_doc_new_tab('${value.Policy_Template_URL}')" class="btn btn-dquam-secondary btn-sm">
+                            <span class="fas fa-file"></span>
+                            View File
+                        </button>
+                    </td>
+                `
+                break;
+            case 6:
+            case 7:
+                view_file_html = `
+                    <td class="documentLink text-center">
+                        <button type="button" onclick="open_doc_new_tab('${value.Policy_Published_URL}')" class="btn btn-dquam-secondary btn-sm">
+                            <span class="fas fa-file"></span>
+                            View File
+                        </button>
+                    </td>
+                `
+                break;
+            default:
+                view_file_html = `<td></td>`;
+                break;
+        }
+
+
+
         return `
             <tr>
                 <td class="id">${value.Sequence_Number}</td>
@@ -281,16 +343,11 @@
                     <span>${value.Step_Stage}</span>
                 </td>
                 <td class="status text-center">
-                    <span class="badge rounded badge-subtle-info p-2 minw-80">New</span>
+                    <span class="badge rounded ${status_class} p-2 minw-80">${value.Status !== null ? value.Status : ''}</span>
                 </td>
-                <td class="dueDate text-center">${new Date(value.Submit_Date).format('yyyy/MM/dd')}</td>
+                <td class="dueDate text-center">${new Date(value.Due_Date).format('dd/MM/yyyy')}</td>
                 <td class="department text-center">${value.Department}</td>
-                <td class="documentLink text-center">
-                    <button class="btn btn-dquam-secondary btn-sm">
-                        <span class="fas fa-file"></span>
-                        View File
-                    </button>
-                </td>
+                ${view_file_html}
                 <td class="text-center">
                     <div class="btn-group font-sans-serif position-static">
                         <button class="btn btn-link btn-sm text-600 dropdown-toggle" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">
@@ -307,6 +364,11 @@
                     </div>
                 </td>
             </tr>`
+    }
+
+    function open_doc_new_tab(url) {
+        window.open(url, '_blank');
+        
     }
 
 
@@ -373,6 +435,13 @@
             filter += `Step_Number eq '${search_stage}'`;
         }
 
+        if (search_status) {
+            if (filter) {
+                filter += ' and ';
+            }
+            filter += `Status eq '${search_status}'`;
+        }
+
         retrieve_table_data(``, filter);
 
     }
@@ -408,8 +477,8 @@
         let next_url = determine_next_url(selected_policy);
 
         window.location.href = next_url;
-        
-        
+
+
     }
 
     function get_policy_info(record_id) {
@@ -456,6 +525,7 @@
                 url += 'policy-request-publish.aspx';
                 break;
             case 6:
+            case 7:
                 url += 'policy-request-completed.aspx';
                 break;
             case 11:
@@ -466,7 +536,7 @@
                 break;
         }
 
-        if(url){
+        if (url) {
             url += `?CNID=${selected_policy.Id}`;
         }
 
