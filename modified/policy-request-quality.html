@@ -700,7 +700,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Status</label>
                             </div>
                             <div class="col-12">
-                                <span class="badge rounded badge-subtle-info p-2 minw-80">New</span>
+                                <span id="policy_status" class="badge rounded p-2 minw-80"></span>
                             </div>
                         </div>
                     </div>
@@ -710,9 +710,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Revision Number</label>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    2
-                                </span>
+                                <span id="policy_revision_number" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -722,9 +720,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Next Revision Date</label>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    15/02/2023
-                                </span>
+                                <span id="policy_revision_date" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -734,9 +730,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Publishing Date</label>
                             </div>
                             <div class="col-12">
-                                <span class="fs--1 text-600">
-                                    15/02/2023
-                                </span>
+                                <span id="policy_publishing_date" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -845,6 +839,15 @@
         $("#policy_description").html(selected_policy.Policy_Description);
         $("#policy_submit_date").html(`${new Date(selected_policy.Created).format('dd/MM/yyyy')}`);
         $("#policy_department").html(selected_policy.Department);
+
+        let status_class = get_status_css_class(policy);
+
+        $("#policy_status").html(policy.Status);
+        $("#policy_status").addClass(status_class);
+
+        $("#policy_revision_number").html(policy.Revision_Number !== null ? policy.Revision_Number : '');
+        $("#policy_revision_date").html(new Date(policy.Next_Revision_Date).format('dd/MM/yyyy'));
+        $("#policy_publishing_date").html(new Date(policy.Publish_Date).format('dd/MM/yyyy'));
 
 
         let existing_policies = await get_existing_policies();

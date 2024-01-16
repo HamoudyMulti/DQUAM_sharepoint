@@ -366,31 +366,12 @@
 
     async function populate_fields(policy, record_id) {
 
-        let status_class;
-
-        switch (policy.Status) {
-            case "new":
-                status_class = "badge-subtle-info";
-                break;
-            case "in progress":
-                status_class = "badge-subtle-warning";
-                break;
-            case "active":
-                status_class = "badge-subtle-success";
-                break;
-            case "delayed":
-                status_class = "badge-subtle-danger";
-                break;
-            case "obsolete":
-                status_class = "badge-subtle-primary";
-                break;
-            default:
-                status_class = "badge-subtle-info";
-                break;
-        }
-
+        
         $("#policy_title").html(policy.Request_title);
         $("#policy_description").html(policy.Policy_Description);
+        
+        
+        let status_class = get_status_css_class(policy);
 
         $("#policy_status").html(policy.Status);
         $("#policy_status").addClass(status_class);

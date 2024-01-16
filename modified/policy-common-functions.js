@@ -487,3 +487,31 @@ async function updateListItemAsync(itemMetadata, MainItemID, newName, fileParts)
         }
     });
 }
+
+
+function get_status_css_class(policy){
+    let status_class;
+
+    switch (policy.Status) {
+        case "new":
+            status_class = "badge-subtle-info";
+            break;
+        case "in progress":
+            status_class = "badge-subtle-warning";
+            break;
+        case "active":
+            status_class = "badge-subtle-success";
+            break;
+        case "delayed":
+            status_class = "badge-subtle-danger";
+            break;
+        case "obsolete":
+            status_class = "badge-subtle-primary";
+            break;
+        default:
+            status_class = "badge-subtle-info";
+            break;
+    }
+    
+    return status_class;
+}
