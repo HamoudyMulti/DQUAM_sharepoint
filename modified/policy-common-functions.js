@@ -322,7 +322,7 @@ function get_current_user_id() {
 
 async function submit_changes(type, next_step_number) {
     $("#loader-policy").show();
-    
+
     const record_id = get_CNID_from_url();
 
     let current_user = get_current_user_id();
@@ -362,15 +362,15 @@ async function send_back_change(previous_step_number, update_approvers) {
     try {
         const record_id = get_CNID_from_url();
 
-        if(update_approvers){
+        if (update_approvers) {
             let list = await get_approvers_list(record_id, null);
-    
+
             const approvers_record_ids = list.map(item => item.Id);
-    
+
             const approvers_record_promises = approvers_record_ids.map(user =>
                 update_user_approval(user, 0)
             );
-    
+
             await Promise.all([
                 ...approvers_record_promises,
             ]);
@@ -494,7 +494,7 @@ async function updateListItemAsync(itemMetadata, MainItemID, newName, randomNumb
 }
 
 
-function get_status_css_class(policy){
+function get_status_css_class(policy) {
     let status_class;
 
     switch (policy.Status) {
@@ -517,6 +517,6 @@ function get_status_css_class(policy){
             status_class = "badge-subtle-info";
             break;
     }
-    
+
     return status_class;
 }
