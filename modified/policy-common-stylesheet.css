@@ -24,3 +24,14 @@
         transform: rotate(360deg);
     }
 }
+
+
+.policy-status-top-div{
+    text-align: center;
+}
+
+
+.policy-status-top-presentation{
+    width: 100%; 
+    font-size: 25px;
+}

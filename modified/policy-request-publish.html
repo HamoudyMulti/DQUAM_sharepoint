@@ -135,6 +135,11 @@
 
         <div class="card">
             <div class="card-body p-xl-5">
+                <div class="col-12 policy-status-top-div">
+                    <span id="policy_status_top" class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
+                </div>
+
+                <br>
                 <div class="row justify-content-end mb-3">
                     <div class="col-auto">
                         <button id="view_file" onclick="open_doc_new_tab($(this).data('file-url'))" class="btn btn-dquam-info" type="button">
@@ -360,8 +365,8 @@
 
         let status_class = get_status_css_class(policy);
 
-        $("#policy_status").html(policy.Status);
-        $("#policy_status").addClass(status_class);
+        $("#policy_status, #policy_status_top").html(policy.Status);
+        $("#policy_status, #policy_status_top").addClass(status_class);
 
         $("#policy_revision_number").html(policy.Revision_Number !== null ? policy.Revision_Number : '');
         $("#policy_revision_date").html(new Date(policy.Next_Revision_Date).format('dd/MM/yyyy'));

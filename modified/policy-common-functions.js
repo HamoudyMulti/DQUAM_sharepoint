@@ -523,5 +523,38 @@ function get_status_css_class(policy) {
 
 function open_doc_new_tab(url) {
     window.open(url, '_blank');
+}
 
+async function populate_departments_dropdown() {
+    let departments = await get_organization_departments();
+
+    let departments_dropdown = $("#search_department");
+
+    departments.forEach(function (item) {
+        let department = encodeURIComponent(item.OU_Name);
+        let option = $("<option>", { value: department, text: item.OU_Name });
+        departments_dropdown.append(option);
+    });
+
+}
+
+
+
+function get_organization_departments() {
+    return new Promise(function (resolve, reject) {
+        let select = "$select=OU_Name";
+        $.ajax({
+            url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Org_Unit')/items?${select}`,
+            method: "GET",
+            headers: {
+                "ACCEPT": "application/json; odata=verbose",
+            },
+            success: function (data) {
+                resolve(data.d.results);
+            },
+            error: function (error) {
+                reject(error);
+            }
+        });
+    });
 }

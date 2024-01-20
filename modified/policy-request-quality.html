@@ -136,6 +136,12 @@
         <!-- ============ page contents here... =========== -->
         <div class="card">
             <div class="card-body p-xl-5">
+                <div class="col-12 policy-status-top-div">
+                    <span id="policy_status_top" class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
+                </div>
+
+                <br>
+
                 <div class="row mb-3">
                     <div class="col-12">
                         <div class="row align-items-center">
@@ -146,9 +152,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <span id="policy_title" class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media
-                        </span>
+                        <span id="policy_title" class="fs--1 text-600"></span>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -158,7 +162,7 @@
                                 <label class="form-label text-900 fs-0 mb-1">Submit Date</label>
                             </div>
                             <div class="col-12">
-                                <span id="policy_submit_date" class="fs--1 text-600">Today's Date (05/12/2023)</span>
+                                <span id="policy_submit_date" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -172,7 +176,7 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <span id="policy_department" class="fs--1 text-600">DeparmentX</span>
+                                <span id="policy_department" class="fs--1 text-600"></span>
                             </div>
                         </div>
                     </div>
@@ -636,14 +640,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <span id="policy_description" class="fs--1 text-600">
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                            Lorem ipsum dolor set amet is a dummy text used in print media Lorem ipsum dolor set amet is
-                            a dummy text used in print media
-                        </span>
+                        <span id="policy_description" class="fs--1 text-600"></span>
                     </div>
                 </div>
                 <div class="row mb-4">
@@ -844,8 +841,8 @@
 
         let status_class = get_status_css_class(policy);
 
-        $("#policy_status").html(policy.Status);
-        $("#policy_status").addClass(status_class);
+        $("#policy_status, #policy_status_top").html(policy.Status);
+        $("#policy_status, #policy_status_top").addClass(status_class);
 
         $("#policy_revision_number").html(policy.Revision_Number !== null ? policy.Revision_Number : '');
         $("#policy_revision_date").html(new Date(policy.Next_Revision_Date).format('dd/MM/yyyy'));

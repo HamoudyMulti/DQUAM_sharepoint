@@ -56,9 +56,6 @@
                                 <div class="col-12 col-xl-auto">
                                     <select id="search_department" class="form-select form-select-sm">
                                         <option value="" selected="">Department</option>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
                                     </select>
                                 </div>
 
@@ -162,7 +159,9 @@
 
     let filter = "";
 
-    $(document).ready(function () {
+    $(document).ready(async function () {
+        await populate_departments_dropdown();
+
         on_change_status();
         on_change_department();
         on_change_title();
