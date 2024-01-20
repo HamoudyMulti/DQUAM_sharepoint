@@ -834,11 +834,11 @@
     }
 
 
-    async function populate_fields(selected_policy, record_id) {
-        $("#policy_title").html(selected_policy.Request_title);
-        $("#policy_description").html(selected_policy.Policy_Description);
-        $("#policy_submit_date").html(`${new Date(selected_policy.Created).format('dd/MM/yyyy')}`);
-        $("#policy_department").html(selected_policy.Department);
+    async function populate_fields(policy, record_id) {
+        $("#policy_title").html(policy.Request_title);
+        $("#policy_description").html(policy.Policy_Description);
+        $("#policy_submit_date").html(`${new Date(policy.Created).format('dd/MM/yyyy')}`);
+        $("#policy_department").html(policy.Department);
 
         let status_class = get_status_css_class(policy);
 
