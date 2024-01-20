@@ -99,6 +99,7 @@ function check_user_permissions(access, step_number) {
         Step_Number=4,"Regulators"
         Step_Number=5,"Publish"
         Step_Number=6,"Completed"
+        Step_Number=7,"Obsolete"
         Step_Number=11,"Send Back By Quality"
         Step_Number=33,"Send Back By Stakeholders"
         Step_Number=44,"Send Back By Regulators"
@@ -320,6 +321,8 @@ function get_current_user_id() {
 }
 
 async function submit_changes(type, next_step_number) {
+    $("#loader-policy").show();
+    
     const record_id = get_CNID_from_url();
 
     let current_user = get_current_user_id();
@@ -355,6 +358,7 @@ function step_number_check(step_number, valid_step_numbers) {
 
 
 async function send_back_change(previous_step_number, update_approvers) {
+    $("#loader-policy").show();
     try {
         const record_id = get_CNID_from_url();
 
@@ -391,9 +395,9 @@ function uploadFiles(MainItemID) {
         for (let i = 0; i < fileCount; i++) {
             try {
                 const { result, index } = await getFileBuffer(i);
-                const { result: addFile, newName, fileParts } = await addFileToFolderAsync(result, MainItemID, index);
+                const { result: addFile, newName, randomNumber, fileParts } = await addFileToFolderAsync(result, MainItemID, index);
                 const listItem = await getListItemAsync(addFile.d.ListItemAllFields.__deferred.uri);
-                await updateListItemAsync(listItem.d.__metadata, MainItemID, newName, fileParts);
+                await updateListItemAsync(listItem.d.__metadata, MainItemID, newName, randomNumber, fileParts);
             } catch (error) {
                 reject(error);
             }
@@ -425,6 +429,7 @@ function addFileToFolderAsync(arrayBuffer, MainItemID, i) {
         const fileName = $('#dropzoneFiles')[0].dropzone.getAcceptedFiles()[i].name;
         const fileParts = fileName.split('.');
         const newName = fileParts[0];
+        const randomNumber = Math.floor(10000 + Math.random() * 90000);
 
         const serverUrl = _spPageContextInfo.webAbsoluteUrl;
         const serverRelativeUrlToFolder = 'Policy Attachments';
@@ -432,7 +437,7 @@ function addFileToFolderAsync(arrayBuffer, MainItemID, i) {
         const fileCollectionEndpoint = String.format(
             "{0}/_api/web/getfolderbyserverrelativeurl('{1}')/files" +
             "/add(overwrite=true, url='{2}')",
-            serverUrl, serverRelativeUrlToFolder, "File" + newName + "-" + MainItemID + "." + fileParts[1]);
+            serverUrl, serverRelativeUrlToFolder, "File" + newName + "-" + MainItemID + "-" + randomNumber + "." + fileParts[1]);
 
         try {
             const result = await $.ajax({
@@ -446,7 +451,7 @@ function addFileToFolderAsync(arrayBuffer, MainItemID, i) {
                 }
             });
 
-            resolve({ result, newName, fileParts });
+            resolve({ result, newName, randomNumber, fileParts });
         } catch (error) {
             reject(error);
         }
@@ -462,9 +467,9 @@ async function getListItemAsync(fileListItemUri) {
     });
 }
 
-async function updateListItemAsync(itemMetadata, MainItemID, newName, fileParts) {
-    const fileLeafRef = "File_" + newName + "-" + MainItemID;
-    const title = "File_" + newName + "-" + MainItemID + "." + fileParts[1];
+async function updateListItemAsync(itemMetadata, MainItemID, newName, randomNumber, fileParts) {
+    const fileLeafRef = "File_" + newName + "-" + MainItemID + "-" + randomNumber;
+    const title = "File_" + newName + "-" + MainItemID + "-" + randomNumber + "." + fileParts[1];
 
     const body = JSON.stringify({
         '__metadata': {
@@ -497,16 +502,16 @@ function get_status_css_class(policy){
             status_class = "badge-subtle-info";
             break;
         case "in progress":
-            status_class = "badge-subtle-warning";
+            status_class = "badge-subtle-primary";
             break;
         case "active":
             status_class = "badge-subtle-success";
             break;
         case "delayed":
-            status_class = "badge-subtle-danger";
+            status_class = "badge-subtle-warning";
             break;
         case "obsolete":
-            status_class = "badge-subtle-primary";
+            status_class = "badge-subtle-danger";
             break;
         default:
             status_class = "badge-subtle-info";

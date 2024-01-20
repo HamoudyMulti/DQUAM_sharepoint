@@ -3,8 +3,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
 <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+<link rel="stylesheet" href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/CSS/policy-common-stylesheet.css">
 
 <div class="content">
+    <div id="loader-policy" class="loader-policy"></div>
 
     <div class="row">
         <div class="col">
@@ -1378,6 +1380,7 @@
 
 
     async function apply_changes() {
+        $("#loader-policy").show();
         try {
             const record_id = get_CNID_from_url();
 
