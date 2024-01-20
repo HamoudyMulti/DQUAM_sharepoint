@@ -147,7 +147,7 @@
             <div class="card-body p-xl-5">
                 <div class="row justify-content-end mb-3">
                     <div class="col-auto">
-                        <button class="btn btn-dquam-info" type="button">
+                        <button id="view_file" onclick="open_doc_new_tab($(this).data('file-url'))" class="btn btn-dquam-info" type="button">
                             <span class="fas fa-file"></span>
                             <span class="ms-1">View File</span>
                         </button>
@@ -334,6 +334,8 @@
         $("#policy_revision_number").html(policy.Revision_Number !== null ? policy.Revision_Number : '');
         $("#policy_revision_date").html(new Date(policy.Next_Revision_Date).format('dd/MM/yyyy'));
         $("#policy_publishing_date").html(new Date(policy.Publish_Date).format('dd/MM/yyyy'));
+
+        $('#view_file').attr('data-file-url', policy.Policy_Template_URL);
 
         await populate_documents(record_id);
     }

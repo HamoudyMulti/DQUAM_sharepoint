@@ -520,3 +520,8 @@ function get_status_css_class(policy) {
 
     return status_class;
 }
+
+function open_doc_new_tab(url) {
+    window.open(url, '_blank');
+
+}

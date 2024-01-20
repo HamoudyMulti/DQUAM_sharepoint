@@ -273,51 +273,23 @@
 
     function populate_table_row(value) {
 
-        let status_class;
+        let status_class = get_status_css_class(value);
 
-        switch (value.Status) {
-            case "new":
-                status_class = "badge-subtle-info";
-                break;
-            case "in progress":
-                status_class = "badge-subtle-warning";
-                break;
-            case "active":
-                status_class = "badge-subtle-success";
-                break;
-            case "delayed":
-                status_class = "badge-subtle-danger";
-                break;
-            case "obsolete":
-                status_class = "badge-subtle-primary";
-                break;
-            default:
-                status_class = "badge-subtle-info";
-                break;
-        }
-
-
+        
         let view_file_html;
 
-        switch(value.Step_Number){
+        switch (value.Step_Number) {
             case 2:
             case 3:
             case 4:
             case 5:
+            case 6:
+            case 7:
+            case 33:
+            case 44:
                 view_file_html = `
                     <td class="documentLink text-center">
                         <button type="button" onclick="open_doc_new_tab('${value.Policy_Template_URL}')" class="btn btn-dquam-secondary btn-sm">
-                            <span class="fas fa-file"></span>
-                            View File
-                        </button>
-                    </td>
-                `
-                break;
-            case 6:
-            case 7:
-                view_file_html = `
-                    <td class="documentLink text-center">
-                        <button type="button" onclick="open_doc_new_tab('${value.Policy_Published_URL}')" class="btn btn-dquam-secondary btn-sm">
                             <span class="fas fa-file"></span>
                             View File
                         </button>
@@ -366,10 +338,6 @@
             </tr>`
     }
 
-    function open_doc_new_tab(url) {
-        window.open(url, '_blank');
-        
-    }
 
 
 
