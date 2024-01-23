@@ -27,8 +27,8 @@ Document Link (when to show/unshow) {
     dont show doc until preparation step (after quality approves)
     dont show doc if status is NEW (disabled button)
 
-    read from tempate_url for steps 2 to 5
-    read from publish_url for steps 6 and 7
+    read from template_url for all stages [DONE]
+    read from publish_url only in published logs page [DONE]
 }
 
 
@@ -80,8 +80,39 @@ view file
 
 -----------------------
 
+read from template_url for all stages [DONE]
+read from publish_url only in published logs page [DONE]
 
-list of departments in policy logs filter
 
-get rest of data in each page (revision number - status - etc...)
-retrieving docs for initiator bug
+
+loader for each page [DONE]
+
+view file implementation [DONE]
+
+list of departments in policy logs filter  (read from Org_Unit list) [DONE]
+
+append random number to same uploaded document [DONE]
+
+retrieving docs for initiator - quality bug [DONE]
+
+add custom color to status on each page [DONE]
+
+
+
+people picker {
+    read from active directory for people picker
+
+
+    people picker for 
+    publishing list {
+        choose users
+        fill list: Policy_Acknowledgment_List
+        change stage to completed
+    }
+
+
+    people picker fix in quality page
+}
+
+
+

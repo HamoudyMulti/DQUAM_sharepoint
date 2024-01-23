@@ -3,7 +3,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
 <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
-<link rel="stylesheet" href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/CSS/policy-common-stylesheet.css">
+<link rel="stylesheet"
+    href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/CSS/policy-common-stylesheet.css">
 
 <div class="content">
     <div id="loader-policy" class="loader-policy"></div>
@@ -45,8 +46,8 @@
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
                     <div class="col-auto">
-                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button" 
-                         onclick="send_back_change(11, false)" disabled>Send
+                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button"
+                            onclick="send_back_change(11, false)" disabled>Send
                             Back</button>
                     </div>
                     <div class="col-auto">
@@ -137,7 +138,8 @@
         <div class="card">
             <div class="card-body p-xl-5">
                 <div class="col-12 policy-status-top-div">
-                    <span id="policy_status_top" class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
+                    <span id="policy_status_top"
+                        class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
                 </div>
 
                 <br>
@@ -691,6 +693,14 @@
                             </div>
                         </div>
                     </div>
+
+                    <div style="padding-top: 20px;" class="col-12">
+                        <div id="uploadedFiles" class="dz-preview dz-preview-multiple m-0 d-flex flex-column">
+
+                        </div>
+                    </div>
+
+
                 </div>
                 <div class="row justify-content-between">
                     <div class="col-12 col-sm-6 col-lg-3">
@@ -859,9 +869,55 @@
         let users = await getUsers();
         populate_users(users);
 
+        await populate_documents(record_id);
+
 
     }
-    
+
+
+    async function populate_documents(record_id) {
+        let documents = await get_policy_documents(record_id);
+        let html = ``;
+        documents.forEach(doc => {
+            html += `
+            <div class="d-flex media mb-3 pb-3 border-bottom btn-reveal-trigger">
+                <img class="dz-image"
+                    src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/generic/image-file-2.png"
+                    alt="..." data-dz-thumbnail="data-dz-thumbnail" data-themekey="#">
+                <div class="flex-1 d-flex flex-between-center">
+                    <div>
+                        <h6 data-dz-name="data-dz-name">${doc.LinkFilename}</h6>
+                        <div class="d-flex align-items-center">
+                            <p class="mb-0 fs--1 text-400 lh-1" data-dz-size="data-dz-size"><strong></strong></p>
+                            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
+                        </div><span class="fs--2 text-danger" data-dz-errormessage="data-dz-errormessage"></span>
+                    </div>
+                    <div class="dropdown font-sans-serif"> <button
+                                class="btn btn-link text-600 btn-sm dropdown-toggle btn-reveal dropdown-caret-none" type="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><svg
+                                    class="svg-inline--fa fa-ellipsis-h fa-w-16" aria-hidden="true" focusable="false"
+                                    data-prefix="fas" data-icon="ellipsis-h" role="img" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 512 512" data-fa-i2svg="">
+                                    <path fill="currentColor"
+                                        d="M328 256c0 39.8-32.2 72-72 72s-72-32.2-72-72 32.2-72 72-72 72 32.2 72 72zm104-72c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72zm-352 0c-39.8 0-72 32.2-72 72s32.2 72 72 72 72-32.2 72-72-32.2-72-72-72z"
+                                        data-darkreader-inline-fill="" style="--darkreader-inline-fill: currentColor;"></path>
+                                </svg><!-- <span class="fas fa-ellipsis-h"></span> Font Awesome fontawesome.com --> </button>
+                            <div class="dropdown-menu dropdown-menu-end border py-2"> 
+                                <a class="dropdown-item" href="${doc.EncodedAbsUrl}" target="_blank"
+                                    data-dz-remove="data-dz-remove">View File</a> 
+                                
+                                    </div>
+                        </div>
+                </div>
+            </div>
+            `
+
+
+        });
+
+        $("#uploadedFiles").html(html);
+    }
+
 
     function getTodayDate() {
         const today = new Date();
@@ -1420,6 +1476,6 @@
     }
 
 
-    
+
 
 </script>
