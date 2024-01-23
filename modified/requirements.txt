@@ -91,6 +91,8 @@ view file implementation [DONE]
 
 list of departments in policy logs filter  (read from Org_Unit list) [DONE]
 
+input search for policies + search filtering for policy published logs
+
 append random number to same uploaded document [DONE]
 
 retrieving docs for initiator - quality bug [DONE]
