@@ -1,0 +1,110 @@
+<button id="publishing_list_button" class="btn btn-dquam-primary btn-sm" type="button" data-bs-toggle="modal"
+    data-bs-target="#modal-policy-request4-publish" disabled>Publish</button>
+<div class="modal fade" id="modal-policy-request4-publish" tabindex="-1" role="dialog" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+        <div class="modal-content position-relative">
+            <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+                <button id="closeModalButton" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+                    <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Publishing List</h6>
+                </div>
+                <div class="p-4 pb-0 text-center">
+                    <div>
+                        <div class="mb-3">
+                            <h6 class="mb-0 text-600">Select user or group:</h6>
+                        </div>
+                        <div class="mb-4">
+                            <div class="col-12 mb-3">
+                                <div class="border bg-white rounded p-3">
+                                    <div class="row align-items-center justify-content-center g-2 mb-3">
+                                        <div class="col-auto">
+                                            <div class="dropdown dropdown-with-avatars font-sans-serif position-static">
+                                                <button class="btn dropdown-toggle border border-0"
+                                                    id="dropdownMenuButton2" type="button" data-bs-toggle="dropdown"
+                                                    data-bs-auto-close="outside" aria-expanded="false">
+                                                    <div class="avatar-group avatar-group-dense selected_users_avatar_list">
+                                                        <div
+                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
+                                                            <img class="rounded-circle"
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png"
+                                                                alt="" />
+                                                        </div>
+                                                        <div
+                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
+                                                            <img class="rounded-circle"
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png"
+                                                                alt="" />
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-450 selected_users_final_list"
+                                                    aria-labelledby="dropdownMenuButton2">
+                                                    <!--End: dropdown-item -->
+
+                                                    
+                                                    <!--End: dropdown-item -->
+                                                </div>
+                                                <!-- End: dropdown-menu -->
+                                            </div>
+                                            <!-- End: dropdown -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <div class="dropdown dropdown-with-avatars font-sans-serif position-static">
+                                                <button class="btn dropdown-toggle w-100 choice_select_user"
+                                                    id="dropdownMenuButton1" type="button" data-bs-toggle="dropdown"
+                                                    data-bs-auto-close="outside" aria-expanded="false">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="mb-0 title">Select User</span>
+                                                        </div>
+                                                        <span class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+                                                    </div>
+                                                </button>
+                                                <div id="users_select"
+                                                    class="dropdown-menu dropdown-menu-start py-2 scrollbar search-filter-parent"
+                                                    aria-labelledby="dropdownMenuButton1">
+                                                    <div class="dropdown-item">
+                                                        <input id="users_search" type="search"
+                                                            class="form-control form-control-sm search-filter-input"
+                                                            placeholder="Search..." />
+                                                    </div>
+                                                    <!--End: dropdown-item -->
+
+                                                    <!--End: dropdown-item -->
+                                                </div>
+                                            </div><!-- End: dropdown -->
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row justify-content-center g-2">
+                                                <div class="col-auto">
+                                                    <button id="save_and_exit_button" class="btn btn-sm btn-dquam-success w-100" type="button">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button id="save_and_add_more_button" class="btn btn-sm btn-dquam-info w-100" type="button">
+                                                        Save &amp; add more
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--End: border, bg-white -->
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <button id="submit_button" class="btn btn-dquam-primary btn-sm" type="button"
+                                onclick="apply_changes()" disabled>Publish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- End: modal -->
