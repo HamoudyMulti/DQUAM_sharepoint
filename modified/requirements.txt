@@ -100,10 +100,10 @@ add custom color to status on each page [DONE]
 
 
 people picker {
-    read from active directory for people picker
+    read from active directory for people picker [DONE]
 
 
-    people picker for 
+    people picker for [DONE]
     publishing list {
         choose users
         fill list: Policy_Acknowledgment_List
@@ -113,6 +113,11 @@ people picker {
 
     people picker fix in quality page
 }
+
+add disabled to publish button (dont forget)
+
+fix in policy published log (case insensitive): filter += `substringof('${search_title}', Request_title)`;
+
 
 
 

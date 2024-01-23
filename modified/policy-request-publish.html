@@ -3,7 +3,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
 <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
-<link rel="stylesheet" href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/CSS/policy-common-stylesheet.css">
+<link rel="stylesheet"
+    href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/CSS/policy-common-stylesheet.css">
 
 
 <div class="content">
@@ -47,10 +48,11 @@
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
                     <div class="col-auto">
-                        <button id="open_ms_team_button" class="btn btn-dquam-info btn-sm" type="button" disabled>Open MS Team</button>
+                        <button id="open_ms_team_button" class="btn btn-dquam-info btn-sm" type="button" disabled>Open
+                            MS Team</button>
                     </div>
-                    <div class="col-auto">
-                        <button id="submit_button" class="btn btn-dquam-primary btn-sm" type="button" onclick="apply_changes()" disabled>Publish</button>
+                    <div id="publish_list_modal" class="col-auto">
+
                     </div>
                 </div>
             </div>
@@ -136,13 +138,15 @@
         <div class="card">
             <div class="card-body p-xl-5">
                 <div class="col-12 policy-status-top-div">
-                    <span id="policy_status_top" class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
+                    <span id="policy_status_top"
+                        class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
                 </div>
 
                 <br>
                 <div class="row justify-content-end mb-3">
                     <div class="col-auto">
-                        <button id="view_file" onclick="open_doc_new_tab($(this).data('file-url'))" class="btn btn-dquam-info" type="button">
+                        <button id="view_file" onclick="open_doc_new_tab($(this).data('file-url'))"
+                            class="btn btn-dquam-info" type="button">
                             <span class="fas fa-file"></span>
                             <span class="ms-1">View File</span>
                         </button>
@@ -170,7 +174,7 @@
                     </div>
                     <div class="col-12">
                         <div id="policy_docs" class="d-flex flex-column777 flex-wrap">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -226,6 +230,9 @@
 
 
 <script>
+    let selected_users = [];
+    let debounceTimer;
+    let users_class = 'users-selection';
 
     $(document).ready(async function () {
         try {
@@ -269,10 +276,377 @@
 
 
 
+            create_people_picker_modal();
+
+            on_click_close_modal();
+
+            on_keydown_users_search();
+            on_input_users_search();
+
+            on_click_save_buttons();
+
+
+
+
         } catch (error) {
             console.error(error);
         }
     });
+
+    function on_click_save_buttons() {
+        $('#save_and_add_more_button, #save_and_exit_button').on('click', function () {
+
+            let user = $('#selected_user');
+
+            const user_id = user.attr('data-user-id');
+            const title = user.attr('data-title');
+            const email = user.attr('data-email');
+            const image = user.attr('data-image');
+
+            selected_users.push({
+                user_id,
+                title,
+                email,
+                image
+            });
+
+
+            populate_selected_users();
+
+            choice_select_remove();
+
+            depopulate_users_modal();
+            $('#users_search').val('');
+        });
+
+
+    }
+
+
+    function populate_selected_users() {
+        $(".selected_users_final_list").html("");
+        let html = ``;
+
+        selected_users.forEach(item => {
+            html += `
+                <div class="dropdown-item px-x1 py-2 selected-user-${item.user_id}">
+                    <div class="row align-items-center g-3">
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-l me-2">
+                                    <img class="rounded-circle"
+                                        src="${item.image}" alt="" />
+                                </div>
+                                <div class="flex-1">
+                                    <h6 class="mb-0">${item.title}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div onclick="remove_selected_user('${item.user_id}')" class="btn-close-falcon text-danger">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        });
+
+        $(".selected_users_final_list").html(html);
+
+
+    }
+
+    function remove_selected_user(user_id) {
+        selected_users = selected_users.filter(user => user.user_id != user_id);
+        $(`.selected-user-${user_id}`).remove();
+
+
+    }
+
+    function choice_select_remove() {
+        let html = `
+            <div id="selected_user" class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="mb-0 title">Select User</span>
+                </div>
+                <span class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+            </div>
+        `;
+
+        $(".choice_select_user").html(html);
+    }
+
+    function capitalize_words(str) {
+        return str.replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+        });
+    }
+
+    function get_active_directory_users_search(value) {
+        let selected_users_filter = ``;
+
+        selected_users.forEach(item => {
+            if(selected_users_filter){
+                selected_users_filter += ' and ';
+            }
+            selected_users_filter += `id ne ${item.user_id}`
+            
+        });
+
+
+        return new Promise(function (resolve, reject) {
+            let select = "$select=ID,Title,Email";
+            let filter = `$filter=
+                Email ne '' 
+                and 
+                ( substringof('${value}', Title) or substringof('${capitalize_words(value)}', Title) )
+            `;
+
+            if(selected_users_filter){
+                filter += ` and (${selected_users_filter})`;
+            }
+            
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/siteusers?${select}&${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+
+
+    function on_click_close_modal() {
+        $('#closeModalButton').on('click', function (event) {
+            event.preventDefault();
+        });
+    }
+
+    function on_input_users_search() {
+        $('#users_search').on('input', async function () {
+            clearTimeout(debounceTimer);
+
+            let value = $(this).val();
+
+
+            depopulate_users_modal();
+
+            debounceTimer = setTimeout(async function () {
+                if (value.length >= 1) { // can be set to 2 characters or more
+                    let users = await get_active_directory_users_search(value);
+                    populate_users_modal(users);
+                }
+            }, 700);
+
+        });
+
+    }
+
+    function populate_users_modal(users) {
+        let html = ``;
+
+
+        users.forEach(item => {
+            const user_id = item.Id;
+            const title = item.Title
+            const email = item.Email;
+            const image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + item.Email;
+
+
+            html += `
+            <button type="button" onclick="choice_select_replace('${user_id}','${title}','${email}','${image}')" class="dropdown-item px-x1 py-2 ${users_class}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l status-online me-2">
+                        <img class="rounded-circle"
+                            src="${image}" alt="" />
+                    </div>
+                    <div class="flex-1">
+                        <h6 class="mb-0 search-filter-data">
+                            ${title}
+                        </h6>
+                    </div>
+                </div>
+            </button>
+            `
+        });
+
+        $("#users_select").append(html);
+
+
+    }
+
+    function choice_select_replace(user_id, title, email, image) {
+
+        $(".choice_select_user").html("");
+
+        let html = `
+            <div id="selected_user" class="d-flex align-items-center justify-content-between"
+             data-user-id="${user_id}" 
+             data-title="${title}" 
+             data-email="${email}" 
+             data-image="${image}"
+            >
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l me-2">
+                        <img class="rounded-circle" src="${image}" alt="" />
+                    </div>
+                    <span class="mb-0 title">${title}</span>
+                </div>
+                <span class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+            </div>
+        `;
+
+        $(".choice_select_user").html(html);
+
+        $('.choice_select_user').dropdown('hide');
+
+    }
+
+    function depopulate_users_modal() {
+        $(`.${users_class}`).remove();
+    }
+
+
+    function on_keydown_users_search() {
+        $('#users_search').on('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    }
+
+    function create_people_picker_modal() {
+        let people_picker_basic_html = get_people_picker_html();
+        $("#publish_list_modal").html(people_picker_basic_html);
+
+
+    }
+
+    function get_people_picker_html() {
+        return `
+        <button id="publishing_list_button" class="btn btn-dquam-primary btn-sm" type="button" data-bs-toggle="modal"
+    data-bs-target="#modal-policy-request4-publish" disabled>Publish</button>
+<div class="modal fade" id="modal-policy-request4-publish" tabindex="-1" role="dialog" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+        <div class="modal-content position-relative">
+            <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+                <button id="closeModalButton" class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+                    <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Publishing List</h6>
+                </div>
+                <div class="p-4 pb-0 text-center">
+                    <div>
+                        <div class="mb-3">
+                            <h6 class="mb-0 text-600">Select user or group:</h6>
+                        </div>
+                        <div class="mb-4">
+                            <div class="col-12 mb-3">
+                                <div class="border bg-white rounded p-3">
+                                    <div class="row align-items-center justify-content-center g-2 mb-3">
+                                        <div class="col-auto">
+                                            <div class="dropdown dropdown-with-avatars font-sans-serif position-static">
+                                                <button class="btn dropdown-toggle border border-0"
+                                                    id="dropdownMenuButton2" type="button" data-bs-toggle="dropdown"
+                                                    data-bs-auto-close="outside" aria-expanded="false">
+                                                    <div class="avatar-group avatar-group-dense selected_users_avatar_list">
+                                                        <div
+                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
+                                                            <img class="rounded-circle"
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png"
+                                                                alt="" />
+                                                        </div>
+                                                        <div
+                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
+                                                            <img class="rounded-circle"
+                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png"
+                                                                alt="" />
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-450 selected_users_final_list"
+                                                    aria-labelledby="dropdownMenuButton2">
+                                                    <!--End: dropdown-item -->
+
+                                                    
+                                                    <!--End: dropdown-item -->
+                                                </div>
+                                                <!-- End: dropdown-menu -->
+                                            </div>
+                                            <!-- End: dropdown -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 mb-3">
+                                            <div class="dropdown dropdown-with-avatars font-sans-serif position-static">
+                                                <button class="btn dropdown-toggle w-100 choice_select_user"
+                                                    id="dropdownMenuButton1" type="button" data-bs-toggle="dropdown"
+                                                    data-bs-auto-close="outside" aria-expanded="false">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="mb-0 title">Select User</span>
+                                                        </div>
+                                                        <span class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+                                                    </div>
+                                                </button>
+                                                <div id="users_select"
+                                                    class="dropdown-menu dropdown-menu-start py-2 scrollbar search-filter-parent"
+                                                    aria-labelledby="dropdownMenuButton1">
+                                                    <div class="dropdown-item">
+                                                        <input id="users_search" type="search"
+                                                            class="form-control form-control-sm search-filter-input"
+                                                            placeholder="Search..." />
+                                                    </div>
+                                                    <!--End: dropdown-item -->
+
+                                                    <!--End: dropdown-item -->
+                                                </div>
+                                            </div><!-- End: dropdown -->
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row justify-content-center g-2">
+                                                <div class="col-auto">
+                                                    <button id="save_and_exit_button" class="btn btn-sm btn-dquam-success w-100" type="button">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button id="save_and_add_more_button" class="btn btn-sm btn-dquam-info w-100" type="button">
+                                                        Save &amp; add more
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--End: border, bg-white -->
+                            </div>
+                        </div>
+                        <div class="mb-5">
+                            <button id="submit_button" class="btn btn-dquam-primary btn-sm" type="button"
+                                onclick="apply_changes()" disabled>Publish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- End: modal -->
+        `
+    }
+
 
     function modify_page_details() {
         $("#pageTitle").text('Policy & Procedure Request');
@@ -281,10 +655,13 @@
 
     async function apply_changes() {
         $("#loader-policy").show();
-        
+
         try {
             const record_id = get_CNID_from_url();
             await update_policy(record_id);
+
+            await insert_users_to_policy_acknowledgment_list(record_id);
+
 
             window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
 
@@ -295,6 +672,58 @@
 
     }
 
+    async function insert_users_to_policy_acknowledgment_list(record_id) {
+        let insert_promises = selected_users.map(item => {
+            add_policy_acknowledgment_list_user(record_id, item.user_id, item.title, item.email);
+        });
+
+        try {
+            const results = await Promise.all([
+                ...insert_promises,
+            ]);
+
+            return results;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function add_policy_acknowledgment_list_user(record_id, user_id, title, email) {
+        return new Promise((resolve, reject) => {
+            const obj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Policy_x005f_Acknowledgment_x005f_ListListItem'
+                },
+                "Policy_ID": record_id,
+                "Viewer_Name": title,
+                "Viewer_Email": email,
+                "Viewer_ID": user_id,
+            });
+
+            console.log("obj",obj)
+
+            const headers = {
+                "accept": "application/json;odata=verbose",
+                "content-type": "application/json;odata=verbose",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            };
+
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_Acknowledgment_List')/items",
+                method: "POST",
+                data: obj,
+                headers: headers,
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error.responseText);
+                }
+            });
+        });
+    }
+
     function update_policy(record_id) {
         return new Promise(function (resolve, reject) {
             var seqObj = JSON.stringify({
@@ -302,7 +731,7 @@
                     'type': 'SP.Data.Policy_x005f_ListListItem'
                 },
                 "Step_Number": 6,
-                "Publish_Date": new Date().format('dd/MM/yyyy')
+                "Publish_Date": new Date().toISOString()
 
             });
 
@@ -347,11 +776,13 @@
     function modify_main_buttons(status) {
         if (status == 'disable') {
             $('#submit_button').prop('disabled', true);
+            $('#publishing_list_button').prop('disabled', true);
             $('#open_ms_team_button').prop('disabled', true);
         }
 
         if (status == 'enable') {
             $('#submit_button').prop('disabled', false);
+            $('#publishing_list_button').prop('disabled', false);
             $('#open_ms_team_button').prop('disabled', false);
 
         }
