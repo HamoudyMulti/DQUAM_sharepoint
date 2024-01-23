@@ -91,7 +91,7 @@ view file implementation [DONE]
 
 list of departments in policy logs filter  (read from Org_Unit list) [DONE]
 
-input search for policies + search filtering for policy published logs
+input search for policies + search filtering for policy published logs [DONE]
 
 append random number to same uploaded document [DONE]
 
