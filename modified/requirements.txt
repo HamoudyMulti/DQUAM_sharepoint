@@ -97,6 +97,12 @@ append random number to same uploaded document [DONE]
 
 retrieving docs for initiator - quality bug [DONE]
 
+for initiator [ability to remove file]
+- open file without downloading 
+view: https://mgskw.sharepoint.com/sites/DQ/Policy%20Attachments/Forms/AllItems.aspx?id=%2Fsites%2FDQ%2FPolicy%20Attachments%2FFile%5Ft1%2D69%2D68394%2Ejson&parent=%2Fsites%2FDQ%2FPolicy%20Attachments
+
+
+
 add custom color to status on each page [DONE]
 
 
@@ -119,6 +125,34 @@ people picker {
 add disabled to publish button (dont forget)
 
 fix in policy published log (case insensitive): filter += `substringof('${search_title}', Request_title)`;
+
+
+
+
+
+get users -> Email ne ''  replace with PrincipalType = 1
+
+fix publish button still disabled even if user has permission (investigate)
+
+
+
+Policy_Approver_History = implement history policy page for each stage
+step_number is the current step to show 
+using approver_status to see if it was send back/proceed
+
+
+people picker fix in quality page
+
+
+debounce timer for policy published logs input
+fix in policy published log (case insensitive): filter += `substringof('${search_title}', Request_title)`;
+
+
+for initiator [ability to remove file]
+- open file without downloading 
+view: https://mgskw.sharepoint.com/sites/DQ/Policy%20Attachments/Forms/AllItems.aspx?id=%2Fsites%2FDQ%2FPolicy%20Attachments%2FFile%5Ft1%2D69%2D68394%2Ejson&parent=%2Fsites%2FDQ%2FPolicy%20Attachments
+
+
 
 
 
