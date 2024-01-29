@@ -325,8 +325,7 @@
 
     }
 
-
-    function populate_selected_users() {
+    function populate_selected_users_box() {
         $(".selected_users_final_list").html("");
         let html = ``;
 
@@ -355,13 +354,51 @@
         });
 
         $(".selected_users_final_list").html(html);
+    }
+
+    function populate_selected_users_box_details() {
+        $(".selected_users_avatar_list").html("");
+        let html = ``;
 
 
+        for (let i = 0; i < Math.min(2, selected_users.length); i++) {
+            const item = selected_users[i];
+
+            html += `
+            <div
+                class="avatar avatar-xl border border-3 border-light rounded-circle">
+                <img class="rounded-circle"
+                    src="${item.image}" alt="" />
+            </div>
+            `;
+        }
+
+        if (selected_users.length > 2) {
+            const remaining_count = selected_users.length - 2;
+
+            html += `
+                <div
+                    class="avatar avatar-xl border border-3 border-light rounded-circle">
+                    <div class="avatar-name rounded-circle">
+                        <span>+${remaining_count}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        $(".selected_users_avatar_list").html(html);
+    }
+
+
+    function populate_selected_users() {
+        populate_selected_users_box();
+        populate_selected_users_box_details();
     }
 
     function remove_selected_user(user_id) {
         selected_users = selected_users.filter(user => user.user_id != user_id);
         $(`.selected-user-${user_id}`).remove();
+        populate_selected_users_box_details();
 
 
     }
@@ -389,11 +426,11 @@
         let selected_users_filter = ``;
 
         selected_users.forEach(item => {
-            if(selected_users_filter){
+            if (selected_users_filter) {
                 selected_users_filter += ' and ';
             }
             selected_users_filter += `id ne ${item.user_id}`
-            
+
         });
 
 
@@ -405,10 +442,10 @@
                 ( substringof('${value}', Title) or substringof('${capitalize_words(value)}', Title) )
             `;
 
-            if(selected_users_filter){
+            if (selected_users_filter) {
                 filter += ` and (${selected_users_filter})`;
             }
-            
+
 
             $.ajax({
                 url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/siteusers?${select}&${filter}`,
@@ -566,18 +603,7 @@
                                                     id="dropdownMenuButton2" type="button" data-bs-toggle="dropdown"
                                                     data-bs-auto-close="outside" aria-expanded="false">
                                                     <div class="avatar-group avatar-group-dense selected_users_avatar_list">
-                                                        <div
-                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                            <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1-thumb.png"
-                                                                alt="" />
-                                                        </div>
-                                                        <div
-                                                            class="avatar avatar-xl border border-3 border-light rounded-circle">
-                                                            <img class="rounded-circle"
-                                                                src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2-thumb.png"
-                                                                alt="" />
-                                                        </div>
+                                                        
                                                     </div>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-450 selected_users_final_list"
@@ -703,7 +729,6 @@
                 "Viewer_ID": user_id,
             });
 
-            console.log("obj",obj)
 
             const headers = {
                 "accept": "application/json;odata=verbose",
