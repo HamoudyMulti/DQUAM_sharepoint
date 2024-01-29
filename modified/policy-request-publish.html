@@ -269,6 +269,7 @@
             console.log("permission", permission);
 
 
+            create_people_picker_modal();
 
             modify_page_details();
             await populate_fields(selected_policy, record_id);
@@ -276,7 +277,6 @@
 
 
 
-            create_people_picker_modal();
 
             on_click_close_modal();
 
@@ -319,6 +319,9 @@
             $('#users_search').val('');
         });
 
+        $('#save_and_exit_button').on('click', function () {
+            $('#modal-policy-request4-publish').modal('hide');
+        });
 
     }
 
