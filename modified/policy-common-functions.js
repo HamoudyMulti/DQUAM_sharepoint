@@ -161,7 +161,7 @@ function get_CNID_from_url() {
 
 function get_policy_documents(record_id) {
     return new Promise(function (resolve, reject) {
-        let select = "$select=Title,LinkFilename,EncodedAbsUrl,ID";
+        let select = "$select=Title,ID";
         let filter = `$filter=Policy_Item eq ${record_id}`;
         $.ajax({
             url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy Attachments')/items?${select}&${filter}`,
@@ -525,6 +525,24 @@ function open_doc_new_tab(url) {
     window.open(url, '_blank');
 }
 
+
+function open_viewable_doc(library_path, file_name, view_id) {
+    let document_url = null;
+
+    if (library_path && file_name && view_id) {
+        document_url =
+            _spPageContextInfo.webAbsoluteUrl + "/" + library_path + "/Forms/AllItems.aspx" +
+            "?useFiltersInViewXml=1" +
+            "&id=" + encodeURIComponent(_spPageContextInfo.siteServerRelativeUrl + "/" + library_path + "/" + file_name) +
+            "&viewid=" + view_id +
+            "&parent=" + encodeURIComponent(_spPageContextInfo.siteServerRelativeUrl + "/" + library_path);
+    }
+
+    window.open(document_url, '_blank');
+
+}
+
+
 async function populate_departments_dropdown() {
     let departments = await get_organization_departments();
 
@@ -558,3 +576,4 @@ function get_organization_departments() {
         });
     });
 }
+

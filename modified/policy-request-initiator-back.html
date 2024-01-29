@@ -205,15 +205,17 @@
     async function populate_documents(record_id) {
         let documents = await get_policy_documents(record_id);
         let html = ``;
+        let element_class_name = "doc-retrieve-";
         documents.forEach(doc => {
+            let class_select = `${element_class_name}${doc.Id}`;
             html += `
-            <div class="d-flex media mb-3 pb-3 border-bottom btn-reveal-trigger">
+            <div class="d-flex media mb-3 pb-3 border-bottom btn-reveal-trigger ${class_select}">
                 <img class="dz-image"
                     src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/generic/image-file-2.png"
                     alt="..." data-dz-thumbnail="data-dz-thumbnail" data-themekey="#">
                 <div class="flex-1 d-flex flex-between-center">
                     <div>
-                        <h6 data-dz-name="data-dz-name">${doc.LinkFilename}</h6>
+                        <h6 data-dz-name="data-dz-name">${doc.Title}</h6>
                         <div class="d-flex align-items-center">
                             <p class="mb-0 fs--1 text-400 lh-1" data-dz-size="data-dz-size"><strong></strong></p>
                             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
@@ -230,9 +232,11 @@
                                         data-darkreader-inline-fill="" style="--darkreader-inline-fill: currentColor;"></path>
                                 </svg><!-- <span class="fas fa-ellipsis-h"></span> Font Awesome fontawesome.com --> </button>
                             <div class="dropdown-menu dropdown-menu-end border py-2"> 
-                                <a class="dropdown-item" href="${doc.EncodedAbsUrl}" target="_blank"
-                                    data-dz-remove="data-dz-remove">View File</a> 
+                                <div class="dropdown-item" onclick="open_viewable_doc('Policy Attachments', '${doc.Title}', '${doc.GUID}')"
+                                    data-dz-remove="data-dz-remove">View File</div>  
                                 
+                                <div class="dropdown-item" onclick="delete_doc_from_server('Policy Attachments', '${doc.Id}', '${class_select}')"
+                                data-dz-remove="data-dz-remove">Delete File</div>  
                                     </div>
                         </div>
                 </div>
@@ -330,5 +334,26 @@
         return false;
     }
 
+    function delete_doc_from_server(library_path, record_id, class_select) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('${library_path}')/items(${record_id})`,
+                type: "POST",
+                headers:
+                {
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                    "IF-MATCH": "*",
+                    "X-HTTP-Method": "DELETE"
+                },
+                success: function (data) {
+                    $(`.${class_select}`).remove();
+                    resolve();
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
 
 </script>
