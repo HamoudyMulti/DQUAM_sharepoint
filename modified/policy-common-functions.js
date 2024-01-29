@@ -161,7 +161,7 @@ function get_CNID_from_url() {
 
 function get_policy_documents(record_id) {
     return new Promise(function (resolve, reject) {
-        let select = "$select=Title,ID";
+        let select = "$select=LinkFilename,ID";
         let filter = `$filter=Policy_Item eq ${record_id}`;
         $.ajax({
             url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy Attachments')/items?${select}&${filter}`,

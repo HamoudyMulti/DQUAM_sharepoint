@@ -215,7 +215,7 @@
                     alt="..." data-dz-thumbnail="data-dz-thumbnail" data-themekey="#">
                 <div class="flex-1 d-flex flex-between-center">
                     <div>
-                        <h6 data-dz-name="data-dz-name">${doc.Title}</h6>
+                        <h6 data-dz-name="data-dz-name">${doc.LinkFilename}</h6>
                         <div class="d-flex align-items-center">
                             <p class="mb-0 fs--1 text-400 lh-1" data-dz-size="data-dz-size"><strong></strong></p>
                             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
@@ -232,7 +232,7 @@
                                         data-darkreader-inline-fill="" style="--darkreader-inline-fill: currentColor;"></path>
                                 </svg><!-- <span class="fas fa-ellipsis-h"></span> Font Awesome fontawesome.com --> </button>
                             <div class="dropdown-menu dropdown-menu-end border py-2"> 
-                                <div class="dropdown-item" onclick="open_viewable_doc('Policy Attachments', '${doc.Title}', '${doc.GUID}')"
+                                <div class="dropdown-item" onclick="open_viewable_doc('Policy Attachments', '${doc.LinkFilename}', '${doc.GUID}')"
                                     data-dz-remove="data-dz-remove">View File</div>  
                                 
                                 <div class="dropdown-item" onclick="delete_doc_from_server('Policy Attachments', '${doc.Id}', '${class_select}')"
