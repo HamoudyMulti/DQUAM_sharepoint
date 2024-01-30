@@ -303,20 +303,23 @@
             const email = user.attr('data-email');
             const image = user.attr('data-image');
 
-            selected_users.push({
-                user_id,
-                title,
-                email,
-                image
-            });
+            if (user_id) {
+                selected_users.push({
+                    user_id,
+                    title,
+                    email,
+                    image
+                });
 
 
-            populate_selected_users();
+                populate_selected_users();
 
-            choice_select_remove();
+                choice_select_remove();
 
-            depopulate_users_modal();
-            $('#users_search').val('');
+                depopulate_users_modal();
+                $('#users_search').val('');
+            }
+
         });
 
         $('#save_and_exit_button').on('click', function () {
@@ -681,11 +684,25 @@
         $("#pageTitle").text('Policy & Procedure Request');
     }
 
+    function users_empty_check() {
+        return selected_users.length === 0;
+    }
 
     async function apply_changes() {
-        $("#loader-policy").show();
-
+        
         try {
+            if (users_empty_check()) {
+                Swal.fire({
+                    title: "Warning!",
+                    html: "<b>" + "Please select at least 1 user" + "</b>",
+                    icon: "warning"
+                });
+                return;
+            }
+            
+
+            $("#loader-policy").show();
+
             const record_id = get_CNID_from_url();
             await update_policy(record_id);
 
@@ -707,9 +724,7 @@
         });
 
         try {
-            const results = await Promise.all([
-                ...insert_promises,
-            ]);
+            const results = await Promise.all(insert_promises);
 
             return results;
         } catch (error) {
@@ -834,6 +849,44 @@
         $('#view_file').attr('data-file-url', policy.Policy_Template_URL);
 
         await populate_documents(record_id);
+
+        await populate_users_from_DB(record_id);
+    }
+
+    async function populate_users_from_DB(record_id) {
+        let all_users_details = await get_users_from_policy_acknowledgment_list(record_id);
+
+        selected_users = all_users_details.map(user => {
+            return {
+                user_id: user.Viewer_ID,
+                title: user.Viewer_Name,
+                email: user.Viewer_Email,
+                image: _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + user.Viewer_Email
+            };
+        });
+
+        populate_selected_users();
+
+    }
+
+    function get_users_from_policy_acknowledgment_list(record_id) {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=Viewer_Name,Viewer_Email,Viewer_ID";
+            let filter = `$filter=Policy_ID eq ${record_id}`;
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Acknowledgment_List')/items?${select}&${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
     }
 
 
