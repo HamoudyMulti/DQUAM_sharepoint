@@ -329,6 +329,22 @@
         selected_users[index] = [];
     }
 
+    let approver_details = {
+        1: {
+            approver_type: "Preparation",
+            step_number: 2
+        },
+        2: {
+            approver_type: "Stakeholders",
+            step_number: 3
+        },
+        3: {
+            approver_type: "Regulators",
+            step_number: 4
+        },
+
+    }
+
     let debounceTimer;
     let users_class = 'users-selection';
 
@@ -341,7 +357,11 @@
 
             console.log("current_user", current_user)
 
-            let selected_policy = await get_policy_info(record_id, "$select=*,Author/Id", "$expand=Author");
+            let selected_policy = await get_policy_info(
+                record_id,
+                "$select=*,Author/Id,Preparation_Approvers/Approver_Name_User_ID,Stakeholders_Approvers/Approver_Name_User_ID,Regulators_Approvers/Approver_Name_User_ID",
+                "$expand=Author,Preparation_Approvers,Stakeholders_Approvers,Regulators_Approvers"
+            );
 
             let approvers_list = await get_approvers_list(record_id, null);
 
@@ -401,20 +421,20 @@
                 const email = user.attr('data-email');
                 const image = user.attr('data-image');
 
-                if(user_id){
+                if (user_id) {
                     selected_users[index].push({
                         user_id,
                         title,
                         email,
                         image
                     });
-    
-    
-    
+
+
+
                     populate_selected_users(index);
-    
+
                     choice_select_remove(index);
-    
+
                     depopulate_users_modal(index);
                     $(`#users_search_${index}`).val('');
                 }
@@ -846,8 +866,71 @@
 
         await populate_documents(record_id);
 
+        await populate_users_from_DB(policy);
+
 
     }
+
+    function get_active_directory_users_details(filter_condition, index) {
+        return new Promise(function (resolve, reject) {
+            let select = "$select=ID,Title,Email";
+            let filter = `$filter=
+                PrincipalType eq 1
+            `;
+
+            if (filter_condition) {
+                filter += ` and (${filter_condition})`;
+            }
+
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/siteusers?${select}&${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    async function populate_users_from_DB(policy) {
+        let users_from_DB = {};
+        for (let index = 1; index <= team_names.length; index++) {
+            users_from_DB[index] = policy[`${approver_details[index]["approver_type"]}_Approvers`].results.map(item => item.Approver_Name_User_ID);
+        }
+
+        const all_users_ids_filter = Object.values(users_from_DB)
+            .flat()
+            .map(id => `Id eq ${id}`)
+            .join(' or ');
+
+        if (all_users_ids_filter) {
+            let all_users_details = await get_active_directory_users_details(all_users_ids_filter);
+
+            for (let index = 1; index <= team_names.length; index++) {
+                selected_users[index] = users_from_DB[index].map(id => {
+                    const user = all_users_details.find(item => item.Id === id);
+                    return {
+                        user_id: user.Id,
+                        title: user.Title,
+                        email: user.Email,
+                        image: _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + user.Email
+                    };
+                });
+                populate_selected_users(index);
+            }
+
+        }
+
+    }
+
+
 
 
     async function populate_documents(record_id) {
@@ -916,7 +999,14 @@
 
 
 
-    function update_policy(record_id, merge_policies, preparation_approvers, stakeholders_approvers, regulators_approvers) {
+    function update_policy(record_id, merge_policies, users_results) {
+
+        let [
+            preparation_approvers,
+            stakeholders_approvers,
+            regulators_approvers
+        ] = Object.values(users_results);
+
         return new Promise(function (resolve, reject) {
             var seqObj = JSON.stringify({
                 '__metadata': {
@@ -963,33 +1053,48 @@
         });
     }
 
+    function users_empty_check() {
+        let is_empty = false;
 
+        for (let index = 1; index <= team_names.length; index++) {
+            if (selected_users[index].length === 0) {
+                is_empty = true;
+                break;
+            }
+        }
+
+        return is_empty;
+
+
+    }
 
 
     async function apply_changes() {
-        $("#loader-policy").show();
         try {
+
+            if (users_empty_check()) {
+                Swal.fire({
+                    title: "Warning!",
+                    html: "<b>" + "Please select at least 1 user for each section" + "</b>",
+                    icon: "warning"
+                });
+                return;
+            }
+
+
+            $("#loader-policy").show();
+
             const record_id = get_CNID_from_url();
 
-            let { preparation_users, stakeholders_users, regulators_users } = getSelectedUsers();
 
-            let {
-                preparation_approvers,
-                stakeholders_approvers,
-                regulators_approvers
-            } = await add_users_to_policy_approvers_list_DB({
-                record_id,
-                preparation_users,
-                stakeholders_users,
-                regulators_users
-            });
+            let users_results = await insert_users_to_policy_approvers_list(record_id);
 
 
             let merging_policy_checkbox = $("#policyRequestReplaceOtherPolicies").prop("checked");
             let merge_policies = merging_policy_checkbox ? $("#merge_policies_select").val() : [];
 
 
-            await update_policy(record_id, merge_policies, preparation_approvers, stakeholders_approvers, regulators_approvers);
+            await update_policy(record_id, merge_policies, users_results);
 
 
 
@@ -1009,6 +1114,86 @@
 
     }
 
+    function filter_approvers_by_type(approvers, approver_type) {
+        return approvers.filter(approver => approver.Approver_Type === approver_type)
+            .map(approver => approver.Id);
+    }
+
+
+    async function insert_users_to_policy_approvers_list(record_id) {
+
+        let all_promises = [];
+
+        for (let index = 1; index <= team_names.length; index++) {
+            const promises = selected_users[index].map(item => {
+                return add_policy_approvers_list_user(
+                    record_id,
+                    item.user_id,
+                    approver_details[index]["approver_type"],
+                    approver_details[index]["step_number"],
+                    0
+                );
+            });
+
+
+            all_promises.push(...promises);
+        }
+
+
+
+        try {
+            const results = await Promise.all(all_promises);
+
+            let users_results = {};
+
+            for (let index = 1; index <= team_names.length; index++) {
+                users_results[index] = filter_approvers_by_type(results, approver_details[index]["approver_type"]);
+            }
+
+
+            return users_results;
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function add_policy_approvers_list_user(record_id, user_id, approver_type, step_number, approval_status) {
+        return new Promise((resolve, reject) => {
+            const obj = JSON.stringify({
+                '__metadata': {
+                    'type': 'SP.Data.Policy_x005f_Approvers_x005f_ListListItem'
+                },
+                "Approver_Type": approver_type,
+                "Approver_NameId": user_id,
+                "Approver_Name_User_ID": user_id,
+                "Approver_Step_Number": step_number,
+                "Request_ID": record_id,
+                "Approver_Approval_Status": approval_status
+            });
+
+            const headers = {
+                "accept": "application/json;odata=verbose",
+                "content-type": "application/json;odata=verbose",
+                "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            };
+
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_Approvers_List')/items",
+                method: "POST",
+                data: obj,
+                headers: headers,
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error.responseText);
+                }
+            });
+        });
+    }
 
 
 
