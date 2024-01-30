@@ -130,10 +130,30 @@ fix in policy published log (case insensitive): filter += `substringof('${search
 
 
 
-get users -> Email ne ''  replace with PrincipalType = 1
 
-fix publish button still disabled even if user has permission (investigate)
 
+
+
+
+
+get users -> Email ne ''  replace with PrincipalType = 1 [DONE]
+
+fix publish button still disabled even if user has permission (investigate) [DONE]
+
+close people picker modal on save green button [DONE]
+
+
+populate number of people chosen + avatar in publish step for people picker [DONE]
+
+CSS problem for choosing 3 people or more - avatar 2 and 3 get collided
+
+people picker fix in quality page [DONE]
+
+populate previous team members to people picker in quality - publish stages [DONE]
+
+save people picker by deleting previous members and adding new ones
+
+validation to make sure people are selected in people picker before submitting stage (both quality and publish stages) [DONE]
 
 
 Policy_Approver_History = implement history policy page for each stage
@@ -141,16 +161,18 @@ step_number is the current step to show
 using approver_status to see if it was send back/proceed
 
 
-people picker fix in quality page
 
 
-debounce timer for policy published logs input
-fix in policy published log (case insensitive): filter += `substringof('${search_title}', Request_title)`;
+debounce timer for policy published logs input [DONE]
+fix in policy published log (case insensitive): filter += `substringof('${search_title}', Request_title)`; [DONE]
 
 
-for initiator [ability to remove file]
-- open file without downloading 
-view: https://mgskw.sharepoint.com/sites/DQ/Policy%20Attachments/Forms/AllItems.aspx?id=%2Fsites%2FDQ%2FPolicy%20Attachments%2FFile%5Ft1%2D69%2D68394%2Ejson&parent=%2Fsites%2FDQ%2FPolicy%20Attachments
+for initiator [ability to remove file] [DONE]
+- open file without downloading [DONE]
+
+
+- issue with view file implementation for fields Policy_Template_URL and Policy_Published_URL
+
 
 
 
