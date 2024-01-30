@@ -321,6 +321,18 @@
 
 <script>
 
+    let team_names = ["Preparation Team", "Reviewers", "Approvers"];
+
+    let selected_users = {};
+
+    for (let index = 1; index <= team_names.length; index++) {
+        selected_users[index] = [];
+    }
+
+    let debounceTimer;
+    let users_class = 'users-selection';
+
+
     $(document).ready(async function () {
         try {
             const record_id = get_CNID_from_url();
@@ -356,15 +368,426 @@
             console.log("permission", permission);
 
 
+            create_people_picker_modal();
 
             modify_page_details();
             await populate_fields(selected_policy, record_id);
             apply_permissions(permission);
 
+
+
+
+
+            on_click_close_modal();
+
+            on_keydown_users_search();
+            on_input_users_search();
+
+            on_click_save_buttons();
+
         } catch (error) {
             console.error(error);
         }
     });
+
+    function on_click_save_buttons() {
+        for (let index = 1; index <= team_names.length; index++) {
+            $(`#save_and_add_more_button_${index}, #save_and_exit_button_${index}`).on('click', function () {
+
+                let user = $(`#selected_user_${index}`);
+
+                const user_id = user.attr('data-user-id');
+                const title = user.attr('data-title');
+                const email = user.attr('data-email');
+                const image = user.attr('data-image');
+
+                if(user_id){
+                    selected_users[index].push({
+                        user_id,
+                        title,
+                        email,
+                        image
+                    });
+    
+    
+    
+                    populate_selected_users(index);
+    
+                    choice_select_remove(index);
+    
+                    depopulate_users_modal(index);
+                    $(`#users_search_${index}`).val('');
+                }
+
+
+            });
+
+
+            $(`#save_and_exit_button_${index}`).on('click', function () {
+                $(`#team-add-member_${index}`).modal('hide');
+            });
+        }
+
+    }
+
+
+    function choice_select_remove(index) {
+        let html = `
+            <div id="selected_user_${index}" class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="mb-0 title">Select User</span>
+                </div>
+                <span class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+            </div>
+        `;
+
+        $(`.choice_select_user_${index}`).html(html);
+    }
+
+    function remove_selected_user(user_id, index) {
+        selected_users[index] = selected_users[index].filter(user => user.user_id != user_id);
+        $(`.selected-user_${index}-${user_id}`).remove();
+        populate_selected_users_box_details(index);
+
+
+    }
+
+    function populate_selected_users_box(index) {
+        $(`.selected_users_final_list_${index}`).html("");
+        let html = ``;
+
+        selected_users[index].forEach(item => {
+            html += `
+                <div class="dropdown-item px-x1 py-2 selected-user_${index}-${item.user_id}">
+                    <div class="row align-items-center g-3">
+                        <div class="col">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-l me-2">
+                                    <img class="rounded-circle"
+                                        src="${item.image}" alt="" />
+                                </div>
+                                <div class="flex-1">
+                                    <h6 class="mb-0">${item.title}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div onclick="remove_selected_user('${item.user_id}','${index}')" class="btn-close-falcon text-danger">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        });
+
+        $(`.selected_users_final_list_${index}`).html(html);
+    }
+
+    function populate_selected_users_box_details(index) {
+        $(`.selected_users_avatar_list_${index}`).html("");
+        let html = ``;
+
+
+        for (let i = 0; i < Math.min(4, selected_users[index].length); i++) {
+            const item = selected_users[index][i];
+
+            html += `
+            <div
+                class="avatar avatar-xl border border-3 border-light rounded-circle">
+                <img class="rounded-circle"
+                    src="${item.image}" alt="" />
+            </div>
+            `;
+        }
+
+        if (selected_users[index].length > 4) {
+            const remaining_count = selected_users[index].length - 4;
+
+            html += `
+                <div
+                    class="avatar avatar-xl border border-3 border-light rounded-circle">
+                    <div class="avatar-name rounded-circle">
+                        <span>+${remaining_count}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        $(`.selected_users_avatar_list_${index}`).html(html);
+    }
+
+    function populate_selected_users(index) {
+        populate_selected_users_box(index);
+        populate_selected_users_box_details(index);
+    }
+
+    function capitalize_words(str) {
+        return str.replace(/\b\w/g, function (match) {
+            return match.toUpperCase();
+        });
+    }
+
+    function depopulate_users_modal(index) {
+        $(`.${users_class}_${index}`).remove();
+    }
+
+    function get_active_directory_users_search(value, index) {
+        let selected_users_filter = ``;
+
+        selected_users[index].forEach(item => {
+            if (selected_users_filter) {
+                selected_users_filter += ' and ';
+            }
+            selected_users_filter += `id ne ${item.user_id}`
+
+        });
+
+
+        return new Promise(function (resolve, reject) {
+            let select = "$select=ID,Title,Email";
+            let filter = `$filter=
+                PrincipalType eq 1
+                and 
+                ( substringof('${value}', Title) or substringof('${capitalize_words(value)}', Title) )
+            `;
+
+            if (selected_users_filter) {
+                filter += ` and (${selected_users_filter})`;
+            }
+
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/siteusers?${select}&${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d.results);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+    function choice_select_replace(user_id, title, email, image, index) {
+
+        $(`.choice_select_user_${index}`).html("");
+
+        let html = `
+            <div id="selected_user_${index}" class="d-flex align-items-center justify-content-between"
+            data-user-id="${user_id}" 
+            data-title="${title}" 
+            data-email="${email}" 
+            data-image="${image}"
+            >
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l me-2">
+                        <img class="rounded-circle" src="${image}" alt="" />
+                    </div>
+                    <span class="mb-0 title">${title}</span>
+                </div>
+                <span class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+            </div>
+        `;
+
+        $(`.choice_select_user_${index}`).html(html);
+
+        $(`.choice_select_user_${index}`).dropdown('hide');
+
+    }
+
+    function populate_users_modal(users, index) {
+        let html = ``;
+
+
+        users.forEach(item => {
+            const user_id = item.Id;
+            const title = item.Title
+            const email = item.Email;
+            const image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + item.Email;
+
+
+            html += `
+            <button type="button" onclick="choice_select_replace('${user_id}','${title}','${email}','${image}','${index}')" class="dropdown-item px-x1 py-2 ${users_class}_${index}">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l status-online me-2">
+                        <img class="rounded-circle"
+                            src="${image}" alt="" />
+                    </div>
+                    <div class="flex-1">
+                        <h6 class="mb-0 search-filter-data">
+                            ${title}
+                        </h6>
+                    </div>
+                </div>
+            </button>
+            `
+        });
+
+        $(`#users_select_${index}`).append(html);
+
+
+    }
+
+    function on_input_users_search() {
+        for (let index = 1; index <= team_names.length; index++) {
+            $(`#users_search_${index}`).on('input', async function () {
+                clearTimeout(debounceTimer);
+
+                let value = $(this).val();
+
+                depopulate_users_modal(index);
+
+                debounceTimer = setTimeout(async function () {
+                    if (value.length >= 1) { // can be set to 2 characters or more
+                        let users = await get_active_directory_users_search(value, index);
+                        populate_users_modal(users, index);
+                    }
+                }, 700);
+
+            });
+
+        }
+
+    }
+
+    function on_keydown_users_search() {
+        for (let index = 1; index <= team_names.length; index++) {
+            $(`#users_search_${index}`).on('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                }
+            });
+        }
+    }
+
+    function on_click_close_modal() {
+        for (let index = 1; index <= team_names.length; index++) {
+            $(`#closeModalButton_${index}`).on('click', function (event) {
+                event.preventDefault();
+            });
+        }
+    }
+
+
+    function create_people_picker_modal() {
+        let people_picker_basic_html = get_people_picker_html();
+        $("#people-picker-global-div").html(people_picker_basic_html);
+    }
+
+
+    function get_people_picker_html() {
+        let html = ``;
+
+
+        for (let index = 1; index <= team_names.length; index++) {
+            html += `
+            <div class="col-12 col-xl-4">
+    <div class="row align-items-center">
+        <div class="col-12">
+            <label class="form-label text-900 fs-0 mb-1">${team_names[index - 1]}</label>
+        </div>
+        <div class="col-12">
+            <div class="users">
+                <div class="row align-items-center justify-content-start g-2">
+                    <div class="col-auto">
+                        <button class="btn btn-outline-light777 p-0" type="button" data-bs-placement="top" title="Add"
+                            data-bs-toggle="modal" data-bs-target="#team-add-member_${index}">
+                            <span class="material-icons text-secondary fs-3 d-flex">add_circle</span>
+                        </button>
+                        <div class="modal fade" id="team-add-member_${index}" tabindex="-1" role="dialog"
+                            aria-hidden="true" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+                                <div class="modal-content position-relative">
+                                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+                                        <button id="closeModalButton_${index}"
+                                            class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-0">
+                                        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+                                            <h6 class="mb-1 text-primary fs-1 fw-semi-bold">Add new member</h6>
+                                        </div>
+                                        <div class="p-4 pb-0">
+                                            <div>
+                                                <div class="mb-3">
+                                                    <div
+                                                        class="dropdown dropdown-with-avatars font-sans-serif position-static">
+                                                        <button class="btn dropdown-toggle w-100 choice_select_user_${index}"
+                                                            id="dropdownMenuButton1_${index}" type="button"
+                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <div
+                                                                class="d-flex align-items-center justify-content-between">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span class="mb-0 title">Select User</span>
+                                                                </div>
+                                                                <span
+                                                                    class="fas fa-chevron-down text-600 fs--1 mx-2"></span>
+                                                            </div>
+                                                        </button>
+                                                        <div id="users_select_${index}"
+                                                            class="dropdown-menu dropdown-menu-start py-2 scrollbar search-filter-parent"
+                                                            aria-labelledby="dropdownMenuButton1_${index}">
+                                                            <div class="dropdown-item">
+                                                                <input id="users_search_${index}" type="search"
+                                                                    class="form-control form-control-sm search-filter-input"
+                                                                    placeholder="Search..." />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End: dropdown -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row w-100 g-2">
+                                            <div class="col-auto">
+                                                <button id="save_and_exit_button_${index}" class="btn btn-dquam-success w-100" type="button">
+                                                    Save
+                                                </button>
+                                            </div>
+                                            <div class="col">
+                                                <button id="save_and_add_more_button_${index}" class="btn btn-dquam-info w-100" type="button">
+                                                    Save &amp; add more
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End: modal -->
+                    </div>
+                    <div class="col-auto">
+                        <div class="dropdown dropdown-with-avatars font-sans-serif position-static">
+                            <button class="btn dropdown-toggle border border-0" id="dropdownMenuButton1_${index}"
+                                type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                aria-expanded="false">
+                                <div class="avatar-group avatar-group-dense selected_users_avatar_list_${index}">
+
+                                </div>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-start py-2 scrollbar maxw-450 selected_users_final_list_${index}"
+                                aria-labelledby="dropdownMenuButton1_${index}">
+                            </div>
+                        </div><!-- End: dropdown -->
+                    </div>
+                </div>
+            </div><!--End: users-->
+        </div>
+    </div>
+</div>
+
+            `
+        }
+
+
+        return html;
+
+    }
 
     function apply_permissions(permission) {
         if (permission == 'read') {
