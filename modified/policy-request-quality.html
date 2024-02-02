@@ -508,7 +508,7 @@
         let html = ``;
 
 
-        for (let i = 0; i < Math.min(4, selected_users[index].length); i++) {
+        for (let i = 0; i < Math.min(2, selected_users[index].length); i++) {
             const item = selected_users[index][i];
 
             html += `
@@ -520,8 +520,8 @@
             `;
         }
 
-        if (selected_users[index].length > 4) {
-            const remaining_count = selected_users[index].length - 4;
+        if (selected_users[index].length > 2) {
+            const remaining_count = selected_users[index].length - 2 + 1;
 
             html += `
                 <div
@@ -1075,7 +1075,7 @@
             if (users_empty_check()) {
                 Swal.fire({
                     title: "Warning!",
-                    html: "<b>" + "Please select at least 1 user for each section" + "</b>",
+                    html: "<b>" + "Please select at least 1 user for each team" + "</b>",
                     icon: "warning"
                 });
                 return;
