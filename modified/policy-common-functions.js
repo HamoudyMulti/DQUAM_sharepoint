@@ -317,7 +317,7 @@ function get_policy_info(record_id, select, expand) {
 
 function get_current_user_id() {
     return _spPageContextInfo.userId;
-    return 23;
+    return 17;
 }
 
 async function submit_changes(type, next_step_number) {
@@ -577,3 +577,41 @@ function get_organization_departments() {
     });
 }
 
+function get_step_stage_detail(Step_Number) {
+    switch (Step_Number) {
+        case 1:
+            step_stage_detail = 'Quality Team';
+            break;
+        case 2:
+            step_stage_detail = 'Preparation Team';
+            break;
+        case 3:
+            step_stage_detail = 'Stakeholders';
+            break;
+        case 4:
+            step_stage_detail = 'Regulators';
+            break;
+        case 5:
+            step_stage_detail = 'Publish';
+            break;
+        case 6:
+            step_stage_detail = 'Completed';
+            break;
+        case 7:
+            step_stage_detail = 'Obsolete';
+            break;
+        case 11:
+            step_stage_detail = 'Send Back By Quality';
+            break;
+        case 33:
+            step_stage_detail = 'Send Back By Stakeholders';
+            break;
+        case 44:
+            step_stage_detail = 'Send Back By Regulators';
+            break;
+
+        default:
+            step_stage_detail = '';
+            break;
+    }
+}
