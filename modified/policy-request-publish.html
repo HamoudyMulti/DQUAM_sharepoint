@@ -234,6 +234,8 @@
     let debounceTimer;
     let users_class = 'users-selection';
 
+    let existing_users = [];
+
     $(document).ready(async function () {
         try {
             const record_id = get_CNID_from_url();
@@ -689,7 +691,7 @@
     }
 
     async function apply_changes() {
-        
+
         try {
             if (users_empty_check()) {
                 Swal.fire({
@@ -699,14 +701,14 @@
                 });
                 return;
             }
-            
+
 
             $("#loader-policy").show();
 
             const record_id = get_CNID_from_url();
             await update_policy(record_id);
 
-            await insert_users_to_policy_acknowledgment_list(record_id);
+            await handle_users_policy_acknowledgment_list(record_id);
 
 
             window.location.href = 'https://mgskw.sharepoint.com/sites/DQ/Pages/Policy_Logs.aspx';
@@ -715,6 +717,29 @@
             console.log(error);
         }
 
+
+    }
+
+    async function handle_users_policy_acknowledgment_list(record_id) {
+        await delete_existing_users_from_policy_acknowledgment_list();
+        await insert_users_to_policy_acknowledgment_list(record_id);
+    }
+
+
+
+    async function delete_existing_users_from_policy_acknowledgment_list() {
+
+        let delete_promises = existing_users.map(item => {
+            delete_policy_acknowledgment_list_user(item.Id);
+        });
+
+        try {
+            const results = await Promise.all(delete_promises);
+
+            return results;
+        } catch (error) {
+            console.log(error);
+        }
 
     }
 
@@ -730,6 +755,27 @@
         } catch (error) {
             console.log(error);
         }
+    }
+
+    function delete_policy_acknowledgment_list_user(id) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Acknowledgment_List')/items(${id})`,
+                type: "POST",
+                headers:
+                {
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                    "IF-MATCH": "*",
+                    "X-HTTP-Method": "DELETE"
+                },
+                success: function (data) {
+                    resolve();
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
     }
 
     function add_policy_acknowledgment_list_user(record_id, user_id, title, email) {
@@ -854,9 +900,9 @@
     }
 
     async function populate_users_from_DB(record_id) {
-        let all_users_details = await get_users_from_policy_acknowledgment_list(record_id);
+        existing_users = await get_users_from_policy_acknowledgment_list(record_id);
 
-        selected_users = all_users_details.map(user => {
+        selected_users = existing_users.map(user => {
             return {
                 user_id: user.Viewer_ID,
                 title: user.Viewer_Name,
@@ -871,7 +917,7 @@
 
     function get_users_from_policy_acknowledgment_list(record_id) {
         return new Promise(function (resolve, reject) {
-            let select = "$select=Viewer_Name,Viewer_Email,Viewer_ID";
+            let select = "$select=Id,Viewer_Name,Viewer_Email,Viewer_ID";
             let filter = `$filter=Policy_ID eq ${record_id}`;
             $.ajax({
                 url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Acknowledgment_List')/items?${select}&${filter}`,

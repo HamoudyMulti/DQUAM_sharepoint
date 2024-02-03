@@ -325,6 +325,8 @@
 
     let selected_users = {};
 
+    let existing_users = [];
+
     for (let index = 1; index <= team_names.length; index++) {
         selected_users[index] = [];
     }
@@ -359,7 +361,7 @@
 
             let selected_policy = await get_policy_info(
                 record_id,
-                "$select=*,Author/Id,Preparation_Approvers/Approver_Name_User_ID,Stakeholders_Approvers/Approver_Name_User_ID,Regulators_Approvers/Approver_Name_User_ID",
+                "$select=*,Author/Id,Preparation_Approvers/Id,Preparation_Approvers/Approver_Name_User_ID,Stakeholders_Approvers/Id,Stakeholders_Approvers/Approver_Name_User_ID,Regulators_Approvers/Id,Regulators_Approvers/Approver_Name_User_ID",
                 "$expand=Author,Preparation_Approvers,Stakeholders_Approvers,Regulators_Approvers"
             );
 
@@ -903,6 +905,8 @@
         let users_from_DB = {};
         for (let index = 1; index <= team_names.length; index++) {
             users_from_DB[index] = policy[`${approver_details[index]["approver_type"]}_Approvers`].results.map(item => item.Approver_Name_User_ID);
+
+            existing_users = [...existing_users, ...policy[`${approver_details[index]["approver_type"]}_Approvers`].results.map(item => item.Id)];
         }
 
         const all_users_ids_filter = Object.values(users_from_DB)
@@ -1087,7 +1091,7 @@
             const record_id = get_CNID_from_url();
 
 
-            let users_results = await insert_users_to_policy_approvers_list(record_id);
+            let users_results = await handle_users_policy_approvers_list(record_id);
 
 
             let merging_policy_checkbox = $("#policyRequestReplaceOtherPolicies").prop("checked");
@@ -1118,6 +1122,50 @@
         return approvers.filter(approver => approver.Approver_Type === approver_type)
             .map(approver => approver.Id);
     }
+
+    async function handle_users_policy_approvers_list(record_id) {
+        await delete_existing_users_from_policy_approvers_list();
+        let users_results = await insert_users_to_policy_approvers_list(record_id);
+        return users_results;
+    }
+
+    async function delete_existing_users_from_policy_approvers_list() {
+
+        let delete_promises = existing_users.map(item => {
+            delete_policy_approvers_list_user(item);
+        });
+
+        try {
+            const results = await Promise.all(delete_promises);
+
+            return results;
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    function delete_policy_approvers_list_user(id) {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Approvers_List')/items(${id})`,
+                type: "POST",
+                headers:
+                {
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                    "IF-MATCH": "*",
+                    "X-HTTP-Method": "DELETE"
+                },
+                success: function (data) {
+                    resolve();
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
 
 
     async function insert_users_to_policy_approvers_list(record_id) {
