@@ -183,12 +183,13 @@
         if (status == 'disable') {
             $('#cancel_button').prop('disabled', true);
             $('#next_button').prop('disabled', true);
+            $('.remove-doc-permission').prop('disabled', true);
         }
 
         if (status == 'enable') {
             $('#cancel_button').prop('disabled', false);
             $('#next_button').prop('disabled', false);
-
+            $('.remove-doc-permission').prop('disabled', false);
         }
     }
 
@@ -232,12 +233,12 @@
                                         data-darkreader-inline-fill="" style="--darkreader-inline-fill: currentColor;"></path>
                                 </svg><!-- <span class="fas fa-ellipsis-h"></span> Font Awesome fontawesome.com --> </button>
                             <div class="dropdown-menu dropdown-menu-end border py-2"> 
-                                <div class="dropdown-item" onclick="open_viewable_doc('Policy Attachments', '${doc.LinkFilename}', '${doc.GUID}')"
-                                    data-dz-remove="data-dz-remove">View File</div>  
+                                <button type="button" class="dropdown-item" onclick="open_viewable_doc('Policy Attachments', '${doc.LinkFilename}', '${doc.GUID}')"
+                                    data-dz-remove="data-dz-remove">View File</button>  
                                 
-                                <div class="dropdown-item" onclick="delete_doc_from_server('Policy Attachments', '${doc.Id}', '${class_select}')"
+                                <button type="button" class="dropdown-item remove-doc-permission" onclick="delete_doc_from_server('Policy Attachments', '${doc.Id}', '${class_select}')"
                                 data-dz-remove="data-dz-remove">Delete File</div>  
-                                    </div>
+                                    </button>
                         </div>
                 </div>
             </div>
