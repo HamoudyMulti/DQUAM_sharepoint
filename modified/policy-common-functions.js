@@ -316,8 +316,8 @@ function get_policy_info(record_id, select, expand) {
 
 
 function get_current_user_id() {
-    return _spPageContextInfo.userId;
     return 17;
+    return _spPageContextInfo.userId;
 }
 
 async function submit_changes(type, next_step_number) {
@@ -614,4 +614,77 @@ function get_step_stage_detail(Step_Number) {
             step_stage_detail = '';
             break;
     }
+
+    return step_stage_detail;
+}
+
+
+function view_history(id){
+    window.location.href = `${_spPageContextInfo.webAbsoluteUrl}/Pages/policy-request-history.aspx?CNID=${id}`;
+}
+
+async function view_details(record_id) {
+
+    let selected_policy = await get_policy_info(record_id);
+
+    let next_url = determine_next_url(selected_policy);
+
+    window.location.href = next_url;
+
+
+}
+
+
+function determine_next_url(selected_policy) {
+    let url = `${_spPageContextInfo.webAbsoluteUrl}/Pages/`;
+
+    let step_number = selected_policy.Step_Number;
+
+
+    switch (step_number) {
+        case 1:
+            url += 'policy-request-quality.aspx';
+            break;
+        case 2:
+        case 33:
+        case 44:
+            url += 'policy-request-preparation.aspx';
+            break;
+        case 3:
+            url += 'policy-request-stakeholders.aspx';
+            break;
+        case 4:
+            url += 'policy-request-regulators.aspx';
+            break;
+        case 5:
+            url += 'policy-request-publish.aspx';
+            break;
+        case 6:
+        case 7:
+            url += 'policy-request-completed.aspx';
+            break;
+        case 11:
+            url += 'policy-request-initiator-back.aspx';
+            break;
+        default:
+            url = null;
+            break;
+    }
+
+    if (url) {
+        url += `?CNID=${selected_policy.Id}`;
+    }
+
+    return url;
+}
+
+
+async function redirect_detail_page(){
+    const record_id = get_CNID_from_url();
+    await view_details(record_id);
+}
+
+function redirect_history_page(){
+    const record_id = get_CNID_from_url();
+    view_history(record_id);
 }

@@ -2,6 +2,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
+<script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
+
 <div class="content">
 
     <div class="row">
@@ -19,7 +21,9 @@
             <div class="col">
                 <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
                         <li class="breadcrumb-item"><a href="gaps-log.html">Policy</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Policy History</li>
                     </ol>
@@ -31,8 +35,10 @@
         <div class="row mb-3 mb-xl-4">
             <div class="col">
                 <div class="btn-group btn-group-sm" role="group">
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-readonly.aspx" class="btn btn-outline-secondary" role="button">Details</a>
-                    <a href="https://mgskw.sharepoint.com/sites/DQ/Pages/policy-request-history.aspx" class="btn btn-dquam-primary" role="button">History</a>
+                    <button type="button" onclick="redirect_detail_page()"
+                        class="btn btn-outline-secondary" role="button">Details</button>
+                    <button type="button" onclick="redirect_history_page()"
+                        class="btn btn-dquam-primary" role="button">History</button>
                 </div>
             </div>
         </div>
@@ -45,142 +51,15 @@
                     <table class="table table-bordered table-striped fs--1 mb-0">
                         <thead class="bg-info-subtle text-900">
                             <tr>
-                                <th class="sort" data-sort="user">User</th>
+                                <th class="sort text-center" data-sort="user">User</th>
+                                <th class="sort text-center">Stage</th>
+                                <th class="sort text-center">Action</th>
                                 <th class="sort text-center" data-sort="date-time">Date/Time</th>
                                 <th class="sort text-center maxw-250 minw-250">Comment</th>
                             </tr>
                         </thead>
-                        <tbody class="list">
-                            <tr>
-                                <td class="user">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-l status-online me-2">
-                                            <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/1.jpg" alt="">
-                                        </div>
-                                        <div class="flex-1">
-                                            <h6 class="mb-0">Lisa K</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="date-time text-center">
-                                    <span class="text-700">12/04/2023</span> &nbsp; <span class="text-500">12:53:05
-                                        PM</span>
-                                </td>
-                                <td class="maxw-250 minw-250">
-                                    <span>
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="user">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-l status-online me-2">
-                                            <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg" alt="">
-                                        </div>
-                                        <div class="flex-1">
-                                            <h6 class="mb-0">John Doe</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="date-time text-center">
-                                    <span class="text-700">11/04/2023</span> &nbsp; <span class="text-500">05:42:33
-                                        AM</span>
-                                </td>
-                                <td class="maxw-250 minw-250">
-                                    <span>
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                        Lorem ipsum dolor set amet is a dummy text used in print media because it's a
-                                        lorem ipsum
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="user">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-l status-online me-2">
-                                            <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg" alt="">
-                                        </div>
-                                        <div class="flex-1">
-                                            <h6 class="mb-0">Tina Guo</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="date-time text-center">
-                                    <span class="text-700">10/04/2023</span> &nbsp; <span class="text-500">08:35:00
-                                        PM</span>
-                                </td>
-                                <td class="maxw-250 minw-250">
-                                    <span>
-                                        Lorem ipsum dolor set amet is a dummy text used in print media.
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="user">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-l status-online me-2">
-                                            <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg" alt="">
-                                        </div>
-                                        <div class="flex-1">
-                                            <h6 class="mb-0">Tina Guo</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="date-time text-center">
-                                    <span class="text-700">09/04/2023</span> &nbsp; <span class="text-500">11:42:03
-                                        AM</span>
-                                </td>
-                                <td class="maxw-250 minw-250">
-                                    <span>
-                                        Just another modification
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="user">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-l status-online me-2">
-                                            <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/3.jpg" alt="">
-                                        </div>
-                                        <div class="flex-1">
-                                            <h6 class="mb-0">Tina Guo</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="date-time text-center">
-                                    <span class="text-700">09/04/2023</span> &nbsp; <span class="text-500">10:28:03
-                                        AM</span>
-                                </td>
-                                <td class="maxw-250 minw-250">
-                                    <span>
-                                        Just another modification is a lorem ipsum dolor set amet text
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="user">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-l status-online me-2">
-                                            <img class="rounded-circle" src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/img/team/2.jpg" alt="">
-                                        </div>
-                                        <div class="flex-1">
-                                            <h6 class="mb-0">John Doe</h6>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="date-time text-center">
-                                    <span class="text-700">28/04/2023</span> &nbsp; <span class="text-500">12:28:03
-                                        AM</span>
-                                </td>
-                                <td class="maxw-250 minw-250">
-                                    <span>
-                                        Just another modification is a lorem ipsum dolor set amet text
-                                    </span>
-                                </td>
-                            </tr>
+                        <tbody class="list" id="tbl-policy-history">
+
                         </tbody>
                     </table>
                 </div><!-- End: table-responsive -->
@@ -201,10 +80,12 @@
                         </p>
                     </div>
                     <div class="col-auto d-flex">
-                        <button class="btn btn-sm btn-dquam-info" type="button" data-list-pagination="prev">
+                        <button id="previous_button" class="btn btn-sm btn-dquam-info" type="button"
+                            data-list-pagination="prev">
                             <span>Previous</span>
                         </button>
-                        <button class="btn btn-sm btn-dquam-info px-4 ms-2" type="button" data-list-pagination="next">
+                        <button id="next_button" class="btn btn-sm btn-dquam-info px-4 ms-2" type="button"
+                            data-list-pagination="next">
                             <span>Next</span>
                         </button>
                     </div>
@@ -217,10 +98,178 @@
 </div><!-- End: content -->
 
 
-<script>
+<script type="text/javascript">
 
-    $(document).ready(function () {
-        $("#pageTitle").text('Policy History');
+    let pagination_list = [""];
+    let page = 1;
+
+    let limit = 8;
+    let order_by = "ID desc";
+
+    let filter = "";
+
+    $(document).ready(async function () {
+        on_click_next();
+        on_click_previous();
+
+
+        modify_page_details();
+        retrieve_table_data("", "");
     });
+
+
+    function modify_page_details() {
+        $("#pageTitle").text('Policy History');
+    }
+
+    async function retrieve_table_data(pagination, filter) {
+        if (pagination === "") {
+            page = 1;
+            pagination_list = [""];
+        }
+
+        let data = await retrive_list_items(pagination, filter);
+        if (data.__next) {
+            const regex = /p_ID%3d(\d+)/;
+            const match = data.__next.match(regex);
+            if (page === pagination_list.length) {
+                pagination_list.push(`%26p_ID=${match[1]}`);
+            }
+        }
+
+        populate_table('#tbl-policy-history', data.results);
+
+    }
+
+    async function retrive_list_items(pagination, filter) {
+        let policy_id = get_CNID_from_url();
+        if(!policy_id){
+            return {
+                results: []
+            };
+        }
+
+        filter = policy_id ? `Request_ID eq ${policy_id}` : ``; 
+
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + `/_api/web/lists/GetByTitle('Policy_Approver_History')/Items?$OrderBy=${order_by}&$top=${limit}&$skiptoken=Paged=TRUE${pagination}&$filter=${filter}`,
+                method: "GET",
+                headers: {
+                    "ACCEPT": "application/json; odata=verbose",
+                },
+                success: function (data) {
+                    resolve(data.d);
+                },
+                error: function (error) {
+                    reject(error);
+                }
+            });
+        });
+    }
+
+
+
+
+    function populate_table(table_id, data) {
+        html = '';
+        if (data.length > 0) {
+            $(data).each(function (index, value) {
+                html += populate_table_row(value);
+            });
+        }
+        $(table_id).html(html);
+    }
+
+
+    function populate_table_row(value) {
+        let step_stage_detail = get_step_stage_detail(value.Step_Number);
+
+        let image = _spPageContextInfo.webAbsoluteUrl + '/_layouts/15/userphoto.aspx?size=S&accountname=' + value.Approver_Email;
+
+        let { formatted_date: date, formatted_time: time } = convert_created_date_format(value.Created);
+
+        return `
+        <tr>
+            <td class="user">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-l status-online me-2">
+                        <img class="rounded-circle" src="${image}" alt="">
+                    </div>
+                    <div class="flex-1">
+                        <h6 class="mb-0">${value.Approver_Name}</h6>
+                    </div>
+                </div>
+            </td>
+            <td class="text-center">
+                ${step_stage_detail}
+            </td>
+            <td class="text-center">
+                ${value.Approver_Status == 1 ? "Approve" : "Send Back"}
+            </td>
+            <td class="date-time text-center">
+                <span class="text-700">
+                    ${date}
+                </span> &nbsp; 
+                <span class="text-500">
+                    ${time}
+                </span>
+            </td>
+            <td class="maxw-250 minw-250">
+                <span>
+                    ${value.Comments}
+                </span>
+            </td>
+        </tr>
+        `
+    }
+
+    function convert_created_date_format(value) {
+        const input_date = new Date(value);
+
+        const date_format_options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        };
+
+        const formatted_date = new Intl.DateTimeFormat('en-US', date_format_options).format(input_date);
+
+        const time_format_options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        };
+
+        const formatted_time = new Intl.DateTimeFormat('en-US', time_format_options).format(input_date);
+
+        return {
+            formatted_date,
+            formatted_time
+        };
+    }
+
+
+
+    function on_click_next() {
+        $("#next_button").click(function () {
+            if (page < pagination_list.length) {
+                page++;
+                retrieve_table_data(`${pagination_list[page - 1]}`, filter);
+            }
+        });
+    }
+
+
+    function on_click_previous() {
+        $("#previous_button").click(function () {
+            if (page > 1) {
+                page--;
+                retrieve_table_data(`${pagination_list[page - 1]}`, filter);
+            }
+
+        });
+    }
 
 </script>
