@@ -145,20 +145,34 @@ close people picker modal on save green button [DONE]
 
 populate number of people chosen + avatar in publish step for people picker [DONE]
 
-CSS problem for choosing 3 people or more - avatar 2 and 3 get collided
+CSS problem for choosing 3 people or more - avatar 2 and 3 get collided [DONE]
 
 people picker fix in quality page [DONE]
 
 populate previous team members to people picker in quality - publish stages [DONE]
 
-save people picker by deleting previous members and adding new ones
+save people picker by deleting previous members and adding new ones [DONE]
 
 validation to make sure people are selected in people picker before submitting stage (both quality and publish stages) [DONE]
 
 
-Policy_Approver_History = implement history policy page for each stage
-step_number is the current step to show 
-using approver_status to see if it was send back/proceed
+Policy_Approver_History = implement history policy page for each stage [DONE]
+step_number is the current step to show [DONE]
+using approver_status to see if it was send back/proceed [DONE]
+
+
+(discussion) [DONE]
+Approval Comments in {
+    Preparation (Submit)
+    Stakeholders (Approve)
+    Regulators  (Approve)
+}
+
+Send Back Comments in {
+    Quality 
+    Stakeholders
+    Regulators
+}
 
 
 
@@ -168,12 +182,66 @@ fix in policy published log (case insensitive): filter += `substringof('${search
 
 
 for initiator [ability to remove file] [DONE]
+fix permission to remove based on user (initiator back) [DONE]
+
 - open file without downloading [DONE]
+
+
+- field Approver_Status changed to number instead of text (discussion) [DONE]
+
+
+
+request meeting fields{
+    id
+    request_id (policy_id)
+    subject
+
+    Policy_Meeting_Attendees (lookup) {
+        id
+        meeting_id (request meeting id)
+        user_name
+        user_email
+        user_id
+        is_required_attendee (boolean)
+    }
+
+    start time
+    end time
+    location
+    is_teams_meeting (boolean)
+    details
+}
+
+
+frontend issues{
+    A in navigation
+    people picker
+    standard management expansion arrow
+    x in popup modal dialog
+    all diagrams
+}
+
+
+
+
+
+
+
 
 
 - issue with view file implementation for fields Policy_Template_URL and Policy_Published_URL
 
+- delete button in policy log [later - Samer]
+delete policy if(
+    status = new
+    and
+    user is initiator or quality
+)
 
+
+- fix # in CNID in url regex
+
+- request meeting implementation
 
 
 
