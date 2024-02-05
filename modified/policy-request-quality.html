@@ -37,19 +37,57 @@
         <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
             <div class="col-12 col-xl-auto mb-2 mb-xl-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" onclick="redirect_detail_page()"
-                        class="btn btn-dquam-primary" role="button">Details</button>
-                    <button type="button" onclick="redirect_history_page()"
-                        class="btn btn-outline-secondary" role="button">History</button>
+                    <button type="button" onclick="redirect_detail_page()" class="btn btn-dquam-primary"
+                        role="button">Details</button>
+                    <button type="button" onclick="redirect_history_page()" class="btn btn-outline-secondary"
+                        role="button">History</button>
                 </div>
             </div>
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
                     <div class="col-auto">
-                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button"
-                            onclick="send_back_change(11, false)" disabled>Send
-                            Back</button>
+                        <button id="send_back_button_modal" class="btn btn-dquam-secondary btn-sm" type="button"
+                            data-bs-toggle="modal" data-bs-target="#modal-policy-sendback-comment">Send Back</button>
+                        <div class="modal fade" id="modal-policy-sendback-comment" tabindex="-1" role="dialog"
+                            aria-hidden="true" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+                                <div class="modal-content position-relative">
+                                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+                                        <button id="send_back_close_modal"
+                                            class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-0">
+                                        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+                                            <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Send Back Comment
+                                            </h6>
+                                        </div>
+                                        <div class="p-4 pb-0 text-center">
+                                            <div>
+                                                <div class="mb-3">
+                                                    <h6 class="mb-0 text-600">Type Comment:</h6>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <input id="policy_comment" class="form-control" type="text"
+                                                        placeholder="type comment">
+                                                </div>
+                                                <div class="mb-5">
+                                                    <button id="send_back_button" class="btn btn-dquam-secondary btn-sm"
+                                                        type="button"
+                                                        onclick="send_back_change(1, 11, false, $('#policy_comment').val())"
+                                                        disabled>Send
+                                                        Back</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End: modal -->
                     </div>
+
+
+
                     <div class="col-auto">
                         <button id="submit_button" class="btn btn-dquam-primary-light btn-sm" type="button"
                             onclick="apply_changes()" disabled>Save
@@ -692,6 +730,10 @@
                 event.preventDefault();
             });
         }
+
+        $('#send_back_close_modal').on('click', function (event) {
+            event.preventDefault();
+        });
     }
 
 
@@ -826,11 +868,13 @@
         if (status == 'disable') {
             $('#submit_button').prop('disabled', true);
             $('#send_back_button').prop('disabled', true);
+            $('#send_back_button_modal').prop('disabled', true);
         }
 
         if (status == 'enable') {
             $('#submit_button').prop('disabled', false);
             $('#send_back_button').prop('disabled', false);
+            $('#send_back_button_modal').prop('disabled', false);
 
         }
     }

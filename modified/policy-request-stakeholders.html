@@ -3,7 +3,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
 
 <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/JS/policy-common-functions.js"></script>
-<link rel="stylesheet" href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/CSS/policy-common-stylesheet.css">
+<link rel="stylesheet"
+    href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/CSS/policy-common-stylesheet.css">
 
 <div class="content">
     <div id="loader-policy" class="loader-policy"></div>
@@ -36,20 +37,57 @@
         <div class="row align-items-center justify-content-between mb-3 mb-xl-4">
             <div class="col-12 col-xl-auto mb-2 mb-xl-0">
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" onclick="redirect_detail_page()"
-                        class="btn btn-dquam-primary" role="button">Details</button>
-                    <button type="button" onclick="redirect_history_page()"
-                        class="btn btn-outline-secondary" role="button">History</button>
+                    <button type="button" onclick="redirect_detail_page()" class="btn btn-dquam-primary"
+                        role="button">Details</button>
+                    <button type="button" onclick="redirect_history_page()" class="btn btn-outline-secondary"
+                        role="button">History</button>
                 </div>
             </div>
             <div class="col-12 col-xl-auto">
                 <div class="row g-2">
-                    <div class="col-auto">
-                        <button id="send_back_button" class="btn btn-dquam-secondary btn-sm" type="button"
-                            onclick="send_back_change(33, true)" disabled>Send
-                            Back</button>
 
+
+
+                    <div class="col-auto">
+                        <button id="send_back_button_modal" class="btn btn-dquam-secondary btn-sm" type="button"
+                            data-bs-toggle="modal" data-bs-target="#modal-policy-sendback-comment">Send Back</button>
+                        <div class="modal fade" id="modal-policy-sendback-comment" tabindex="-1" role="dialog"
+                            aria-hidden="true" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+                                <div class="modal-content position-relative">
+                                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+                                        <button id="send_back_close_modal"
+                                            class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-0">
+                                        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+                                            <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Send Back Comment
+                                            </h6>
+                                        </div>
+                                        <div class="p-4 pb-0 text-center">
+                                            <div>
+                                                <div class="mb-3">
+                                                    <h6 class="mb-0 text-600">Type Comment:</h6>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <input id="policy_comment" class="form-control" type="text"
+                                                        placeholder="type comment">
+                                                </div>
+                                                <div class="mb-5">
+                                                    <button id="send_back_button" class="btn btn-dquam-secondary btn-sm"
+                                                        type="button" onclick="send_back_change(3, 33, true, $('#policy_comment').val())" disabled>Send
+                                                        Back</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End: modal -->
                     </div>
+
+
                     <div class="col-auto">
                         <button id="open_ms_team_button" class="btn btn-dquam-info btn-sm" type="button" disabled>Open
                             MS
@@ -61,11 +99,52 @@
                             disabled>Request
                             Meeting</button>
                     </div>
-                    <div class="col-auto">
-                        <button id="submit_button" class="btn btn-dquam-primary btn-sm" type="button"
-                            onclick="submit_changes('Stakeholders', 4)" disabled>Approve</button>
 
+
+                    <div class="col-auto">
+                        <button id="submit_button_modal" class="btn btn-dquam-primary btn-sm px-2 px-sm-3 minw-150"
+                            type="button" data-bs-toggle="modal"
+                            data-bs-target="#modal-policy-approve-comment">Submit</button>
+                        <div class="modal fade" id="modal-policy-approve-comment" tabindex="-1" role="dialog"
+                            aria-hidden="true" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 400px">
+                                <div class="modal-content position-relative">
+                                    <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+                                        <button id="approval_close_modal"
+                                            class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-0">
+                                        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+                                            <h6 class="mb-0 text-primary fs-0 fw-semi-bold text-900">Approval Comment
+                                            </h6>
+                                        </div>
+                                        <div class="p-4 pb-0 text-center">
+                                            <div>
+                                                <div class="mb-3">
+                                                    <h6 class="mb-0 text-600">Type Comment:</h6>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <input id="policy_comment" class="form-control" type="text"
+                                                        placeholder="type comment">
+                                                </div>
+                                                <div class="mb-5">
+                                                    <button id="submit_button" class="btn btn-dquam-primary btn-sm"
+                                                        type="button"
+                                                        onclick="submit_changes('Stakeholders', 3, 4, $('#policy_comment').val())"
+                                                        disabled>Approve</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End: modal -->
                     </div>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -150,13 +229,15 @@
         <div class="card">
             <div class="card-body p-xl-5">
                 <div class="col-12 policy-status-top-div">
-                    <span id="policy_status_top" class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
+                    <span id="policy_status_top"
+                        class="policy-status-top-presentation badge rounded p-2 minw-80"></span>
                 </div>
 
                 <br>
                 <div class="row justify-content-end mb-3">
                     <div class="col-auto">
-                        <button id="view_file" onclick="open_doc_new_tab($(this).data('file-url'))" class="btn btn-dquam-info" type="button">
+                        <button id="view_file" onclick="open_doc_new_tab($(this).data('file-url'))"
+                            class="btn btn-dquam-info" type="button">
                             <span class="fas fa-file"></span>
                             <span class="ms-1">View File</span>
                         </button>
@@ -290,6 +371,8 @@
                 modify_main_buttons('disable');
             }
 
+            on_click_close_modal();
+
         } catch (error) {
             console.error(error);
         }
@@ -315,16 +398,20 @@
     function modify_main_buttons(status) {
         if (status == 'disable') {
             $('#submit_button').prop('disabled', true);
+            $('#submit_button_modal').prop('disabled', true);
             $('#request_meeting_button').prop('disabled', true);
             $('#open_ms_team_button').prop('disabled', true);
             $('#send_back_button').prop('disabled', true);
+            $('#send_back_button_modal').prop('disabled', true);
         }
 
         if (status == 'enable') {
             $('#submit_button').prop('disabled', false);
+            $('#submit_button_modal').prop('disabled', false);
             $('#request_meeting_button').prop('disabled', false);
             $('#open_ms_team_button').prop('disabled', false);
             $('#send_back_button').prop('disabled', false);
+            $('#send_back_button_modal').prop('disabled', false);
 
         }
     }
@@ -367,6 +454,12 @@
         });
 
         $("#policy_docs").html(html);
+    }
+
+    function on_click_close_modal() {
+        $('#approval_close_modal, #send_back_close_modal').on('click', function (event) {
+            event.preventDefault();
+        });
     }
 
 </script>

@@ -316,11 +316,11 @@ function get_policy_info(record_id, select, expand) {
 
 
 function get_current_user_id() {
-    return 17;
+    return 34;
     return _spPageContextInfo.userId;
 }
 
-async function submit_changes(type, next_step_number) {
+async function submit_changes(type, current_step_number, next_step_number, comment) {
     $("#loader-policy").show();
 
     const record_id = get_CNID_from_url();
@@ -342,7 +342,19 @@ async function submit_changes(type, next_step_number) {
         if (is_last_approver) {
             await proceed_to_next_stage(record_id, next_step_number);
         }
+
+        await add_policy_history_record(
+            record_id,
+            current_step_number,
+            1,
+            _spPageContextInfo.userDisplayName,
+            _spPageContextInfo.userEmail,
+            _spPageContextInfo.userId,
+            comment
+        );
     }
+
+
 
     redirect_user_to_home_page();
     return;
@@ -357,7 +369,7 @@ function step_number_check(step_number, valid_step_numbers) {
 }
 
 
-async function send_back_change(previous_step_number, update_approvers) {
+async function send_back_change(current_step_number, previous_step_number, update_approvers, comment) {
     $("#loader-policy").show();
     try {
         const record_id = get_CNID_from_url();
@@ -377,6 +389,16 @@ async function send_back_change(previous_step_number, update_approvers) {
         }
 
         await proceed_to_next_stage(record_id, previous_step_number);
+
+        await add_policy_history_record(
+            record_id,
+            current_step_number,
+            0,
+            _spPageContextInfo.userDisplayName,
+            _spPageContextInfo.userEmail,
+            _spPageContextInfo.userId,
+            comment
+        );
 
         redirect_user_to_home_page();
         return;
@@ -619,7 +641,7 @@ function get_step_stage_detail(Step_Number) {
 }
 
 
-function view_history(id){
+function view_history(id) {
     window.location.href = `${_spPageContextInfo.webAbsoluteUrl}/Pages/policy-request-history.aspx?CNID=${id}`;
 }
 
@@ -679,12 +701,51 @@ function determine_next_url(selected_policy) {
 }
 
 
-async function redirect_detail_page(){
+async function redirect_detail_page() {
     const record_id = get_CNID_from_url();
     await view_details(record_id);
 }
 
-function redirect_history_page(){
+function redirect_history_page() {
     const record_id = get_CNID_from_url();
     view_history(record_id);
+}
+
+function add_policy_history_record(record_id, current_step_number, approval_status, approver_name, approver_email, approver_id, comment) {
+    return new Promise(function (resolve, reject) {
+
+        var obj = JSON.stringify({
+            '__metadata': {
+                'type': 'SP.Data.Policy_x005f_Approver_x005f_HistoryListItem'
+            },
+            "Request_ID": record_id,
+            "Step_Number": current_step_number,
+            "Approver_Name": approver_name,
+            "Approver_Email": approver_email,
+            "Approver_ID": approver_id,
+            "Approver_Status": approval_status,
+            "Comments": comment,
+        })
+
+        var headers = {
+            "accept": "application/json;odata=verbose",
+            "content-type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        }
+
+        $.ajax({
+            url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/GetByTitle('Policy_Approver_History')/items",
+            method: "POST",
+            data: obj,
+            headers: headers,
+            success: function (data) {
+                resolve(data.d);
+            },
+            error: function (error) {
+                reject(error.responseText);
+            }
+        })
+
+    });
+
 }
