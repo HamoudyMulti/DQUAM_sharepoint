@@ -18,7 +18,9 @@
             <div class="col">
                 <nav style="--falcon-breadcrumb-divider: '»';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality Documentation</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="https://mgskw.sharepoint.com/sites/DQ/Pages/gaps-dash.aspx">Quality
+                                Documentation</a></li>
                         <li class="breadcrumb-item active"><a href="#">Meeting Request</a></li>
                     </ol>
                 </nav>
@@ -40,7 +42,7 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label">Required Attendees</label>
-                                <select class="form-select js-choice" multiple="multiple" size="1"
+                                <select id="required_attendees" class="form-select js-choice" multiple="multiple" size="1"
                                     data-options='{"removeItemButton":true,"placeholder":true}'>
                                     <option value="">Add</option>
                                     <option>John Doe</option>
@@ -51,20 +53,15 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label">Optional Attendees</label>
-                                <select class="form-select js-choice" multiple="multiple" size="1"
+                                <select id="optional_attendees" class="form-select js-choice" multiple="multiple" size="1"
                                     data-options='{"removeItemButton":true,"placeholder":true}'>
-                                    <option value="">Add</option>
-                                    <option>John Doe</option>
-                                    <option>Christina</option>
-                                    <option>David</option>
-                                    <option>Michael</option>
                                 </select>
                             </div>
                             <div class="col-12 col-xl-6 mb-3">
-                                <label class="form-label">Start Time</label>
+                                <label class="form-label" for="start_time">Start Time</label>
                                 <div class="form-control-wrapper-icon">
                                     <span class="fas fa-clock form-control-icon"></span>
-                                    <input class="form-control datetimepicker" type="text" placeholder="d-m-y H:i"
+                                    <input id="start_time" class="form-control datetimepicker" type="text" placeholder="d-m-y H:i"
                                         data-options='{"enableTime":true,"dateFormat":"d-m-y H:i","disableMobile":true}' />
                                 </div>
                             </div>
@@ -123,9 +120,58 @@
 
 
 <script>
+    let required_attendees = [];
+    let optional_attendees = [];
 
-    $(document).ready(function () {
-        $("#pageTitle").text('Meeting Request');
+    let debounceTimer;
+
+    $(document).ready(async function () {
+        modify_page_details();
+
+        $('#start_time').flatpickr();
+
+        on_input_users_search();
     });
 
+
+    function modify_page_details() {
+        $("#pageTitle").text('Meeting Request');
+    }
+
+
+    function on_input_users_search() {
+        $('#required_attendees').on('change', async function () {
+            clearTimeout(debounceTimer);
+
+            let value = $(this).val();
+
+            console.log("value",value)
+            // depopulate_users_modal();
+
+            // debounceTimer = setTimeout(async function () {
+            //     if (value.length >= 1) { // can be set to 2 characters or more
+            //         let users = await get_active_directory_users_search(value);
+            //         populate_users_modal(users);
+            //     }
+            // }, 700);
+
+        });
+
+    }
+
+
+
+
 </script>
+
+
+<style>
+    .choices__input{
+        border: 0px;
+    }
+
+    .choices__button{
+        min-width: 15px;
+        background-image: unset;
+    }
+</style>
