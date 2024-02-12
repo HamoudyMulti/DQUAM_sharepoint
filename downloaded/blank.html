@@ -55,8 +55,12 @@ To build the master page directly from this HTML file, simply edit the page as y
             <!--MS:<asp:ContentPlaceHolder id="PlaceHolderBodyAreaClass" runat="server">-->
             <!--ME:</asp:ContentPlaceHolder>-->
         <!--ME:</SharePoint:AjaxDelta>-->
+
+
         <!--MS:<SharePoint:CssRegistration Name="Themable/corev15.css" runat="server">-->
         <!--ME:</SharePoint:CssRegistration>-->
+
+        
         <!--MS:<SharePoint:AjaxDelta id="DeltaSPWebPartManager" runat="server">-->
             <!--MS:<WebPartPages:SPWebPartManager runat="server">-->
             <!--ME:</WebPartPages:SPWebPartManager>-->
@@ -87,158 +91,64 @@ To build the master page directly from this HTML file, simply edit the page as y
         <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/flatpickr/flatpickr.min.css" rel="stylesheet" />
         <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/simplebar/simplebar.min.css" rel="stylesheet" />
         <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/dropzone/dropzone.min.css" rel="stylesheet" />
-        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/theme-rtl.css" rel="stylesheet" id="stylertl" />
-        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/theme.css" rel="stylesheet" id="styledefault" />
-        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/user-rtl.css" rel="stylesheet" id="userstylertl" />
-        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/user.css" rel="stylesheet" id="userstyledefault" />
+        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/theme-rtl.css" rel="stylesheet" id="style_rtl" />
+        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/theme.css" rel="stylesheet" id="style_default" />
+        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/user-rtl.css" rel="stylesheet" id="user_style_rtl" />
+        <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/user.css" rel="stylesheet" id="user_style_default" />
         <link href="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/css/custom.css" rel="stylesheet" />
+
+
+
+        <!-- added css -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
+
+
+
+
         <script>//<![CDATA[
         var isRTL = JSON.parse(localStorage.getItem('isRTL'));
         if (isRTL) {
-            var linkDefault = document.getElementById('style-default');
-            var userLinkDefault = document.getElementById('user-style-default');
+            var linkDefault = document.getElementById('ctl00_style_default');
+            var userLinkDefault = document.getElementById('ctl00_user_style_default');
             linkDefault.setAttribute('disabled', true);
             userLinkDefault.setAttribute('disabled', true);
             document.querySelector('html').setAttribute('dir', 'rtl');
         } else {
-            var linkRTL = document.getElementById('style-rtl');
-            var userLinkRTL = document.getElementById('user-style-rtl');
+            var linkRTL = document.getElementById('ctl00_style_rtl');
+            var userLinkRTL = document.getElementById('ctl00_user_style_rtl');
             linkRTL.setAttribute('disabled', true);
             userLinkRTL.setAttribute('disabled', true);
         }
-    
-        
-        
-        //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/jquery/jquery.min.js">//<![CDATA[
-        
-        
-            
-        
-        
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/js/config.js">//<![CDATA[
-            
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/simplebar/simplebar.min.js">//<![CDATA[
-            
-            
-              
-        
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/popper/popper.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/bootstrap/bootstrap.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/anchorjs/anchor.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/is/is.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/fontawesome/all.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/dropzone/dropzone.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/lodash/lodash.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/list.js/list.min.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/js/flatpickr.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
-        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/js/theme.js">//<![CDATA[
-                    
-            
-            
-            
-            
-            
-            //]]>
-        </script>
+        //]]></script>
+
+
+
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/jquery/jquery.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/js/config.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/simplebar/simplebar.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/popper/popper.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/bootstrap/bootstrap.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/anchorjs/anchor.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/is/is.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/fontawesome/all.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/dropzone/dropzone.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/lodash/lodash.min.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/list.js/list.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/js/flatpickr.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/assets/js/theme.js"></script>
+
+
+
+        <!-- added js -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/chart/chart.min.js"></script>
+        <script src="/sites/DQ/_catalogs/masterpage/DQUAM/DQUAM Configs/DQUAM Configs/vendors/echarts/echarts.min.js"></script>
+
+
+
+
+
         <!--[if gte mso 9]><xml>
 <mso:CustomDocumentProperties>
 <mso:ContentTypeId msdt:dt="string">0x0101000F1C8B9E0EB4BE489F09807B2C53288F0054AD6EF48B9F7B45A142F8173F171BD10003D357F861E29844953D5CAA1D4D8A3A</mso:ContentTypeId>
