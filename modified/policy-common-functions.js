@@ -222,7 +222,8 @@ function proceed_to_next_stage(record_id, step_number) {
             '__metadata': {
                 'type': 'SP.Data.Policy_x005f_ListListItem'
             },
-            "Step_Number": step_number
+            "Step_Number": step_number,
+            "isStatusChanged": 0
 
         });
 
@@ -316,8 +317,8 @@ function get_policy_info(record_id, select, expand) {
 
 
 function get_current_user_id() {
-    return 34;
     return _spPageContextInfo.userId;
+    return 25;
 }
 
 async function submit_changes(type, current_step_number, next_step_number, comment) {
