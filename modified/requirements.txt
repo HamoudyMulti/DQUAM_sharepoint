@@ -213,12 +213,17 @@ request meeting fields{
 }
 
 
+
+
+
+
 frontend issues{
-    A in navigation
-    people picker
-    standard management expansion arrow
-    x in popup modal dialog
-    all diagrams
+    A in navigation [fixed]
+    people picker [fixed]
+    standard management expansion arrow [fixed]
+    x in popup modal dialog [fixed]
+    all diagrams [fixed]
+    responsive design
 }
 
 
@@ -246,4 +251,26 @@ delete policy if(
 
 
 
+
+
+
+
+
+
+check {
+    generate word/pdf document [yes]
+    save file on server / opentext edocs / sharepoint online [repo] [configuration only 1 option]  [yes]
+    active directory/ normal users authentication [yes]
+}
+
+
+
+
+
+
+
+
+- add check for empty dates
+- update status keys (colors)
+- validation (start time before end time)
 
