@@ -48,11 +48,11 @@
                                 <div class="col-12 col-xl-auto">
                                     <select id="search_status" class="form-select form-select-sm">
                                         <option value="" selected="">Status</option>
-                                        <option value="new">new</option>
-                                        <option value="in progress">in progress</option>
-                                        <option value="active">active</option>
-                                        <option value="delayed">delayed</option>
-                                        <option value="obsolete">obsolete</option>
+                                        <option value="New">New</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Delayed">Delayed</option>
+                                        <option value="Obsolete">Obsolete</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-xl-auto">
@@ -318,7 +318,7 @@
                 <td class="status text-center">
                     <span class="badge rounded ${status_class} p-2 minw-80">${value.Status !== null ? value.Status : ''}</span>
                 </td>
-                <td class="dueDate text-center">${new Date(value.Due_Date).format('dd/MM/yyyy')}</td>
+                <td class="dueDate text-center">${value.Due_Date ? new Date(value.Due_Date).format('dd/MM/yyyy') : ''}</td>
                 <td class="department text-center">${value.Department}</td>
                 ${view_file_html}
                 <td class="text-center">

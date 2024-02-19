@@ -521,19 +521,19 @@ function get_status_css_class(policy) {
     let status_class;
 
     switch (policy.Status) {
-        case "new":
+        case "New":
             status_class = "badge-subtle-info";
             break;
-        case "in progress":
+        case "In Progress":
             status_class = "badge-subtle-primary";
             break;
-        case "active":
+        case "Active":
             status_class = "badge-subtle-success";
             break;
-        case "delayed":
+        case "Delayed":
             status_class = "badge-subtle-warning";
             break;
-        case "obsolete":
+        case "Obsolete":
             status_class = "badge-subtle-danger";
             break;
         default:

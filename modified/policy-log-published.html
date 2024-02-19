@@ -313,8 +313,8 @@
                 <td class="status text-center">
                     <span class="badge rounded ${status_class} p-2 minw-80">${value.Status !== null ? value.Status : ''}</span>
                 </td>
-                <td class="dueDate text-center">${new Date(value.Next_Revision_Date).format('dd/MM/yyyy')}</td>
-                <td class="dueDate text-center">${new Date(value.Publish_Date).format('dd/MM/yyyy')}</td>
+                <td class="dueDate text-center">${value.Next_Revision_Date ? new Date(value.Next_Revision_Date).format('dd/MM/yyyy'): ''}</td>
+                <td class="dueDate text-center">${value.Publish_Date ? new Date(value.Publish_Date).format('dd/MM/yyyy') : ''}</td>
                 ${view_file_html}
             </tr>`
     }
