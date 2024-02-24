@@ -48,8 +48,8 @@
                                 <div class="col-12 col-xl-auto">
                                     <select id="search_status" class="form-select form-select-sm">
                                         <option value="" selected="">Status</option>
-                                        <option value="active">active</option>
-                                        <option value="obsolete">obsolete</option>
+                                        <option value="Active">Active</option>
+                                        <option value="Obsolete">Obsolete</option>
                                     </select>
                                 </div>
 
@@ -100,6 +100,7 @@
                                 <tr>
                                     <th class="sort" data-sort="id">Policy No.</th>
                                     <th>Title</th>
+                                    <th class="sort text-center">Department</th>
                                     <th class="sort text-center">Revision No.</th>
                                     <th class="sort text-center">Status</th>
                                     <th class="sort text-center">Next Revision Date</th>
@@ -307,6 +308,7 @@
                         ${value.Request_title}
                     </span>
                 </td>
+                <td class="department text-center">${value.Department}</td>
                 <td class="stage text-center">
                     <span>${value.Revision_Number !== null ? value.Revision_Number : ''}</span>
                 </td>
