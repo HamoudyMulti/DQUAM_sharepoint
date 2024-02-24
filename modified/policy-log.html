@@ -290,7 +290,7 @@
             case 44:
                 view_file_html = `
                     <td class="documentLink text-center">
-                        <button type="button" onclick="open_doc_new_tab('${value.Policy_Template_URL}')" class="btn btn-dquam-secondary btn-sm">
+                        <button type="button" onclick="open_doc_new_tab('${encodeURIComponent(value.Policy_Template_URL)}')" class="btn btn-dquam-secondary btn-sm">
                             <span class="fas fa-file"></span>
                             View File
                         </button>

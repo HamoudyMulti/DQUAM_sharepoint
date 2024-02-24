@@ -1,27 +1,32 @@
 async function check_user_access(record_id, selected_policy, current_user, approvers_list) {
+    let user_access = [];
 
     if (initiator_check(current_user, selected_policy)) {
-        return 'initiator';
+        user_access.push('initiator');
     }
     if (await quality_team_check(current_user)) {
-        return 'quality';
+        user_access.push('quality');
     }
 
 
     if (preparation_check("Preparation", approvers_list, current_user)) {
-        return 'preparation';
+        user_access.push('preparation');
     }
 
     if (stakeholders_check("Stakeholders", approvers_list, current_user)) {
-        return 'stakeholders';
+        user_access.push('stakeholders');
     }
 
     if (regulators_check("Regulators", approvers_list, current_user)) {
-        return 'regulators';
+        user_access.push('regulators');
     }
 
 
-    return 'unauthorized';
+    if(user_access.length === 0){
+        user_access.push('unauthorized');
+    }
+
+    return user_access;
 
 
 }
@@ -119,7 +124,21 @@ function check_user_permissions(access, step_number) {
         44: { initiator: "read", quality: "read", preparation: "write", stakeholders: "read", regulators: "read" },
     };
 
-    return permissions[step_number][access];
+    let highest_permission = 'none';
+
+    for (const item of access) {
+        let permission = permissions[step_number][item];
+        if(permission === 'read'){
+            highest_permission = 'read';
+        }
+        
+        if(permission === 'write'){
+            highest_permission = 'write';
+            return highest_permission;
+        }
+    }
+
+    return highest_permission;
 }
 
 
@@ -281,7 +300,7 @@ function redirect_user_to_home_page() {
 
 
 function current_user_approved_check(access, approvers_list, current_user, access_type, type) {
-    if (access === access_type) {
+    if (access.some(item => item === access_type)) {
         const isMatchFound = approvers_list.some(record => {
             if (record.Approver_Type === type && record.Approver_Name.Id === current_user && record.Approver_Approval_Status === 1) {
                 return true;
@@ -545,7 +564,7 @@ function get_status_css_class(policy) {
 }
 
 function open_doc_new_tab(url) {
-    window.open(url, '_blank');
+    window.open(decodeURIComponent(url), '_blank');
 }
 
 

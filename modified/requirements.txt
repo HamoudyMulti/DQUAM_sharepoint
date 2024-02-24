@@ -234,7 +234,7 @@ frontend issues{
 
 
 
-- issue with view file implementation for fields Policy_Template_URL and Policy_Published_URL
+- issue with view file implementation for fields Policy_Template_URL and Policy_Published_URL [DONE]
 
 - delete button in policy log [later - Samer]
 delete policy if(
@@ -247,7 +247,23 @@ delete policy if(
 - fix # in CNID in url regex
 
 - request meeting implementation
+- request meeting validation (start time before end time)
 
+
+
+
+
+
+- add check for empty dates [DONE]
+- update status keys (colors) [DONE]
+
+
+
+- change permissions to support multiple roles per user [DONE]
+- View File implementation in policy log - not working (URL encoding) [DONE]
+- open ms team - open application
+- comment: null [DONE]
+- add deparment column from policy published [DONE]
 
 
 
@@ -261,16 +277,6 @@ check {
     generate word/pdf document [yes]
     save file on server / opentext edocs / sharepoint online [repo] [configuration only 1 option]  [yes]
     active directory/ normal users authentication [yes]
+
+    single sign on SSO
 }
-
-
-
-
-
-
-
-
-- add check for empty dates
-- update status keys (colors)
-- validation (start time before end time)
-

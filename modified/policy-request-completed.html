@@ -246,7 +246,7 @@
 
 
             let access = await check_user_access(record_id, selected_policy, current_user, approvers_list);
-            if (access == 'unauthorized') {
+            if (access.some(item => item === 'unauthorized')) {
                 redirect_user_to_home_page();
                 return;
             }
