@@ -1,0 +1,381 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+
+Table users {
+  id integer [primary key, increment]
+  email varchar [not null, unique]
+  email_verified_at datetime
+  password varchar
+  is_ad_user boolean
+  user_main_role_id integer [ref: - user_roles.id]
+  user_main_structural_group_id integer [ref: - groups_structural.id]
+  user_acting_as_role_id integer [ref: - user_roles.id]
+  user_acting_as_structural_group_id integer  [ref: - groups_structural.id]
+  job_title varchar
+
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+Table user_distribution_groups as u_distribution_groups{
+  id integer [primary key, increment]
+  distribution_group_id integer [ref: - groups_distribution.id]
+  user_id integer [ref: - users.id]
+}
+
+
+
+Table organizational_units as org_units {
+  id integer [primary key, increment]
+  title varchar [not null, unique]
+  short_title varchar
+  organizational_unit_type integer [ref: - org_unit_types.id]
+  
+  parent_organizational_unit_id integer [ref: - organizational_units.id]
+}
+
+Table organizational_units_types as org_unit_types {
+  id integer [primary key, increment]
+  title varchar [not null, unique]
+}
+
+
+Table groups {
+  id integer [primary key, increment]
+  group_type integer [ref: - group_types.id]
+  organizational_unit_id integer [ref: - org_units.id]
+
+}
+
+Table groups_distribution {
+  id integer [primary key, increment]
+  title varchar
+  group_id integer [ref: - groups.id]
+}
+
+Table groups_structural {
+  id integer [primary key, increment]
+  title varchar
+  group_id integer [ref: - groups.id]
+
+}
+
+Table groups_committee {
+  id integer [primary key, increment]
+  title varchar [not null, unique]
+  short_title varchar
+  group_id integer [ref: - groups.id]
+  
+}
+Table group_types {
+  id integer [primary key, increment]
+  title varchar
+  // distribution or structural or committee
+}
+
+
+
+
+Table user_roles{
+  id integer [primary key, increment]
+  title varchar
+  role_type integer [ref: - user_role_types.id]
+}
+
+Table user_role_types{
+  id integer [primary key, increment]
+  title varchar
+  // structure or committee
+}
+
+
+
+Table user_committee_groups {
+  id integer [primary key, increment]
+  user_id integer [ref: - users.id]
+  user_role_id integer [ref: - user_roles.id]
+  committee_group_id integer [ref: - groups_committee.id]
+  
+}
+
+
+
+
+
+
+Table workspaces as w {
+  id integer [primary key, increment]
+  workspace_type_id integer [ref: - w_types.id]
+  created_by integer [ref: - users.id]
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+// version control (check in - check out)
+
+// more descriptive permissions
+Table permissions as permissions {
+  id integer [primary key, increment]
+  item_type_id integer  [ref: - p_item_types.id]
+  item_action_id integer
+  created_at datetime
+  updated_at datetime
+  deleted_at datetime
+}
+
+
+
+
+
+Table permission_item_types as p_item_types{
+  id integer [primary key, increment]
+  title varchar
+}
+
+Table actions_workspace as w_actions{
+  id integer [primary key, increment]
+  title varchar
+}
+
+Table actions_correspondence as c_actions{
+  id integer [primary key, increment]
+  title varchar
+}
+
+Table actions_workspace_document as d_actions{
+  id integer [primary key, increment]
+  title varchar
+}
+
+
+
+
+Table workspace_types as w_types {
+  id integer [primary key, increment]
+  title varchar
+  // correspondence or legal cases etc..
+}
+
+
+Table workspace_folders as w_folders {
+  id integer [primary key, increment]
+  workspace_id integer [ref: - w.id]
+  parent_folder_id integer [ref: - w_folders.id]
+}
+
+Table workspace_items as w_items {
+  id integer [primary key, increment]
+  workspace_folder_id integer [ref: - w_folders.id]
+  workspace_item_type_id integer [ref: - w_item_types.id]
+}
+
+Table workspace_item_types as w_item_types {
+  id integer [primary key, increment]
+  title varchar
+  // document or others
+}
+
+Table workspace_folder_translations as w_folder_translations {
+  id integer [primary key, increment]
+  workspace_folder_id integer [ref: - w_folders.id]
+  title varchar
+}
+
+
+Table workspace_documents as w_documents {
+  id integer [primary key, increment]
+  workspace_item_id integer [ref: - w_items.id]
+  url varchar
+}
+
+Table workspace_document_translations as w_document_translations {
+  id integer [primary key, increment]
+  workspace_document_id integer [ref: - w_documents.id]
+  title varchar
+  description varchar
+}
+
+
+
+
+Table languages {
+  id integer [primary key, increment]
+  title varchar
+}
+
+
+
+Table correspondences as c {
+  id integer [primary key, increment]
+  workspace_id integer [ref: - w.id]
+  correspondence_type_id integer [ref: - c_types.id]
+  correspondence_status_id integer [ref: - c_statuses.id]
+  reference_number varchar
+
+}
+
+// same statuses for all 3 correspondences?
+Table correspondence_statuses as c_statuses {
+  id integer [primary key, increment]
+  title varchar
+}
+Table correspondence_types as c_types {
+  id integer [primary key, increment]
+  title varchar
+}
+
+
+
+
+
+Table correspondence_internal as c_internal {
+  id integer [primary key, increment]
+  correspondence_id integer [ref: - c.id]
+}
+Table correspondence_incoming as c_incoming {
+  id integer [primary key, increment]
+  correspondence_id integer [ref: - c.id]
+}
+Table correspondence_outgoing as c_outgoing {
+  id integer [primary key, increment]
+  correspondence_id integer [ref: - c.id]
+}
+
+
+Table correspondence_translations as c_translations {
+  id integer [primary key, increment]
+  item_id integer [ref: - c.id]
+  language_id integer [ref: - languages.id]
+  title varchar
+  description varchar
+  
+}
+Table correspondence_internal_translations as c_internal_translations {
+  id integer [primary key, increment]
+  item_id integer [ref: - c_internal.id]
+  language_id integer [ref: - languages.id]
+  
+}
+Table correspondence_incoming_translations as c_incoming_translations {
+  id integer [primary key, increment]
+  item_id integer [ref: - c_incoming.id]
+  language_id integer [ref: - languages.id]
+  
+}
+Table correspondence_outgoing_translations as c_outgoing_translations {
+  id integer [primary key, increment]
+  item_id integer [ref: - c_outgoing.id]
+  language_id integer [ref: - languages.id]
+  
+}
+
+Table workspace_team_members as w_team_members {
+  id integer [primary key, increment]
+  workspace_id integer [ref: - w.id]
+  workspace_team_member_access_role_id integer [ref: - w_team_member_access_roles.id]
+  workspace_team_member_participant_type_id integer [ref: - w_team_member_participant_types.id]
+  participant_id integer
+  
+}
+
+// Table workspace_user_members as w_user_members {
+//   id integer [primary key, increment]
+//   workspace_team_member_id integer [ref: > w_team_members.id]
+//   user_id integer [ref: > users.id]
+// }
+
+// Table workspace_distribution_group_members as w_distribution_group_members {
+//   id integer [primary key, increment]
+//   workspace_team_member_id integer [ref: > w_team_members.id]
+//   distribution_group_id integer [ref: > distribution_groups.id]
+// }
+
+// Table workspace_structural_group_members as w_structural_group_members {
+//   id integer [primary key, increment]
+//   workspace_team_member_id integer [ref: > w_team_members.id]
+//   structural_group_id integer [ref: > structural_groups.id]
+// }
+
+// Table workspace_committee_members as w_committee_members {
+//   id integer [primary key, increment]
+//   workspace_team_member_id integer [ref: > w_team_members.id]
+//   committee_id integer [ref: > committee_groups.id]
+// }
+
+Table workspace_team_member_access_roles as w_team_member_access_roles {
+  id integer [primary key, increment]
+  title varchar
+  
+}
+
+Table workspace_team_member_access_role_permissions as w_team_member_access_role_permissions {
+  id integer [primary key, increment]
+  workspace_team_member_access_role_id integer [ref: - w_team_member_access_roles.id]
+  permission_id integer [ref: - permissions.id]
+  
+}
+
+Table workspace_team_member_participant_types as w_team_member_participant_types {
+  id integer [primary key, increment]
+  title varchar
+  // either user or group or (role)?
+}
+
+Table workspace_history as w_history {
+  id integer [primary key, increment]
+  workspace_id integer [ref: - w.id]
+  workspace_history_action_type_id integer [ref: - w_history_action_types.id]
+  entity_id integer
+  created_by integer [ref: - users.id]
+}
+
+Table workspace_history_action_types as w_history_action_types {
+  id integer [primary key, increment]
+  title varchar
+}
+
+
+Table sending_rules {
+  id integer [primary key, increment]
+  sending_item_type integer [ref: - sending_rule_types.id] //(user - role - group)
+  sending_item_id integer
+  receiving_item_type integer [ref: - sending_rule_types.id] //(user - role - group)
+  receiving_item_id integer
+}
+
+Table sending_rule_types {
+  id integer [primary key, increment]
+  title varchar
+  priority integer // (role: 1 - group: 2 - user: 3)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

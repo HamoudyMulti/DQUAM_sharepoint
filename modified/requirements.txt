@@ -260,10 +260,10 @@ delete policy if(
 
 
 - change permissions to support multiple roles per user [DONE]
-- View File implementation in policy log - not working (URL encoding) [DONE]
-- open ms team - open application
-- comment: null [DONE]
-- add deparment column from policy published [DONE]
+- View File button in policy log/policy published log (URL encoding) [DONE]
+- open ms team - open application[NOT DONE - needs MS Teams channel implementation]
+- fix comments bug: null as value [DONE]
+- add deparment column in policy published log [DONE]
 
 
 
@@ -280,3 +280,49 @@ check {
 
     single sign on SSO
 }
+
+
+questions:
+
+- committee considered as group? can it be selected in the workspace when sending the correspondence
+- a user may belong to multiple committees? yes
+- committee can have a parent committee? no
+- acting as - can the user have many acting as? or only one? (depending on the answer we may need new table if he can have many)
+- we have 3 types of roles? user roles = acting as roles - committee roles?
+- implementation for the head of org unit (group) - to be right under the org unit
+
+
+
+
+
+
+
+
+
+db design:
+
+1- changed implementation of groups (used group_id)
+2- 1 permission = 1 action or 1 permission = multiple actions?
+3- same statuses for all 3 correspondences?
+4- workspace/correspondence relationships - parent/child or another type? is it at the level of workspace or correspondence?
+5- history discussion for entity_id
+6- organizational_unit_id in sub groups to be moved to groups table (committees to have root org unit id)
+7- workspace_team_member_participant_types -> can be either user or group or (role) ??
+8- discussion regarding saving as main group and sub groups for different tables
+9- workspace items inside folders before documents
+10- changing all the types to enum instead of table
+11- version control for documents
+12- deleted_at to be used instead of deleting record (soft delete)
+13- add translation for all tables
+14- adding all_items flag for sending_rules table 
+15- sending rules priority
+
+
+
+
+
+
+
+
+
+
